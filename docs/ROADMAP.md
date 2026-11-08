@@ -15,14 +15,16 @@ is a direction, not a claim about today's build.
 - [x] SwiftPM build, app bundle script, CI definition, contributor/agent docs.
 - [ ] Physical closed-lid/open-lid/reclose and charger-transition acceptance tests.
 - [ ] Remote SSH validation from another device.
-- [ ] Signed/notarized alpha DMG and wider Mac/OS testing.
+- [x] Universal local-test DMG/pkg, first-run setup, and private installer workflow.
+- [ ] Signed/notarized alpha DMG, clean installation, and wider Mac/OS testing.
 
 ## Alpha 0.2+ — own the whole session
 
 - [x] Standalone temporary guard, lease/process monitoring, restoration and explicit recovery.
 - [ ] Closed-lid hardware/charger matrix, rare recovery scenarios, production signing,
       and distribution constraints.
-- [ ] Persist preferences; login item and opt-in resume policies.
+- [x] Persist display/closed-lid/battery preferences and setup completion.
+- [ ] Persist remaining session options; login item and opt-in resume policies.
 - [ ] Monitor external session termination accurately; reconcile backend state.
 - [ ] Multiple app/CLI activity triggers with clear precedence and pause behavior.
 - [ ] Scheduled/date sessions, power adapter, network, and external-display triggers.

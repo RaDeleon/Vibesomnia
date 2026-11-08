@@ -37,14 +37,17 @@ struct ContentView: View {
                     }
                 }
                 HStack {
-                    Text("0.1.0-alpha.4 · Open source · Created by Angelo De Leon")
+                    Text("0.1.0-alpha.5 · Open source · Created by Angelo De Leon")
                     Spacer()
                     Link("Source & roadmap", destination: URL(string: "https://github.com/RaDeleon/Vibesomnia")!)
                 }.font(.caption).foregroundStyle(.secondary)
             }.padding(30)
         }
         .frame(minWidth: 800, minHeight: 620)
-        .toolbar { SettingsLink() }
+        .toolbar {
+            Button("Setup guide", systemImage: "sparkles") { store.showSetup = true }
+            SettingsLink()
+        }
     }
 
     private var bundledAppIcon: NSImage {

@@ -10,6 +10,29 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 - Richer triggers and physical closed-lid / remote-workspace validation.
 - Community/Pro separation is deferred; no paid tier exists in this version.
 
+## [0.1.0-alpha.5] — 2026-11-07
+
+### Added
+
+- Universal Apple silicon/Intel DMG containing a standard macOS package installer,
+  welcome/license/completion screens, Applications placement and update guard.
+- First-run setup for app discovery, sleep preferences, administrator permission
+  guidance, and an optional owner-confirmed physical lid / remote test.
+- Persisted display sleep, closed-lid and battery preferences; reopenable setup.
+- Separate packaging build path that leaves a running app/session untouched.
+- Manual private installer workflow, checksums, artifact validation, and optional
+  Developer ID signing/notarization support. No automatic publication.
+
+### Validation and limitations
+
+- 23 tests pass, including defaults, preference persistence and corrupt-data fallback.
+- Setup preview and installer introduction/license screens checked through computer use.
+- Universal executable slices, bundled signatures, package destination and disk-image
+  integrity verified. Preinstall refuses an active Vibesomnia session.
+- This local installer is unsigned and unnotarized; Developer ID credentials are
+  not configured. Actual privileged installation, clean-Mac Gatekeeper behavior,
+  Intel hardware and physical lid/remote acceptance remain to be tested.
+
 ## [0.1.0-alpha.4] — 2026-11-07
 
 ### Fixed
@@ -101,7 +124,7 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 - Physical lid/charger behavior and remote connections require manual validation.
 - Local ad-hoc builds only; no notarized DMG or Mac App Store release yet.
 
-[Unreleased]: https://github.com/RaDeleon/Vibesomnia/compare/v0.1.0-alpha.4...HEAD
+[Unreleased]: https://github.com/RaDeleon/Vibesomnia/compare/v0.1.0-alpha.5...HEAD
 [0.1.0-alpha.1]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.1
 
 [0.1.0-alpha.2]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.2
@@ -109,3 +132,5 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 [0.1.0-alpha.3]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.3
 
 [0.1.0-alpha.4]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.4
+
+[0.1.0-alpha.5]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.5

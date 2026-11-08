@@ -71,7 +71,7 @@ public struct AppStatus: Codable, Sendable {
     public var apps: [WorkspaceApp]
     public var lastError: String?
     public init(session: ActiveSession?, apps: [WorkspaceApp], lastError: String?) {
-        updatedAt = Date(); version = "0.1.0-alpha.4"
+        updatedAt = Date(); version = "0.1.0-alpha.5"
         self.session = session; self.apps = apps; self.lastError = lastError
     }
 }

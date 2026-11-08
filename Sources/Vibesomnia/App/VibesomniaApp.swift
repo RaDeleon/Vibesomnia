@@ -5,12 +5,21 @@ import SwiftUI
 @main
 struct VibesomniaApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
-    @StateObject private var store = SessionStore()
+    @StateObject private var store = SessionStore(preview: CommandLine.arguments.contains("--setup-preview"))
 
     var body: some Scene {
         WindowGroup("Vibesomnia", id: "workspace") {
-            ContentView(store: store)
-                .onAppear { delegate.store = store }
+            Group {
+                if store.isPreview {
+                    SetupView(store: store) { NSApp.terminate(nil) }
+                } else {
+                    ContentView(store: store)
+                        .sheet(isPresented: $store.showSetup) {
+                            SetupView(store: store) { store.finishSetup() }
+                                .interactiveDismissDisabled(store.busy)
+                        }
+                }
+            }.onAppear { delegate.store = store }
         }
         .defaultSize(width: 860, height: 680)
         .windowResizability(.contentMinSize)
@@ -21,16 +30,19 @@ struct VibesomniaApp: App {
                         if store.session == nil { try await store.start() }
                         else { try await store.stop() }
                     }
-                }.keyboardShortcut("s", modifiers: [.command, .shift]).disabled(store.busy)
+                }.keyboardShortcut("s", modifiers: [.command, .shift]).disabled(store.busy || store.isPreview)
             }
         }
         MenuBarExtra {
-            SessionMenu(store: store)
+            SessionMenu(store: store).disabled(store.isPreview)
         } label: {
             Label(store.session == nil ? "Vibesomnia" : "Vibesomnia · awake",
                   systemImage: store.session == nil ? "moon.zzz" : "moon.stars.fill")
         }
-        Settings { SettingsView(store: store) }
+        Settings {
+            if store.isPreview { Text("Setup preview · preferences are not saved").padding() }
+            else { SettingsView(store: store) }
+        }
     }
 }
 

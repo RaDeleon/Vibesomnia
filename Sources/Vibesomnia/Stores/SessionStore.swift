@@ -13,14 +13,19 @@ final class SessionStore: ObservableObject {
     @Published private(set) var events: [String] = []
     @Published var minutes = 60
     @Published var timed = false
-    @Published var allowDisplaySleep = true
-    @Published var closedLid = false
+    @Published var allowDisplaySleep = true { didSet { savePreferences() } }
+    @Published var closedLid = false { didSet { savePreferences() } }
     @Published var selectedApp = ""
     @Published var autoStart = false
-    @Published var batteryProtection = true
+    @Published var batteryProtection = true { didSet { savePreferences() } }
     @Published private(set) var battery: BatteryStatus?
     @Published private(set) var needsRecovery = false
-    let addons = AddOnStore()
+    @Published var showSetup = false
+    @Published var confirmedRemoteTest = false { didSet { savePreferences() } }
+    let isPreview: Bool
+    private let preferencesDefaults: UserDefaults?
+    private var setupCompleted = false
+    lazy var addons = AddOnStore()
     let transport = ControlTransport()
     private let power = PowerService()
     private lazy var lidGuard = ClosedLidService(transport: transport)
@@ -31,7 +36,21 @@ final class SessionStore: ObservableObject {
     private var suppressAutoStart = false
     private var ipcReady = false
 
-    init() {
+    init(preview: Bool = false) {
+        isPreview = preview
+        preferencesDefaults = preview ? nil : .standard
+        let preferences = SetupPreferences.load(from: preferencesDefaults)
+        allowDisplaySleep = preferences.allowDisplaySleep
+        closedLid = preferences.closedLid
+        batteryProtection = preferences.batteryProtection
+        confirmedRemoteTest = preferences.confirmedRemoteTest
+        setupCompleted = preferences.completed
+        showSetup = !preferences.completed
+        if preview {
+            apps = workspace.snapshot()
+            battery = .current()
+            return // Preview never touches IPC, add-ons, leases, or system power.
+        }
         do { try transport.prepare(); ipcReady = true }
         catch { self.error = error.localizedDescription }
         needsRecovery = lidGuard.needsRecovery
@@ -43,12 +62,31 @@ final class SessionStore: ObservableObject {
         }
     }
 
+    private func savePreferences() {
+        var value = SetupPreferences()
+        value.completed = setupCompleted
+        value.allowDisplaySleep = allowDisplaySleep
+        value.closedLid = closedLid
+        value.batteryProtection = batteryProtection
+        value.confirmedRemoteTest = confirmedRemoteTest
+        value.save(to: preferencesDefaults)
+    }
+
+    func finishSetup() {
+        setupCompleted = true
+        savePreferences()
+        showSetup = false
+    }
+
+    func refreshApps() { apps = workspace.snapshot() }
+
     var request: SessionRequest {
         SessionRequest(minutes: timed ? minutes : nil, allowDisplaySleep: allowDisplaySleep,
                        closedLid: closedLid, whileApp: selectedApp.isEmpty ? nil : selectedApp)
     }
 
     func start(_ request: SessionRequest? = nil) async throws {
+        guard !isPreview else { throw VibeError.message("Setup preview cannot start sessions.") }
         guard !busy else { throw VibeError.message("A session change is already in progress.") }
         guard session == nil else { throw VibeError.message("End the current session before starting another.") }
         guard !needsRecovery else { throw VibeError.message("Recover the previous closed-lid session first.") }
@@ -73,6 +111,7 @@ final class SessionStore: ObservableObject {
     }
 
     func stop(reason: String = "Stopped manually") async throws {
+        guard !isPreview else { return }
         guard !busy else { throw VibeError.message("A session change is already in progress.") }
         busy = true
         defer { busy = false; needsRecovery = lidGuard.needsRecovery; publish() }
@@ -88,6 +127,7 @@ final class SessionStore: ObservableObject {
     }
 
     func recover() async {
+        guard !isPreview else { return }
         guard !busy else { return }
         busy = true
         defer { busy = false; needsRecovery = lidGuard.needsRecovery; publish() }
@@ -102,9 +142,13 @@ final class SessionStore: ObservableObject {
         Task { do { try await action() } catch { report(error) } }
     }
 
-    func launch(_ app: String) async throws { try await workspace.launch(app) }
+    func launch(_ app: String) async throws {
+        guard !isPreview else { return }
+        try await workspace.launch(app)
+    }
 
     func displayOff() async throws {
+        guard !isPreview else { return }
         if let session, !session.request.allowDisplaySleep {
             throw VibeError.message("This session keeps the display on. Stop it and allow display sleep first.")
         }
@@ -112,6 +156,7 @@ final class SessionStore: ObservableObject {
     }
 
     func quit() async throws {
+        guard !isPreview else { return }
         guard !needsRecovery || session != nil else {
             throw VibeError.message("Recover the previous closed-lid session before quitting.")
         }

@@ -123,3 +123,38 @@ Verification:
 Handoff: Left indefinite closed-lid session running with display sleep allowed for
   the requested test. Battery protection remains enabled. Physical lid cycling
   and remote reconnection are not claimed as passed pending owner observation.
+
+2026-11-07 | Session 005 | Private DMG installer and first-run setup · alpha.5
+Objective: Produce a ready-to-install DMG/pkg and first-run setup while keeping
+  the repository private and preserving the owner's active closed-lid session.
+Changes:
+  - Added universal release bundle construction, macOS package wizard, versioned
+    DMG and checksum, and a validator that inspects without installing.
+  - Installer targets Applications without relocation; preinstall refuses a
+    running app/guard or leftover recovery record. No power/network/login changes.
+  - Added welcome, app detection, saved sleep preferences, and optional guided
+    remote test. Owner-confirmed results are distinct from automated evidence.
+  - Added setup replay in toolbar/Settings and an isolated, read-only setup preview.
+  - Added optional Developer ID signing/notarization path and manual private
+    Actions artifacts. No release publishing or visibility-changing permissions.
+  - Updated version metadata, README, distribution guide, tests and roadmap.
+Verification:
+  - Graph discovery/trace and relevant file coverage checked; sources read.
+  - All 23 Swift tests passed, including persisted preferences and corrupt fallback.
+  - Universal release build passed; image checksum, package layout/choice XML,
+    app/CLI versions, macOS 14 targets, all arm64/x86_64 slices, bundled signatures,
+    license, welcome/conclusion resources and preinstall contents verified.
+  - Preinstall rejected the active session with an end/recover-and-quit message.
+  - Computer use checked four setup preview pages, detection of ChatGPT/Claude,
+    preference toggles/back navigation, and disabled power actions in preview.
+  - Installer introduction/license screens inspected without accepting terms or
+    performing a privileged installation. Duplicate title prefix corrected.
+  - Existing alpha.4 PID and closed-lid session start time remained unchanged.
+    Normal build/run --verify and runtime smoke test were not used because they
+    would stop the owner's active session; separate bundle/preview checks used.
+Limitations: Local app is ad-hoc signed; pkg is unsigned and unnotarized. No valid
+  Developer ID identity was available. Actual installation, signed/notarized job,
+  first launch from Applications, Intel hardware and physical lid/remote tests
+  remain acceptance work. Manual installer workflow must reach the default branch
+  before normal workflow dispatch. Main and repository visibility were not changed.
+Delivery: alpha.5 source on feat/standalone-closed-lid; local DMG with checksum.

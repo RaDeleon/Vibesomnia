@@ -74,6 +74,9 @@ Gracefully end owned sessions before relaunching; don't force-kill around recove
 
 ## Public repository hygiene
 
+- Keep this repository private until the owner confirms acceptance testing is complete.
+- Build installers privately; do not publish releases or change visibility automatically.
+
 All current code is AGPL-3.0-only. Preserve Angelo De Leon's copyright notices.
 Don't put user-specific local paths, network addresses, remote access details,
 private keys, saved chat history, or secret-bearing logs into source or docs.

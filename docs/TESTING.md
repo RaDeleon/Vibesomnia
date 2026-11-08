@@ -19,6 +19,26 @@ Verify timer boundaries, indefinite sessions, app lifetime, rejected durations,
 expired requests, launch allowlisting, transport permissions, and stale status.
 Check that the app bundle and CLI report VERSION consistently.
 
+## Installer and first-run setup
+
+- Build `./script/package_dmg.sh --local` while an existing session is active;
+  confirm its PID, heartbeat and session start time remain unchanged.
+- Run `./script/verify_installer.py dist/installers/<filename>.dmg`.
+- Inspect installer welcome, license and completion instructions.
+- Confirm preinstall refuses a running app, live guard or leftover recovery record.
+- On a test Mac, install to Applications with administrator approval. Verify it
+  does not relocate into a developer checkout or change power/sharing settings.
+- Open the installed app: first-run setup appears. Detect apps, change preferences,
+  finish/skip, relaunch, and confirm choices persist while sessions remain stopped.
+- Reopen setup from both toolbar and Settings. Test permission denial/cancellation.
+- Follow the physical lid/remote checklist below; owner confirmation is not an
+  automatically measured connectivity result.
+- Test update and uninstall (end/recover session, quit, move app to Trash).
+- Signed release: verify Developer ID signatures and stapled tickets, then test a
+  browser-downloaded quarantined DMG on a clean Mac; never disable Gatekeeper.
+- Check both Apple silicon and Intel hardware. Packaging slices alone is not a
+  hardware compatibility test.
+
 ## Desktop app discovery
 
 - Confirm ChatGPT and Claude Desktop report installed/running against real apps.

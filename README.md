@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml"><img alt="macOS checks" src="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml/badge.svg" /></a>
-  <img alt="Version 0.1.0-alpha.4" src="https://img.shields.io/badge/version-0.1.0--alpha.4-9b82f5" />
+  <img alt="Version 0.1.0-alpha.5" src="https://img.shields.io/badge/version-0.1.0--alpha.5-9b82f5" />
   <img alt="macOS 14+" src="https://img.shields.io/badge/macOS-14%2B-19172f?logo=apple" />
   <img alt="Swift and SwiftUI" src="https://img.shields.io/badge/Swift-SwiftUI-f07152?logo=swift&logoColor=white" />
   <a href="LICENSE"><img alt="AGPL v3" src="https://img.shields.io/badge/license-AGPL--3.0-7462c8" /></a>
@@ -39,12 +39,13 @@ scripts, and access through the remote tools you already use.
 
 ## The night crew
 
-| Capability | What alpha.4 does |
+| Capability | What alpha.5 does |
 | --- | --- |
 | **On your terms** | Manual, timed, indefinite, and selected-GUI-app sessions |
 | **Lights out, work on** | Native idle-sleep prevention, with optional display wakefulness |
 | **Closed lid, standalone** | Bundled administrator-authorized power guard; no Amphetamine installation |
 | **Cleanup that outlives the app** | Separate guard monitors process identity and an eight-second heartbeat lease |
+| **Ready to install** | Universal DMG, macOS installer, and first-run setup with saved preferences |
 | **Know your tools** | Detect/open Claude Desktop, ChatGPT, and Codex; launch Claude Code/Codex CLI in Terminal |
 | **App-aware sessions** | End when the selected app closes; opt into starting when it runs |
 | **Battery guard** | Refuse/end sessions at 20% or lower on battery, configurable in Settings |
@@ -56,12 +57,27 @@ session while Vibesomnia is focused; it is not a global hotkey yet.
 
 ## Get running
 
-### Requirements
+### Install the app
 
-- macOS 14+ and Xcode 15+ or a compatible Swift 5.9+ developer toolchain.
-- Administrator approval **only for closed-lid sessions/recovery**.
-- Existing SSH or screen-sharing access if you want to work from another device.
-- No model account, API key, Node runtime, or third-party Swift dependency.
+Private alpha testing now has a **universal DMG containing a macOS installer**.
+Open `Install Vibesomnia.pkg`, install to Applications, then launch Vibesomnia.
+First-run setup detects AI apps, saves your sleep preferences, and walks through
+an optional lid/remote test. Reopen the guide from the toolbar or Settings.
+
+- macOS 14+ on Apple silicon or Intel. No developer tools needed to use the app.
+- End/recover an existing session and quit Vibesomnia before installing an update.
+- Administrator approval for the Applications installation and closed-lid sessions.
+- Existing SSH or screen-sharing access for remote use; setup does not enable it.
+- No model account, API key, or third-party Swift dependency.
+
+**Current installer: local alpha only.** Its app is ad-hoc signed; its installer
+is unsigned and not notarized. Developer ID signing/notarization and clean-Mac
+installation testing remain release gates. Repository visibility stays private
+until the owner confirms testing is complete. No public download is published.
+
+### Build from source
+
+Contributors need Xcode 15+ or a compatible Swift 5.9+ toolchain.
 
 ```sh
 git clone https://github.com/RaDeleon/Vibesomnia.git
@@ -70,8 +86,8 @@ cd Vibesomnia
 ```
 
 This builds and ad-hoc signs `dist/Vibesomnia.app`, launches it, and checks the
-CLI. The Codex **Run** button uses the same script. There is no published,
-notarized DMG or Mac App Store package yet.
+CLI. The Codex **Run** button uses the same script. The installer pipeline is documented in [distribution](docs/DISTRIBUTION.md);
+there is no public notarized release or Mac App Store package yet.
 
 1. Leave **Let the display sleep** enabled for a dark screen and an awake Mac.
 2. Choose a timer or keep the session indefinite. Optionally select a running app.
@@ -233,8 +249,9 @@ writes or transmits it.
 The temporary guard's root-owned recovery state lives in
 `/private/var/run/vibesomnia-closed-lid/` only while active or awaiting recovery.
 It never reads add-on code or credentials. Native assertions are released by
-macOS if the app exits. Session options and auto-start triggers still reset on
-relaunch in this alpha; add-on approvals and enabled choices persist.
+macOS if the app exits. Display sleep, closed-lid preference, battery protection, and setup completion
+persist. Active sessions, timers, selected-app rules, and auto-start triggers do
+not resume on relaunch. Add-on approvals and enabled choices persist.
 
 </details>
 

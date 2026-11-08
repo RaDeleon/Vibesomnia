@@ -3,7 +3,7 @@ import Foundation
 import VibesomniaCore
 
 let help = """
-Vibesomnia 0.1.0-alpha.4 — control your logged-in Mac's AI workspace.
+Vibesomnia 0.1.0-alpha.5 — control your logged-in Mac's AI workspace.
 
 Usage: vibesomnia-cli <command> [options]
   status                   Print fresh app status as JSON
@@ -27,7 +27,7 @@ user. This CLI never opens a network port or executes arbitrary remote code.
 func run() throws {
     var args = Array(CommandLine.arguments.dropFirst())
     guard !args.isEmpty, !["help", "--help", "-h"].contains(args[0]) else { print(help); return }
-    if args == ["--version"] { print("0.1.0-alpha.4"); return }
+    if args == ["--version"] { print("0.1.0-alpha.5"); return }
     let verb = args.removeFirst()
     let transport = ControlTransport()
     try transport.prepare()
