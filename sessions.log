@@ -207,3 +207,18 @@ Limitations: Default main still has the starter README. Full implementation and
   polished docs are on the feature branch/draft PR. Public visibility does not
   establish beta readiness or close the installation/hardware/remote test gaps.
 Delivery: https://github.com/RaDeleon/Vibesomnia
+
+2026-11-07 | Session 008 | Integrate completed alpha work into main
+Objective: Merge all remaining repository work at the owner's explicit request.
+Preparation:
+  - Refreshed remote refs and inspected every open PR and branch. PR #1 is the
+    sole open PR, targets main, and has no merge conflicts.
+  - Verified the app-icon and alpha.1 branches are ancestors of the current
+    standalone-closed-lid branch, so PR #1 includes all pending feature commits.
+  - Both CI checks on the inspected head passed. Selected a merge commit rather
+    than squash to retain ancestry and keep source release tags unchanged.
+  - Added this work record and a development-diary integration note; no app code
+    changed, no running session was restarted, and no binary was republished.
+Delivery: Merge/check outcome is tracked by GitHub PR #1 and main's merge commit.
+Limitations: Integration does not close the documented installation, signing,
+  hardware or remote-acceptance gaps and does not promote the alpha to beta.

@@ -46,3 +46,12 @@ confidence in the app. Avoid describing openness itself as a quality certificati
 - [Draft PR #1](https://github.com/RaDeleon/Vibesomnia/pull/1)
 - [Remaining acceptance tests](../TESTING.md)
 - [Engineering log](../../sessions.log)
+
+## Integration follow-up
+
+Later that evening, Angelo explicitly requested merging all remaining repository
+work. PR #1 is the only open PR; the icon and alpha.1 branches are ancestors of
+its feature branch. A merge commit preserves those relationships and the source
+release tags. The PR records the integration result and CI status. This brings
+the public-facing repository toward the complete app and README without treating
+code integration as acceptance testing or changing the alpha designation.
