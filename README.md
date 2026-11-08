@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml"><img alt="macOS checks" src="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml/badge.svg" /></a>
-  <img alt="Version 0.1.0-alpha.3" src="https://img.shields.io/badge/version-0.1.0--alpha.3-9b82f5" />
+  <img alt="Version 0.1.0-alpha.4" src="https://img.shields.io/badge/version-0.1.0--alpha.4-9b82f5" />
   <img alt="macOS 14+" src="https://img.shields.io/badge/macOS-14%2B-19172f?logo=apple" />
   <img alt="Swift and SwiftUI" src="https://img.shields.io/badge/Swift-SwiftUI-f07152?logo=swift&logoColor=white" />
   <a href="LICENSE"><img alt="AGPL v3" src="https://img.shields.io/badge/license-AGPL--3.0-7462c8" /></a>
@@ -39,7 +39,7 @@ scripts, and access through the remote tools you already use.
 
 ## The night crew
 
-| Capability | What alpha.3 does |
+| Capability | What alpha.4 does |
 | --- | --- |
 | **On your terms** | Manual, timed, indefinite, and selected-GUI-app sessions |
 | **Lights out, work on** | Native idle-sleep prevention, with optional display wakefulness |
@@ -219,7 +219,8 @@ flowchart LR
 <summary><strong>Privacy, local data, and permissions</strong></summary>
 
 No analytics uploads, model credentials, chat content, or prompts are collected.
-GUI app discovery uses bundle IDs; CLI discovery checks common executable paths.
+GUI app discovery checks running bundles, registered apps, and Applications folders,
+using bundle IDs and app names together; CLI discovery checks common executable paths.
 It does not imply a model is authenticated or a CLI agent is actively working.
 
 Same-user status, leases, and short-lived requests live under

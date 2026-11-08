@@ -7,8 +7,25 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 
 ### Planned
 
-- Standalone closed-lid backend, richer triggers, and remote-workspace validation.
+- Richer triggers and physical closed-lid / remote-workspace validation.
 - Community/Pro separation is deferred; no paid tier exists in this version.
+
+## [0.1.0-alpha.4] — 2026-11-07
+
+### Fixed
+
+- Detect ChatGPT builds that use the Codex bundle identifier by checking product
+  names as well as bundle IDs. Separate Codex and Claude Desktop stay distinct.
+- Discover running apps even without Launch Services registration, with fallback
+  checks in system/user Applications folders. Launch and app-lifetime controls
+  now use the actual detected bundle rather than an assumed identifier.
+
+### Validation
+
+- All 20 tests pass, including three desktop identity regression tests.
+- Rebuilt app reports both ChatGPT and Claude Desktop installed and running.
+- Owner-authorized closed-lid session started with display sleep allowed;
+  physical lid cycling and remote reconnection await owner testing.
 
 ## [0.1.0-alpha.3] — 2026-11-07
 
@@ -84,9 +101,11 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 - Physical lid/charger behavior and remote connections require manual validation.
 - Local ad-hoc builds only; no notarized DMG or Mac App Store release yet.
 
-[Unreleased]: https://github.com/RaDeleon/Vibesomnia/compare/v0.1.0-alpha.3...HEAD
+[Unreleased]: https://github.com/RaDeleon/Vibesomnia/compare/v0.1.0-alpha.4...HEAD
 [0.1.0-alpha.1]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.1
 
 [0.1.0-alpha.2]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.2
 
 [0.1.0-alpha.3]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.3
+
+[0.1.0-alpha.4]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.4

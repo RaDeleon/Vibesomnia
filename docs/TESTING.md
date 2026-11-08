@@ -19,6 +19,15 @@ Verify timer boundaries, indefinite sessions, app lifetime, rejected durations,
 expired requests, launch allowlisting, transport permissions, and stale status.
 Check that the app bundle and CLI report VERSION consistently.
 
+## Desktop app discovery
+
+- Confirm ChatGPT and Claude Desktop report installed/running against real apps.
+- Verify ChatGPT with either `com.openai.chat` or a ChatGPT-named
+  `com.openai.codex` bundle; a separate Codex app must stay a separate product.
+- Check running apps outside Applications and an installed but closed app.
+- Launch and app-lifetime selection must use the detected URL/bundle identity.
+- Never treat a matching display name with an unrelated bundle ID as an AI app.
+
 ## Native session smoke test
 
 - Start indefinite mode with display sleep allowed. `pmset -g assertions` should

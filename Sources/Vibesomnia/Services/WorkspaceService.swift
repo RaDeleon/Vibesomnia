@@ -4,19 +4,50 @@ import VibesomniaCore
 
 @MainActor
 struct WorkspaceService {
-    private let gui: [(String, String, [String])] = [
-        ("claude", "Claude Desktop", ["com.anthropic.claudefordesktop"]),
-        ("chatgpt", "ChatGPT", ["com.openai.chat"]),
-        ("codex", "Codex", ["com.openai.codex"])
-    ]
+    private let gui = [("claude", "Claude Desktop"), ("chatgpt", "ChatGPT"), ("codex", "Codex")]
 
     var runningBundleIDs: Set<String> {
         Set(NSWorkspace.shared.runningApplications.compactMap(\.bundleIdentifier))
     }
 
+    private struct DiscoveredApp {
+        let product: String
+        let bundleID: String
+        let url: URL
+        let running: Bool
+    }
+
+    private func discover() -> [DiscoveredApp] {
+        let workspace = NSWorkspace.shared
+        let runningApps = workspace.runningApplications
+        // Running bundles work even when Launch Services has not registered an app.
+        var urls = runningApps.compactMap(\.bundleURL)
+        urls += ["com.anthropic.claudefordesktop", "com.openai.chat", "com.openai.codex"]
+            .compactMap { workspace.urlForApplication(withBundleIdentifier: $0) }
+        let roots = [URL(fileURLWithPath: "/Applications"),
+                     FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Applications")]
+        urls += roots.flatMap { root in
+            ["Claude", "ChatGPT", "Codex"].map { root.appendingPathComponent("\($0).app") }
+        }
+        var seen = Set<URL>()
+        return urls.compactMap { candidate in
+            let url = candidate.resolvingSymlinksInPath().standardizedFileURL
+            guard seen.insert(url).inserted, let bundle = Bundle(url: url),
+                  let bundleID = bundle.bundleIdentifier else { return nil }
+            let names = [bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String,
+                         bundle.object(forInfoDictionaryKey: "CFBundleName") as? String,
+                         url.deletingPathExtension().lastPathComponent].compactMap { $0 }
+            guard let product = DesktopAppIdentity.product(bundleID: bundleID, names: names) else { return nil }
+            let running = runningApps.contains {
+                $0.bundleURL?.resolvingSymlinksInPath().standardizedFileURL == url
+            }
+            return DiscoveredApp(product: product, bundleID: bundleID, url: url, running: running)
+        }
+    }
+
     func url(for id: String) -> URL? {
-        guard let entry = gui.first(where: { $0.0 == id }) else { return nil }
-        return entry.2.compactMap { NSWorkspace.shared.urlForApplication(withBundleIdentifier: $0) }.first
+        let matches = discover().filter { $0.product == id }
+        return (matches.first(where: \.running) ?? matches.first)?.url
     }
 
     func executable(for id: String) -> String? {
@@ -27,10 +58,12 @@ struct WorkspaceService {
     }
 
     func snapshot() -> [WorkspaceApp] {
-        let running = runningBundleIDs
-        var apps = gui.map { id, name, ids in
-            WorkspaceApp(id: id, name: name, installed: url(for: id) != nil,
-                         running: ids.contains { running.contains($0) }, bundleID: ids.first)
+        let discovered = discover()
+        var apps = gui.map { id, name in
+            let matches = discovered.filter { $0.product == id }
+            let selected = matches.first(where: \.running) ?? matches.first
+            return WorkspaceApp(id: id, name: name, installed: selected != nil,
+                                running: matches.contains(where: \.running), bundleID: selected?.bundleID)
         }
         apps += [("claude-code", "Claude Code"), ("codex-cli", "Codex CLI")].map { id, name in
             WorkspaceApp(id: id, name: name, installed: executable(for: id) != nil,

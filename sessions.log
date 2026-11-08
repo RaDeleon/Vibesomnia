@@ -102,3 +102,24 @@ Delivery: Feature branch feat/standalone-closed-lid; source version v0.1.0-alpha
 Repository review: Draft PR #1 opened through the existing personal GitHub login;
   the generic connector/local default account lacked access to this private repo.
   Push and pull-request CI jobs passed. Repository visibility was not changed.
+
+2026-11-07 | Session 004 | Desktop discovery correction · alpha.4
+Objective: Fix ChatGPT detection and activate closed-lid mode for the owner's
+  physical lid and remote-access test.
+Changes:
+  - Product detection checks bundle names alongside IDs: a ChatGPT-named build
+    using com.openai.codex is ChatGPT, not a separate Codex installation.
+  - Discovery includes running bundle URLs, Launch Services and system/user
+    Applications folders. Launch and app-lifetime controls use detected identity.
+  - Added three regression tests, updated test guide and alpha.4 version metadata.
+Verification:
+  - Graph lookup, relationship trace and coverage checks completed; source read.
+  - All 20 tests passed; build/run --verify and ad-hoc signature verification passed.
+  - Live app status reports ChatGPT and Claude Desktop installed and running.
+  - Previous unowned override had already cleared (SleepDisabled=0); no reset made.
+  - Owner authorized closed-lid activation and approved the administrator prompt.
+  - Verified active closedLid session, SleepDisabled=1, guard process present,
+    native idle-system assertion, and no idle-display assertion.
+Handoff: Left indefinite closed-lid session running with display sleep allowed for
+  the requested test. Battery protection remains enabled. Physical lid cycling
+  and remote reconnection are not claimed as passed pending owner observation.

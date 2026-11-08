@@ -37,7 +37,7 @@ struct ContentView: View {
                     }
                 }
                 HStack {
-                    Text("0.1.0-alpha.3 · Open source · Created by Angelo De Leon")
+                    Text("0.1.0-alpha.4 · Open source · Created by Angelo De Leon")
                     Spacer()
                     Link("Source & roadmap", destination: URL(string: "https://github.com/RaDeleon/Vibesomnia")!)
                 }.font(.caption).foregroundStyle(.secondary)
