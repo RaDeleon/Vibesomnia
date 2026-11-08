@@ -83,7 +83,11 @@ Verification:
   - Simulated Vibesomnia process exit: independent guard restored sleep and exited.
   - Suspended the app while its PID remained alive: heartbeat expiry restored sleep
     in about 8.4 seconds. Resumed app detected guard loss and ended the session.
-  - Final system SleepDisabled=0; no power-guard worker or root recovery record left.
+  - At the end of isolated guard tests, SleepDisabled=0 and no worker/record remained.
+  - Later system checks found SleepDisabled=1 again without a Vibesomnia owner.
+    Amphetamine was fully closed through its menu; the unowned flag persisted.
+    Requested owner confirmation before resetting another utility's global state.
+    No Vibesomnia worker or root recovery record was left by the tests.
   - Computer-use UI: examples installed unapproved, read-only diagnostic reviewed
     and run, in-app edit saved, prior approval invalidated and Run disabled.
   - Markdown local links and banner dimensions (2172x724) verified; diff check clean.
@@ -94,3 +98,7 @@ Limitations: Physical lid/charger tests and remote reconnection from another dev
   need more testing. Full Amphetamine parity and full remote desktop are not done;
   see docs/PARITY.md. No Community/Pro split or public binary release.
 Delivery: Feature branch feat/standalone-closed-lid; source version v0.1.0-alpha.3.
+
+Repository review: Draft PR #1 opened through the existing personal GitHub login;
+  the generic connector/local default account lacked access to this private repo.
+  Push and pull-request CI jobs passed. Repository visibility was not changed.

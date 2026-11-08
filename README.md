@@ -12,7 +12,6 @@
   <img alt="macOS 14+" src="https://img.shields.io/badge/macOS-14%2B-19172f?logo=apple" />
   <img alt="Swift and SwiftUI" src="https://img.shields.io/badge/Swift-SwiftUI-f07152?logo=swift&logoColor=white" />
   <a href="LICENSE"><img alt="AGPL v3" src="https://img.shields.io/badge/license-AGPL--3.0-7462c8" /></a>
-  <a href="https://github.com/RaDeleon/Vibesomnia/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/RaDeleon/Vibesomnia?style=flat&color=a78bfa" /></a>
 </p>
 
 <p align="center">
