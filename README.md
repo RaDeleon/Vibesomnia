@@ -1,10 +1,11 @@
 <p align="center">
+  <img src="Resources/AppIcon.png" alt="Vibesomnia mascot: a tired developer with bloodshot eyes and a glowing laptop" width="128" /><br />
   <img src="docs/assets/banner.svg" alt="Vibesomnia — You can sleep. Your AI doesn't have to." width="100%" />
 </p>
 
 <p align="center">
   <a href="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml"><img alt="macOS checks" src="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml/badge.svg" /></a>
-  <img alt="Version 0.1.0-alpha.1" src="https://img.shields.io/badge/version-0.1.0--alpha.1-818cf8" />
+  <img alt="Version 0.1.0-alpha.2" src="https://img.shields.io/badge/version-0.1.0--alpha.2-818cf8" />
   <img alt="macOS 14 or newer" src="https://img.shields.io/badge/macOS-14%2B-black" />
   <a href="LICENSE"><img alt="License AGPL v3" src="https://img.shields.io/badge/license-AGPL--3.0-blue" /></a>
 </p>
@@ -33,7 +34,7 @@ The destination is an Amphetamine-style power utility with AI workspace controls
 and remote access built around real development workflows. **This first alpha
 implements the foundation, not full Amphetamine feature parity.**
 
-**Current version: `0.1.0-alpha.1`.** Everything in this repository is open source.
+**Current version: `0.1.0-alpha.2`.** Everything in this repository is open source.
 Community/Pro editions, licensing infrastructure, and paywalls are deferred.
 Beta starts when the core workflow is reliable and approved for that milestone.
 
@@ -201,6 +202,13 @@ accessibility, packaging, and the acceptance gates for beta.
 Development history lives in [sessions.log](sessions.log). Versioned changes live
 in [CHANGELOG.md](CHANGELOG.md). Contributor and agent instructions are in
 [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and [CLAUDE.md](CLAUDE.md).
+
+## App artwork
+
+The icon is a late-night developer mascot: bloodshot eyes, messy hair, and laptop
+screen glow. Source artwork, PNG, and macOS ICNS assets live in `Resources/`.
+Regenerate the icon family with `./script/generate_icon.sh`; see
+[artwork provenance and prompt](Resources/ARTWORK.md).
 
 ## License and credits
 

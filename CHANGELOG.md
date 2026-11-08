@@ -10,6 +10,14 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 - Standalone closed-lid backend, richer triggers, and remote-workspace validation.
 - Community/Pro separation is deferred; no paid tier exists in this version.
 
+## [0.1.0-alpha.2] — 2026-11-07
+
+### Added
+
+- Original late-night developer mascot with bloodshot eyes and laptop screen glow.
+- Source PNG, 1024px export, full macOS ICNS family, and reproducible icon script.
+- App bundle icon in Finder/Dock, dashboard artwork, and README preview.
+
 ## [0.1.0-alpha.1] — 2026-11-07
 
 ### Added
@@ -42,5 +50,7 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 - Physical lid/charger behavior and remote connections require manual validation.
 - Local ad-hoc builds only; no notarized DMG or Mac App Store release yet.
 
-[Unreleased]: https://github.com/RaDeleon/Vibesomnia/compare/v0.1.0-alpha.1...HEAD
+[Unreleased]: https://github.com/RaDeleon/Vibesomnia/compare/v0.1.0-alpha.2...HEAD
 [0.1.0-alpha.1]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.1
+
+[0.1.0-alpha.2]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.2

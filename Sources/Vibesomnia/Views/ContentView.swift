@@ -37,7 +37,7 @@ struct ContentView: View {
                     }
                 }
                 HStack {
-                    Text("0.1.0-alpha.1 · Open source · Created by Angelo De Leon")
+                    Text("0.1.0-alpha.2 · Open source · Created by Angelo De Leon")
                     Spacer()
                     Link("Source & roadmap", destination: URL(string: "https://github.com/RaDeleon/Vibesomnia")!)
                 }.font(.caption).foregroundStyle(.secondary)
@@ -47,11 +47,18 @@ struct ContentView: View {
         .toolbar { SettingsLink() }
     }
 
+    private var bundledAppIcon: NSImage {
+        if let url = Bundle.main.url(forResource: "AppIcon", withExtension: "icns"),
+           let image = NSImage(contentsOf: url) { return image }
+        return NSApp.applicationIconImage
+    }
+
     private var header: some View {
         HStack(spacing: 16) {
-            Image(systemName: store.session == nil ? "moon.zzz.fill" : "moon.stars.fill")
-                .font(.system(size: 36)).foregroundStyle(.indigo)
-                .padding(14).background(.indigo.opacity(0.1), in: RoundedRectangle(cornerRadius: 18))
+            Image(nsImage: bundledAppIcon)
+                .resizable().interpolation(.high)
+                .frame(width: 76, height: 76)
+                .accessibilityLabel("Vibesomnia: a late-night developer at a glowing laptop")
             VStack(alignment: .leading, spacing: 4) {
                 Text("Vibesomnia").font(.largeTitle.bold())
                 Text("You can sleep. Your AI doesn’t have to.").foregroundStyle(.secondary)

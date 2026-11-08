@@ -23,6 +23,7 @@ cp "$BIN_DIR/Vibesomnia" "$APP_BINARY"
 cp "$BIN_DIR/vibesomnia-cli" "$APP_BUNDLE/Contents/MacOS/vibesomnia-cli"
 cp LICENSE "$APP_BUNDLE/Contents/Resources/LICENSE"
 cp NOTICE "$APP_BUNDLE/Contents/Resources/NOTICE"
+cp Resources/AppIcon.icns "$APP_BUNDLE/Contents/Resources/AppIcon.icns"
 APP_VERSION="$(cat VERSION)"
 BASE_VERSION="${APP_VERSION%%-*}"
 BUILD_NUMBER="${APP_VERSION##*.}"
@@ -33,6 +34,7 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
 <key>CFBundleExecutable</key><string>Vibesomnia</string>
 <key>CFBundleIdentifier</key><string>com.angelodeleon.Vibesomnia</string>
 <key>CFBundleName</key><string>Vibesomnia</string>
+<key>CFBundleIconFile</key><string>AppIcon.icns</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleShortVersionString</key><string>$BASE_VERSION</string>
 <key>VibesomniaPrereleaseVersion</key><string>$APP_VERSION</string>

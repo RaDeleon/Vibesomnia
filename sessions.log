@@ -36,3 +36,23 @@ Next: Owner review of the running alpha; opt-in closed-lid/charger hardware test
   independent remote SSH testing, richer triggers, and native closed-lid design.
 Delivery: Feature branch feat/v0.1.0-alpha.1; version 0.1.0-alpha.1. No binary
   release, notarization, app-store submission, or default-branch merge in this session.
+
+2026-11-07 | Session 002 | App icon · v0.1.0-alpha.2
+Objective: Create an app-related icon with a bloodshot-eyed developer vibe coding.
+Changes:
+  - Created a late-night developer mascot with messy hair, bloodshot eyes, dark
+    hoodie, laptop, and lavender screen glow using the built-in image tool.
+  - Added original artwork, PNG, ICNS, provenance/prompt, and repeatable exports.
+  - Wired the icon into the macOS bundle, dashboard, and README.
+  - Advanced alpha version strings and changelog to 0.1.0-alpha.2.
+Verification:
+  - swift test: all 8 tests passed.
+  - Build/run --verify: alpha.2 app launched and CLI responded.
+  - ICNS decoded successfully; 16px and 1024px family dimensions verified.
+  - PNG is 1024x1024 with alpha; bundled ICNS matches the checked-in asset.
+  - Ad-hoc app signature verified.
+  - Computer-use screenshot confirmed the mascot appears in the dashboard.
+  - Explicit bundled icon loading corrected a cached generic-icon preview.
+Delivery: Feature branch feat/app-icon; source version v0.1.0-alpha.2.
+Limitations: The detailed mascot is intended for app/Dock branding; the menu bar
+  continues using native monochrome status symbols. No power behavior changed.
