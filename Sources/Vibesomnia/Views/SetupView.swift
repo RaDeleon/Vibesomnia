@@ -95,7 +95,7 @@ struct SetupView: View {
         VStack(alignment: .leading, spacing: 18) {
             Toggle("Let the display sleep", isOn: $store.allowDisplaySleep)
             Text("Keep work running while your screen goes dark.").font(.caption).foregroundStyle(.secondary)
-            Toggle("Keep running with lid closed", isOn: $store.closedLid)
+            Toggle("Use closed-lid mode for new sessions", isOn: $store.closedLid)
             Text("Optional. Starting a closed-lid session asks for macOS administrator approval. Normal system sleep returns when you end the session or quit. Opening the lid does not end it.")
                 .font(.callout).foregroundStyle(.secondary)
             Toggle("End sessions on battery at 20%", isOn: $store.batteryProtection)

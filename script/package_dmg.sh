@@ -6,7 +6,7 @@ cd "$ROOT_DIR"
 MODE="${1:---local}"
 [[ "$MODE" == --local || "$MODE" == --signed ]] || { echo 'Usage: package_dmg.sh [--local|--signed]' >&2; exit 2; }
 VERSION="$(cat VERSION)"
-[[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+-alpha\.[0-9]+$ ]] || { echo 'Expected an alpha version' >&2; exit 2; }
+[[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+-(alpha|beta)\.[0-9]+$ ]] || { echo 'Expected an alpha or beta version' >&2; exit 2; }
 if [[ "$MODE" == --signed ]]; then
     : "${VIBESOMNIA_SIGNING_IDENTITY:?Set Developer ID Application identity}"
     : "${VIBESOMNIA_INSTALLER_IDENTITY:?Set Developer ID Installer identity}"
@@ -22,8 +22,9 @@ cleanup() { rm -rf "$STAGE"; }
 trap cleanup EXIT
 APP="$STAGE/payload/Applications/Vibesomnia.app"
 "$ROOT_DIR/script/build_bundle.sh" "$APP" release universal
-# Use a monotonically increasing numeric package version across alpha releases.
+# Use a monotonically increasing numeric package version across prerelease revisions.
 PACKAGE_VERSION="${VERSION/-alpha./.}"
+PACKAGE_VERSION="${PACKAGE_VERSION/-beta./.}"
 PKG_ARGS=(--root "$STAGE/payload" --identifier com.angelodeleon.Vibesomnia.installer
           --version "$PACKAGE_VERSION" --install-location / --scripts "$ROOT_DIR/script/installer")
 # Avoid Installer relocating this component to a developer's existing dist bundle.
@@ -70,12 +71,12 @@ You can sleep. Your AI doesn't have to.
 macOS 14+. Universal app for Apple silicon and Intel.
 This installer never enables SSH, changes sleep settings, or adds a background service.
 Closed-lid mode requests administrator approval when you start a session.
-Source and license: https://github.com/RaDeleon/Vibesomnia (private during testing).
+Source and license: https://github.com/RaDeleon/Vibesomnia.
 TXT
 SUFFIX=''
 if [[ "$MODE" == --local ]]; then
     SUFFIX='-local-unsigned'
-    printf '\nLOCAL ALPHA TEST BUILD: installer is unsigned; app is ad-hoc signed.\nNot notarized. Not ready for general distribution.\n' >> "$STAGE/image/READ ME.txt"
+    printf '\nUNSIGNED TEST BUILD: installer is unsigned; app is ad-hoc signed.\nNot notarized. Not ready for general distribution.\n' >> "$STAGE/image/READ ME.txt"
 fi
 cp Resources/AppIcon.icns "$STAGE/image/.VolumeIcon.icns"
 xcrun SetFile -a C "$STAGE/image"

@@ -140,14 +140,26 @@ do {
     record.active = true; try writeRecord(record)
     var watchdog = LeaseWatchdog(nonce: nonce, now: ProcessInfo.processInfo.systemUptime)
     _ = watchdog.receive(lease, now: ProcessInfo.processInfo.systemUptime)
+    var nextPowerCheck = ProcessInfo.processInfo.systemUptime
     while vibe_interrupted() == 0 {
         let now = ProcessInfo.processInfo.systemUptime
         if vibe_process_stamp(pid, nil) != stamp { break }
         if let lease = readLease(uid: uid, nonce: nonce), watchdog.receive(lease, now: now) { break }
         if watchdog.expired(now: now) { break }
+        if now >= nextPowerCheck {
+            if try !powerFlag() {
+                // Someone already restored sleep. Relinquish ownership; never fight
+                // another utility by silently re-enabling the global override.
+                changedPower = false
+                throw VibeError.message("The system sleep override was cleared while the session was active.")
+            }
+            nextPowerCheck = now + 1
+        }
         Thread.sleep(forTimeInterval: 0.25)
     }
 } catch { record.error = error.localizedDescription }
+record.active = false
+try? writeRecord(record)
 if changedPower {
     var restored = false
     for _ in 0..<5 {

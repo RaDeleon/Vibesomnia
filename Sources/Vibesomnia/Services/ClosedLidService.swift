@@ -42,6 +42,7 @@ final class ClosedLidService {
             guard response == "active", record?.nonce == token, record?.active == true else {
                 throw VibeError.message("Closed-lid guard did not confirm activation.")
             }
+            _ = try await heartbeat()
         } catch {
             // A delayed authorization reply cannot leave an unleased override alive.
             try? transport.write(ClosedLidLease(nonce: token, sequence: sequence, stop: true), to: leaseURL(token))
@@ -50,13 +51,18 @@ final class ClosedLidService {
         }
     }
 
-    func heartbeat() throws {
-        guard let nonce, !stopping else { return }
-        guard let record, record.nonce == nonce, workerAlive(record), record.active else {
-            throw VibeError.message("Closed-lid guard stopped. The session has ended; check recovery if sleep was not restored.")
-        }
+    /// A live worker alone is not evidence that macOS still prevents lid sleep.
+    /// Returns false if an overlapping stop superseded this observation.
+    func heartbeat() async throws -> Bool {
+        guard let token = nonce, !stopping else { return false }
+        let flag = try await ProcessRunner.run(helper.path, ["--check"])
+        guard nonce == token, !stopping else { return false }
+        let current = record
+        try ClosedLidHealth.validate(powerCheck: flag, record: current, nonce: token,
+                                     workerAlive: current.map(workerAlive) ?? false)
         sequence += 1
-        try transport.write(ClosedLidLease(nonce: nonce, sequence: sequence), to: leaseURL(nonce))
+        try transport.write(ClosedLidLease(nonce: token, sequence: sequence), to: leaseURL(token))
+        return true
     }
 
     func stop() async throws {

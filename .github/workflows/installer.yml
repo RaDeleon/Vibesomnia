@@ -1,9 +1,9 @@
-name: Build private installer
+name: Build installer
 on:
   workflow_dispatch:
     inputs:
       signing:
-        description: Local alpha test or Developer ID signed and notarized
+        description: Unsigned test build or Developer ID signed and notarized
         type: choice
         options: [local, signed]
         default: local
@@ -22,7 +22,7 @@ jobs:
         run: |
           swift test
           git diff --exit-code
-      - name: Build local alpha installer
+      - name: Build unsigned test installer
         if: inputs.signing == 'local'
         run: ./script/package_dmg.sh --local
       - name: Sign, notarize, and package
@@ -67,7 +67,7 @@ jobs:
           for dmg in dist/installers/*.dmg; do
             ./script/verify_installer.py "$dmg"
           done
-      - name: Save installer for private testing
+      - name: Save test installer
         uses: actions/upload-artifact@v4
         with:
           name: Vibesomnia-installer-${{ inputs.signing }}

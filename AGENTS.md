@@ -3,8 +3,8 @@
 ## Product scope
 
 Build an open-source macOS utility for screen-off AI development and remote
-workspace control. Current version: `VERSION`. All work is alpha until the owner
-explicitly approves beta. Community/Pro separation is backlogged; do not add
+workspace control. Current version: `VERSION`. The owner approved V1.0 Beta 1
+(`1.0.0-beta.1`) on 2026-11-07. Continue beta until stable is explicitly approved. Community/Pro separation is backlogged; do not add
 paywalls, licensing checks, payment flows, or artificial feature limits now.
 
 ## Before changing code
@@ -59,7 +59,7 @@ Gracefully end owned sessions before relaunching; don't force-kill around recove
 
 ## Version and history discipline
 
-- Use SemVer prereleases: `0.1.0-alpha.1`, `.2`, etc. Beta is an explicit milestone.
+- Use SemVer prereleases: `1.0.0-beta.1`, `.2`, etc. Stable is an explicit milestone.
 - For a new release, synchronize VERSION, AppStatus/CLI/UI version strings,
   README badge, CHANGELOG, and generated bundle version metadata.
 - CHANGELOG.md records user-visible changes by version, with Unreleased for work
@@ -78,7 +78,8 @@ Gracefully end owned sessions before relaunching; don't force-kill around recove
 ## Public repository hygiene
 
 - The owner approved making this repository public on 2026-11-07 while alpha
-  acceptance testing continues. Public visibility is not beta or production approval.
+  acceptance testing continues. The owner subsequently approved beta; production
+  readiness still requires the remaining acceptance work.
 - Do not publish additional binary releases or change visibility automatically.
 
 All current code is AGPL-3.0-only. Preserve Angelo De Leon's copyright notices.
