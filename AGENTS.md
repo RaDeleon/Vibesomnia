@@ -77,8 +77,9 @@ Gracefully end owned sessions before relaunching; don't force-kill around recove
 
 ## Public repository hygiene
 
-- Keep this repository private until the owner confirms acceptance testing is complete.
-- Build installers privately; do not publish releases or change visibility automatically.
+- The owner approved making this repository public on 2026-11-07 while alpha
+  acceptance testing continues. Public visibility is not beta or production approval.
+- Do not publish additional binary releases or change visibility automatically.
 
 All current code is AGPL-3.0-only. Preserve Angelo De Leon's copyright notices.
 Don't put user-specific local paths, network addresses, remote access details,

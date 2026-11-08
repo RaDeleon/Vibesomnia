@@ -1,7 +1,7 @@
-# DMG installer and private alpha testing
+# DMG installer and alpha testing
 
-Vibesomnia remains private until the owner confirms acceptance testing. Packaging
-never changes repository visibility and never publishes a release automatically.
+The owner approved public alpha development on 2026-11-07 while acceptance testing
+continues. Packaging never changes visibility or publishes a release automatically.
 
 ## User experience
 
@@ -70,7 +70,7 @@ valid certificates and credentials are supplied; the local path does not fake it
 
 `.github/workflows/installer.yml` is **manual only**. Select `local` for an unsigned
 alpha or `signed` for Developer ID distribution. It runs tests, builds/validates
-the DMG, and stores a private Actions artifact for seven days. It has read-only
+the DMG, and stores an Actions artifact for seven days. It has read-only
 repository permissions and no release-publishing or visibility-changing step.
 GitHub requires this dispatch workflow to exist on the default branch before it
 can normally be launched from Actions. Main is not merged automatically.
@@ -83,16 +83,17 @@ For signed jobs, configure these repository secrets through GitHub:
 - `NOTARY_APPLE_ID`, `NOTARY_TEAM_ID`, `NOTARY_APP_PASSWORD`.
 
 The job imports keys into a temporary runner keychain and deletes it afterward.
-Do not commit certificates or credentials. Private runner/storage use is subject
-to the account's plan; no paid runner or billing setting is enabled by this code.
+Do not commit certificates or credentials. Runner/storage use is subject
+to repository visibility and the account's plan; no paid runner or billing setting is enabled by this code.
 
 ## Release gate
 
 Follow docs/TESTING.md: clean installation, upgrade, first-run persistence,
 permission denial, app discovery, sleep restoration, physical lid cycling and
 real remote reconnection. Verify the downloaded signed artifact on clean Apple
-silicon and Intel systems. Only after owner acceptance should a DMG be attached
-to a GitHub Release and repository visibility be changed. Provide corresponding
+silicon and Intel systems. The owner explicitly authorized the alpha.5 prerelease and public repository.
+Further binary releases still require explicit approval; public availability
+does not replace these acceptance checks. Provide corresponding
 source for the exact binary version alongside any distributed release.
 
 To uninstall, end/recover any session, quit Vibesomnia, then move the app to Trash.

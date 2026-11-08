@@ -185,3 +185,25 @@ Limitations: Release remains local-test quality, unsigned and unnotarized. Earli
   installation and hardware acceptance gaps remain. Diary prose is a draft for
   owner review; no website content was created or published. Main was not merged.
 Delivery: https://github.com/RaDeleon/Vibesomnia/releases/tag/v0.1.0-alpha.5
+
+2026-11-07 | Session 007 | Public alpha development
+Objective: Make the repository public at the owner's explicit request, replacing
+  the earlier plan to wait for full acceptance testing.
+Changes:
+  - Updated alpha.5 release title/notes to experimental public-alpha wording,
+    retaining unsigned/unnotarized and incomplete-acceptance disclosures.
+  - Changed repository visibility from PRIVATE to PUBLIC; existing prerelease
+    assets, branches, history and diary are now publicly accessible.
+  - Updated current README/policy/distribution notes and added a diary entry about
+    the decision. Preserved earlier diary context with a dated follow-up link.
+Verification:
+  - Refreshed remote refs. Targeted scan of 126 historical text blobs found no
+    matches for tested credential/key/credential-URL or personal-path patterns.
+    This was a bounded hygiene check, not a comprehensive security audit.
+  - GitHub API confirmed PUBLIC visibility and alpha.5 as a published prerelease.
+  - Default branch remains main; draft PR #1 was not merged. No app code, release
+    tag, binary or running power session changed, and no website post was published.
+Limitations: Default main still has the starter README. Full implementation and
+  polished docs are on the feature branch/draft PR. Public visibility does not
+  establish beta readiness or close the installation/hardware/remote test gaps.
+Delivery: https://github.com/RaDeleon/Vibesomnia

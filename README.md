@@ -59,7 +59,7 @@ session while Vibesomnia is focused; it is not a global hotkey yet.
 
 ### Install the app
 
-Private alpha testing now has a **universal DMG containing a macOS installer**.
+The experimental alpha has a **universal DMG containing a macOS installer**.
 Open `Install Vibesomnia.pkg`, install to Applications, then launch Vibesomnia.
 First-run setup detects AI apps, saves your sleep preferences, and walks through
 an optional lid/remote test. Reopen the guide from the toolbar or Settings.
@@ -72,9 +72,9 @@ an optional lid/remote test. Reopen the guide from the toolbar or Settings.
 
 **Current installer: local alpha only.** Its app is ad-hoc signed; its installer
 is unsigned and not notarized. Developer ID signing/notarization and clean-Mac
-installation testing remain release gates. Repository visibility stays private
-until the owner confirms testing is complete. The [private alpha.5 release](https://github.com/RaDeleon/Vibesomnia/releases/tag/v0.1.0-alpha.5)
-provides the test DMG to repository collaborators; no public download is published.
+installation testing remain release gates. The owner has approved public alpha
+development while acceptance testing continues. The [alpha.5 prerelease](https://github.com/RaDeleon/Vibesomnia/releases/tag/v0.1.0-alpha.5)
+provides the experimental test DMG; public availability does not mean beta readiness.
 
 ### Build from source
 

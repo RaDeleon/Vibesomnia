@@ -13,6 +13,7 @@ record; `CHANGELOG.md` remains the version-by-version change list.
 
 | Date | Entry | Stage |
 | --- | --- | --- |
+| 2026-11-07 | [Opening the repo while it is still alpha](2026-11-07-public-alpha.md) | Unpublished website notes · visibility decision |
 | 2026-11-07 | [Why I’m building Vibesomnia—and getting the first closed-lid test working](2026-11-07-origin-to-alpha.md) | Unpublished working draft · alpha.1–alpha.5 |
 
 ## How to keep this useful
@@ -38,5 +39,6 @@ Technical observations and owner reports are different kinds of evidence; label
 both. Keep the version under test explicit when it differs from the latest build.
 
 Repository visibility and website publication are separate decisions. Keeping this
-diary in Git does not authorize changing either. The repo stays private until the
-owner confirms acceptance testing is complete.
+diary in Git does not authorize publishing it to the website. The owner approved
+public repository visibility on 2026-11-07 while alpha testing continues; diary
+files are consequently public source material, not published website articles.

@@ -5,6 +5,10 @@
 - Stage: Unpublished working draft for Angelo's review
 - Intended destination: angelodeleon.com
 
+> Later on November 7, the owner approved opening the repository while alpha
+> testing continues. The private-repository plan below records the earlier
+> decision; see [the follow-up entry](2026-11-07-public-alpha.md).
+
 ## The problem that started it
 
 I use the ChatGPT and Claude desktop apps throughout my workday. I wanted to close

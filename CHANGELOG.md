@@ -7,6 +7,9 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 
 ### Documentation
 
+- Owner approved public alpha development while acceptance testing remains open;
+  updated release disclosures and recorded the decision in the development diary.
+
 - Added a development diary and entry template for future angelodeleon.com posts,
   separating the project story, owner reports, and verified results.
 - Recorded the first physical closed-lid observation on alpha.4; repeat-cycle and
