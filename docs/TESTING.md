@@ -33,18 +33,33 @@ Check that the app bundle and CLI report VERSION consistently.
   running important work just to satisfy the checklist.
 - Close the dashboard; menu control remains available. Quit app; assertions release.
 
-## Closed-lid backend (manual and opt-in)
+## Standalone closed-lid guard (manual and opt-in)
 
-- Install/configure Amphetamine independently. Approve Automation on the Mac.
-- Keep an existing Amphetamine session active; confirm Vibesomnia refuses to replace it.
-- End it yourself. Start Vibesomnia closed-lid mode and confirm Amphetamine's
-  session, display-sleep permission, and closed-display state.
+- End other power-manager sessions. Verify the guard refuses an existing global override.
+- Start Vibesomnia closed-lid mode; approve the macOS administrator prompt yourself.
+- Verify SleepDisabled=1, display assertions follow the chosen display policy,
+  and the temporary root-owned state records Vibesomnia's PID identity.
+- Stop normally; verify SleepDisabled=0 and no root guard/record remains.
+- In an isolated test, terminate the app; verify the guard restores and exits.
+- Suspend only the test app to stop heartbeat progress; verify lease expiry
+  restores sleep even while the app's PID remains alive. Resume and inspect errors.
 - Close lid → confirm remote task continues → open → close again → confirm again.
 - Test charger disconnect/reconnect, external displays, low battery, timer end,
-  app closure, manual stop, and normal quit. Verify sleep overrides restore.
-- Interrupt a controlled test session, relaunch, and explicitly recover. Recovery
-  ends the current Amphetamine session; review it before clicking Recover.
-- Do not force-kill or replace a real user session as an automated test.
+  app closure, manual stop, and normal quit. Verify restoration each time.
+- Simulate a worker failure only in a controlled environment; recovery must use
+  a verified root-owned record, never adopt another tool's sleep override.
+- Don't force-kill a real user session or authenticate an admin prompt automatically.
+
+## Add-ons
+
+- Import/create without approval: Run and event execution remain disabled.
+- Review source/manifest; approve that version; run a harmless script.
+- Edit source or change event/interpreter/timeout: approval invalidates.
+- Verify timeout, cancellation, bounded output, clean environment, and no root execution.
+- Opt into start/end events; verify normal end hook and no end hook on app quit.
+- Verify quitting cancels/waits for the current unprivileged runner's cleanup.
+- Reject malformed IDs, path traversal, symlinks, oversized code, and duplicate events.
+- Review two-file import limitations; no marketplace, package assets, or remote run endpoint.
 
 ## Remote controls
 

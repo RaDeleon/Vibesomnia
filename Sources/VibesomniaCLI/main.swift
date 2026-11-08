@@ -3,7 +3,7 @@ import Foundation
 import VibesomniaCore
 
 let help = """
-Vibesomnia 0.1.0-alpha.2 — control your logged-in Mac's AI workspace.
+Vibesomnia 0.1.0-alpha.3 — control your logged-in Mac's AI workspace.
 
 Usage: vibesomnia-cli <command> [options]
   status                   Print fresh app status as JSON
@@ -18,7 +18,7 @@ Start/toggle options:
   --minutes <1–10080>       End automatically after this many minutes
   --while-app <bundle-id>   End when this GUI app closes (it must be running)
   --keep-display-on        Also prevent idle display sleep
-  --closed-lid             Use the optional Amphetamine backend
+  --closed-lid             Use the built-in guard (local admin approval)
 
 Open Vibesomnia.app before using the CLI. Over SSH, log in as the same macOS
 user. This CLI never opens a network port or executes arbitrary remote code.
@@ -27,7 +27,7 @@ user. This CLI never opens a network port or executes arbitrary remote code.
 func run() throws {
     var args = Array(CommandLine.arguments.dropFirst())
     guard !args.isEmpty, !["help", "--help", "-h"].contains(args[0]) else { print(help); return }
-    if args == ["--version"] { print("0.1.0-alpha.2"); return }
+    if args == ["--version"] { print("0.1.0-alpha.3"); return }
     let verb = args.removeFirst()
     let transport = ControlTransport()
     try transport.prepare()

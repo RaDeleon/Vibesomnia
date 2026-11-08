@@ -2,7 +2,7 @@
 import Foundation
 
 public enum SessionBackend: String, Codable, Sendable {
-    case native, amphetamine
+    case native, closedLid
 }
 
 public struct SessionRequest: Codable, Equatable, Sendable {
@@ -40,7 +40,7 @@ public struct ActiveSession: Codable, Equatable, Sendable {
         self.request = request
         startedAt = now
         endsAt = request.minutes.map { now.addingTimeInterval(Double($0) * 60) }
-        backend = request.closedLid ? .amphetamine : .native
+        backend = request.closedLid ? .closedLid : .native
     }
 
     public func endReason(now: Date, runningBundleIDs: Set<String>) -> String? {
@@ -71,7 +71,7 @@ public struct AppStatus: Codable, Sendable {
     public var apps: [WorkspaceApp]
     public var lastError: String?
     public init(session: ActiveSession?, apps: [WorkspaceApp], lastError: String?) {
-        updatedAt = Date(); version = "0.1.0-alpha.2"
+        updatedAt = Date(); version = "0.1.0-alpha.3"
         self.session = session; self.apps = apps; self.lastError = lastError
     }
 }

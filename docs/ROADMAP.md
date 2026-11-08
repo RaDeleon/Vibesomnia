@@ -10,7 +10,8 @@ is a direction, not a claim about today's build.
 - [x] GUI app-lifetime sessions and opt-in app-start triggers.
 - [x] Battery cutoff, session events, CLI status/control.
 - [x] Claude/ChatGPT/Codex availability and launch controls.
-- [x] Optional Amphetamine automation for closed-lid mode.
+- [x] Standalone, explicitly authorized temporary closed-lid guard (alpha.3).
+- [x] Reviewed user scripts, in-app editor/import, start/end hooks and runner limits.
 - [x] SwiftPM build, app bundle script, CI definition, contributor/agent docs.
 - [ ] Physical closed-lid/open-lid/reclose and charger-transition acceptance tests.
 - [ ] Remote SSH validation from another device.
@@ -18,8 +19,9 @@ is a direction, not a claim about today's build.
 
 ## Alpha 0.2+ — own the whole session
 
-- [ ] Standalone closed-lid support: evaluate public APIs, privileged helper,
-      lifecycle ownership, crash/power-loss recovery, and distribution constraints.
+- [x] Standalone temporary guard, lease/process monitoring, restoration and explicit recovery.
+- [ ] Closed-lid hardware/charger matrix, rare recovery scenarios, production signing,
+      and distribution constraints.
 - [ ] Persist preferences; login item and opt-in resume policies.
 - [ ] Monitor external session termination accurately; reconcile backend state.
 - [ ] Multiple app/CLI activity triggers with clear precedence and pause behavior.
@@ -31,6 +33,7 @@ is a direction, not a claim about today's build.
 
 ## Amphetamine-inspired parity inventory
 
+The detailed [parity checklist](PARITY.md) is the authoritative feature inventory.
 Track and test each feature independently before marking parity complete:
 manual durations and dates; application/file/download sessions; trigger rules;
 display sleep and screen saver policies; drive wakefulness; battery and power

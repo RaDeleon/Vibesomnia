@@ -1,90 +1,68 @@
 <p align="center">
-  <img src="Resources/AppIcon.png" alt="Vibesomnia mascot: a tired developer with bloodshot eyes and a glowing laptop" width="128" /><br />
-  <img src="docs/assets/banner.svg" alt="Vibesomnia — You can sleep. Your AI doesn't have to." width="100%" />
+  <img src="docs/assets/vibesomnia-banner.png" alt="Vibesomnia's bloodshot-eyed developer coding by the glow of terminals and AI agents at night" width="100%" />
 </p>
+
+<h1 align="center">Vibesomnia</h1>
+<p align="center"><strong>You can sleep. Your AI doesn't have to.</strong></p>
+<p align="center">A native macOS keep-awake utility for the one-more-commit crowd.<br />Close the lid, keep your AI workspace alive, and make the night shift yours.</p>
 
 <p align="center">
   <a href="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml"><img alt="macOS checks" src="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml/badge.svg" /></a>
-  <img alt="Version 0.1.0-alpha.2" src="https://img.shields.io/badge/version-0.1.0--alpha.2-818cf8" />
-  <img alt="macOS 14 or newer" src="https://img.shields.io/badge/macOS-14%2B-black" />
-  <a href="LICENSE"><img alt="License AGPL v3" src="https://img.shields.io/badge/license-AGPL--3.0-blue" /></a>
+  <img alt="Version 0.1.0-alpha.3" src="https://img.shields.io/badge/version-0.1.0--alpha.3-9b82f5" />
+  <img alt="macOS 14+" src="https://img.shields.io/badge/macOS-14%2B-19172f?logo=apple" />
+  <img alt="Swift and SwiftUI" src="https://img.shields.io/badge/Swift-SwiftUI-f07152?logo=swift&logoColor=white" />
+  <a href="LICENSE"><img alt="AGPL v3" src="https://img.shields.io/badge/license-AGPL--3.0-7462c8" /></a>
+  <a href="https://github.com/RaDeleon/Vibesomnia/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/RaDeleon/Vibesomnia?style=flat&color=a78bfa" /></a>
 </p>
 
 <p align="center">
-  <strong>A little less screen glow. A little more work getting done.</strong><br />
-  Keep your Mac awake, launch your AI tools, and control sessions from elsewhere.
+  <a href="#get-running">Get running</a> · <a href="#the-night-crew">Features</a> ·
+  <a href="#closed-lid-without-amphetamine">Closed lid</a> · <a href="#your-scripts-your-workflow">Add-ons</a> ·
+  <a href="#take-it-remote">Remote controls</a> · <a href="docs/PARITY.md">Feature parity</a> ·
+  <a href="CHANGELOG.md">Changelog</a>
 </p>
 
-<p align="center">
-  <a href="#get-running">Get running</a> ·
-  <a href="#what-works-in-this-alpha">Features</a> ·
-  <a href="#remote-controls">Remote controls</a> ·
-  <a href="docs/ROADMAP.md">Roadmap</a> ·
-  <a href="CHANGELOG.md">Changelog</a> ·
-  <a href="CONTRIBUTING.md">Contribute</a>
-</p>
+> **Alpha, fully open source.** This is a working development build, not a finished
+> Amphetamine replacement yet. The standalone closed-lid guard and script system
+> are implemented; the [parity checklist](docs/PARITY.md) shows what still needs work.
+> Community/Pro editions and monetization are deferred. No paywalls or license checks.
 
-## For the nights that become mornings
+## Built for the nights that become mornings
 
-Vibesomnia is a native macOS menu bar app for developers who work with Claude,
-ChatGPT, Codex, and terminal agents. Start a session, let the display go dark,
-and keep your workspace available. End it when you're done.
+Your laptop shouldn't clock out before your agents do. Vibesomnia keeps macOS
+awake while Claude Desktop, ChatGPT, Codex, and your terminal tools keep working.
+Use the display normally, let it go dark, or opt into closed-lid mode. End the
+session when you're done.
 
-The destination is an Amphetamine-style power utility with AI workspace controls
-and remote access built around real development workflows. **This first alpha
-implements the foundation, not full Amphetamine feature parity.**
+The goal is the power and flexibility of an Amphetamine-class utility, built
+around AI development: clear session controls, useful app awareness, your own
+scripts, and access through the remote tools you already use.
 
-**Current version: `0.1.0-alpha.2`.** Everything in this repository is open source.
-Community/Pro editions, licensing infrastructure, and paywalls are deferred.
-Beta starts when the core workflow is reliable and approved for that milestone.
+## The night crew
 
-## What works in this alpha
-
-| Capability | Implementation |
+| Capability | What alpha.3 does |
 | --- | --- |
-| Manual on/off sessions | Dashboard, menu bar, keyboard shortcut, or CLI |
-| Indefinite and timed sessions | One minute to seven days, or until stopped |
-| Screen-off keep-awake | Native macOS power assertions; display sleep allowed by default |
-| Keep the display on | Optional assertion for presentations or monitoring |
-| While-app-running sessions | Ends when the selected GUI app closes |
-| App-aware auto-start | Opt-in trigger for the selected GUI app; manual stop suppresses retriggering until that app closes |
-| Battery protection | Refuses/ends sessions at 20% or lower on battery; can be disabled in Settings |
-| AI workspace | Detects and opens installed Claude Desktop, ChatGPT, and Codex |
-| Terminal agents | Detects common Claude Code/Codex CLI installations; opens them in Terminal |
-| Remote session commands | Same-user CLI over an existing SSH connection |
-| Closed-lid sessions | **Optional Amphetamine backend**, described below |
-| Session recovery | Explicit recovery after an interrupted Amphetamine-backed session |
+| **On your terms** | Manual, timed, indefinite, and selected-GUI-app sessions |
+| **Lights out, work on** | Native idle-sleep prevention, with optional display wakefulness |
+| **Closed lid, standalone** | Bundled administrator-authorized power guard; no Amphetamine installation |
+| **Cleanup that outlives the app** | Separate guard monitors process identity and an eight-second heartbeat lease |
+| **Know your tools** | Detect/open Claude Desktop, ChatGPT, and Codex; launch Claude Code/Codex CLI in Terminal |
+| **App-aware sessions** | End when the selected app closes; opt into starting when it runs |
+| **Battery guard** | Refuse/end sessions at 20% or lower on battery, configurable in Settings |
+| **Your own scripts** | In-app source editor, add-on import, reviewed versions, manual runs, start/end hooks |
+| **Take control elsewhere** | Same-user CLI commands through an existing SSH connection |
 
-### Closed lid: read this first
-
-**Native mode prevents idle sleep. It does not override macOS lid-close sleep.**
-For closed-lid operation in this alpha, install
-[Amphetamine](https://apps.apple.com/app/amphetamine/id937984704) in `/Applications`,
-configure its closed-display support, and enable **Keep running with lid closed**
-in Vibesomnia. macOS may request Automation approval. Apple Silicon power-source
-changes may require Amphetamine's own Power Protect setup.
-
-Vibesomnia uses Amphetamine's published AppleScript commands; it contains no
-Amphetamine source and is not affiliated with that project. It refuses to replace
-an already-active Amphetamine session. End that session yourself first.
-
-During a Vibesomnia closed-lid session, reopening the lid does not end the session.
-Closing it again should retain the same behavior until you end the session.
-Physical lid-close, charger-change, and remote-reconnection behavior still require
-hardware testing. Keep an awake Mac ventilated; don't place it in a bag.
-
-A standalone, recoverable closed-lid implementation is on the
-[roadmap](docs/ROADMAP.md). This app does not silently install a root helper,
-change sudoers, or permanently change your power settings.
+Closing the dashboard leaves the menu bar controls available. `⌘⇧S` toggles the
+session while Vibesomnia is focused; it is not a global hotkey yet.
 
 ## Get running
 
 ### Requirements
 
-- macOS 14 or newer.
-- Xcode 15+ or a compatible Swift 5.9+ toolchain; active developer tools selected.
-- Optional: Amphetamine for closed-lid mode; existing SSH access for remote commands.
-- No API keys, Node runtime, cloud account, or third-party Swift packages.
+- macOS 14+ and Xcode 15+ or a compatible Swift 5.9+ developer toolchain.
+- Administrator approval **only for closed-lid sessions/recovery**.
+- Existing SSH or screen-sharing access if you want to work from another device.
+- No model account, API key, Node runtime, or third-party Swift dependency.
 
 ```sh
 git clone https://github.com/RaDeleon/Vibesomnia.git
@@ -92,36 +70,96 @@ cd Vibesomnia
 ./script/build_and_run.sh --verify
 ```
 
-This builds and ad-hoc signs `dist/Vibesomnia.app`, launches it, and checks that
-its CLI is responding. The Codex **Run** action uses the same script.
-The dashboard and menu bar item both control the same session.
-Closing the dashboard leaves the app in the menu bar. Quitting ends its session.
+This builds and ad-hoc signs `dist/Vibesomnia.app`, launches it, and checks the
+CLI. The Codex **Run** button uses the same script. There is no published,
+notarized DMG or Mac App Store package yet.
 
-1. Start with **Let the display sleep** enabled and closed-lid mode disabled.
-2. Choose an indefinite session or a timer. Optionally select a running GUI app.
-3. Click **Start session**. Use **Display off now** to test screen-off behavior.
-4. Click **End session** when finished. Other applications and macOS settings may
-   still keep the machine awake; Vibesomnia releases only what it owns.
+1. Leave **Let the display sleep** enabled for a dark screen and an awake Mac.
+2. Choose a timer or keep the session indefinite. Optionally select a running app.
+3. Enable **Keep running with lid closed** if you need it, then start the session.
+4. Approve the macOS administrator prompt for closed-lid mode.
+5. End the session from the dashboard, menu bar, or CLI to restore normal behavior.
 
-`⌘⇧S` toggles a session while the app is focused; it is not a global hotkey.
+Other apps and pre-existing macOS power preferences may still prevent idle sleep
+after Vibesomnia stops; it releases its own assertions and override.
 
-### Build and test
+<details>
+<summary><strong>Build, test, debug, and regenerate icons</strong></summary>
 
 ```sh
 swift test
 ./script/build_and_run.sh --build-only
 ./script/build_and_run.sh --logs
+./script/generate_icon.sh
 ```
 
-The build script requests a graceful quit before rebuilding. If a prior session
-needs recovery, resolve it in the app rather than force-killing the process.
-Local builds are **not Developer ID signed or notarized**. No public DMG or
-Mac App Store release is published as part of this alpha.
+`./script/smoke_test.py` exercises native assertions and graceful CLI quit against
+an idle running app, then leaves it closed. Python 3 is required for that test.
+The build script requests a graceful quit before rebuilding; resolve recovery
+rather than force-killing an app that owns an active session.
 
-## Remote controls
+</details>
 
-The app bundle includes `Contents/MacOS/vibesomnia-cli`.
-Use **Copy CLI path** in the dashboard to find your build's exact location.
+## Closed lid without Amphetamine
+
+Closed-lid mode now belongs to Vibesomnia. Ordinary sessions use IOKit power
+assertions; closed-lid sessions additionally use **VibesomniaPowerGuard**, a
+small helper included in the app bundle.
+
+- macOS asks for administrator authorization when the guard starts.
+- The guard refuses to overwrite an already-disabled system sleep setting.
+- It records ownership before changing the system-wide sleep override.
+- It checks the app's process identity and fresh heartbeat sequence.
+- Stop, app exit, or an expired lease restores sleep before removing the record.
+- It installs no persistent service, login daemon, sudoers rule, or network port.
+- It cannot run add-ons, execute user commands, or enable remote access.
+
+While this mode is on, system sleep is disabled, including manual sleep requests;
+**end the session to restore normal system sleep**. Display sleep remains
+independent. Opening the lid doesn't end the session, so you can close it again.
+Keep an awake Mac on a ventilated surface, not inside a bag.
+
+**Validation:** activation, normal stop, and restoration after simulated app exit
+have been tested locally with Amphetamine's session ended. Physical lid-close /
+open / reclose, charger transitions, and reconnection from another device still
+need [hardware acceptance testing](docs/TESTING.md). Compatibility is alpha-stage;
+Mac App Store suitability is not established.
+
+If the root guard itself fails before restoring sleep, Vibesomnia exposes explicit
+administrator-authorized recovery from its root-owned record. The complete
+ownership and failure model is in [closed-lid design](docs/CLOSED_LID.md).
+
+## Your scripts, your workflow
+
+Open **Settings → Add-ons** to create a script, import a folder, edit its source
+and manifest, review it, and approve that exact version. Edits invalidate approval.
+Nothing imported or bundled runs automatically before you approve and enable it.
+
+| Idea | What an add-on could do |
+| --- | --- |
+| **Workspace pulse** | Show local power assertions, time, and uptime. Included example. |
+| **End-of-shift chime** | Play a macOS sound when a session ends. Included example. |
+| **Project test runner** | Run your chosen project's test command after you start a session. |
+| **Git checkpoint** | Show branch/status or write a local summary before you step away. |
+| **Night crew launcher** | Open your selected editor, terminals, projects, and AI apps. |
+| **Personal finish ritual** | Send a local notification, export a report, or run your backup script. |
+
+The example add-ons are opt-in. Other ideas are examples of scripts **you author**,
+not automatic integrations or permission to send data elsewhere.
+
+Shell (zsh/bash), AppleScript, and Python 3 are supported. Scripts run as your user,
+with a reviewed-content snapshot, clean environment, 1–300 second timeout,
+process-group cleanup, and a 64 KiB captured-output limit. They are **trusted local
+code, not sandboxed plug-ins**: they can use your account's files and network.
+Long-lived daemons/background agents are outside the add-on lifecycle contract.
+
+See the [add-on guide](docs/ADDONS.md) for manifests, events, examples, and guardrails.
+There is no remote arbitrary-script endpoint or automatic marketplace installer.
+
+## Take it remote
+
+The bundle contains `Contents/MacOS/vibesomnia-cli`. Use **Copy CLI path** in the
+app to find your exact build path.
 
 ```sh
 CLI="$(pwd)/dist/Vibesomnia.app/Contents/MacOS/vibesomnia-cli"
@@ -135,7 +173,7 @@ CLI="$(pwd)/dist/Vibesomnia.app/Contents/MacOS/vibesomnia-cli"
 "$CLI" --help
 ```
 
-On another device, use your existing SSH setup and the Mac's actual CLI path:
+From another device, with SSH already configured:
 
 ```sh
 ssh your-mac '/absolute/path/to/vibesomnia-cli status'
@@ -143,83 +181,88 @@ ssh your-mac '/absolute/path/to/vibesomnia-cli start --minutes 60'
 ssh your-mac '/absolute/path/to/vibesomnia-cli stop'
 ```
 
-Vibesomnia must be running in the **same user's logged-in graphical session**.
-It does not enable Remote Login, install SSH keys, open firewall ports, bypass
-screen locking, or survive logout/reboot as a background service. The controls
-use local files with a private directory and short-lived requests. SSH supplies
-the remote authentication and transport.
+The app must run in the **same user's logged-in graphical session**. Starting a
+closed-lid session requires administrator interaction on that Mac; authorize it
+locally before leaving. Remote start is not an unattended privilege bypass.
 
-**These are session and app-launch controls, not full remote desktop.** There is
-no chat relay, screen streaming, keyboard/mouse injection, or mobile companion in
-this alpha. Use an existing desktop-sharing tool for full GUI interaction.
-Launching a CLI opens Terminal; it does not remotely attach to an agent session.
+**Session controls are implemented; remote desktop is not.** Use your existing
+screen-sharing tool to interact with Claude/ChatGPT/Codex windows. Vibesomnia does
+not enable SSH, install keys, bypass screen locking, stream the screen, inject
+input, relay chats, or attach to terminal agent sessions. It keeps the host awake
+so your existing remote connection has a running machine to reach.
 
-## Under the hood
+## How the pieces fit
 
 ```mermaid
 flowchart LR
-    UI[Dashboard and menu bar] --> Store[Session coordinator]
-    CLI[CLI over existing SSH] --> IPC[Private same-user command queue]
-    IPC --> Store
-    Store --> Native[Native IOKit power assertions]
-    Store --> Bridge[Optional Amphetamine automation]
-    Store --> Apps[macOS app discovery and launch]
+    UI[Dashboard / menu bar] --> Coordinator[Session coordinator]
+    CLI[CLI via existing SSH] --> Queue[Private same-user command queue]
+    Queue --> Coordinator
+    Coordinator --> IOKit[Native idle/display assertions]
+    Coordinator --> Guard[Temporary authorized power guard]
+    Coordinator --> Apps[AI app discovery and launch]
+    Coordinator --> Hooks[Approved session hooks]
+    Hooks --> Scripts[Unprivileged script process group]
+    Guard --> Restore[Restore sleep on stop / exit / lease expiry]
 ```
 
 | Location | Responsibility |
 | --- | --- |
-| `Sources/VibesomniaCore/` | Session policy, typed command protocol, local transport |
-| `Sources/Vibesomnia/App/` | App lifecycle, scenes, graceful shutdown |
-| `Sources/Vibesomnia/Stores/` | Shared session state and command coordination |
-| `Sources/Vibesomnia/Services/` | Power, battery, AI app discovery, optional automation |
-| `Sources/Vibesomnia/Views/` | Dashboard, menu bar, settings |
-| `Sources/VibesomniaCLI/` | Command-line client |
-| `Tests/` | Expiry, app-lifetime, validation, and transport tests |
-| `script/` | Reproducible app bundle build and launch |
+| `Sources/VibesomniaCore/` | Session policy, lease logic, manifests, script runner, local control protocol |
+| `Sources/Vibesomnia/` | SwiftUI screens, session coordinator, platform services, add-on management |
+| `Sources/VibesomniaPowerGuard/` | Fixed-purpose temporary elevated worker and recovery |
+| `Sources/VibeSystem/` | Small C bridge for process identity, signals, and isolated script spawning |
+| `Sources/VibesomniaCLI/` | Typed command-line client |
+| `Resources/` | Mascot artwork, macOS icon, and opt-in example add-ons |
+| `Tests/`, `script/` | Policy/runtime checks and reproducible local builds |
 
-### Privacy and recovery
+<details>
+<summary><strong>Privacy, local data, and permissions</strong></summary>
 
-- No analytics, telemetry uploads, model credentials, or conversation access.
-- CLI status and short-lived commands live under
-  `~/Library/Application Support/Vibesomnia/Control/` (directory `0700`, files `0600`).
-- GUI app detection uses bundle identifiers. CLI detection checks common executable
-  locations; CLI process/activity detection is not implemented.
-- The activity panel is in-memory. macOS unified logs contain session transitions
-  and errors; no prompts or chat contents are collected.
-- Native assertions are released by macOS if the process exits.
-- An interrupted Amphetamine session can remain active. Next launch offers
-  **Recover session**, which explicitly ends the current Amphetamine session.
-  This could include a session you started independently after the interruption.
-- Session options and triggers reset on app relaunch in this alpha. There is no
-  automatic login item or unattended resumption.
+No analytics uploads, model credentials, chat content, or prompts are collected.
+GUI app discovery uses bundle IDs; CLI discovery checks common executable paths.
+It does not imply a model is authenticated or a CLI agent is actively working.
 
-## What's next
+Same-user status, leases, and short-lived requests live under
+`~/Library/Application Support/Vibesomnia/Control/` (`0700` directory, `0600` files).
+User add-ons live alongside it in `AddOns/`; approval hashes are stored in app
+preferences. Activity is shown locally; macOS unified logs record transitions and
+errors. Script output stays in the local result pane unless your script itself
+writes or transmits it.
 
-The [roadmap](docs/ROADMAP.md) tracks native closed-lid support, advanced triggers,
-file/download sessions, schedules, app parity, secure remote desktop exploration,
-accessibility, packaging, and the acceptance gates for beta.
+The temporary guard's root-owned recovery state lives in
+`/private/var/run/vibesomnia-closed-lid/` only while active or awaiting recovery.
+It never reads add-on code or credentials. Native assertions are released by
+macOS if the app exits. Session options and auto-start triggers still reset on
+relaunch in this alpha; add-on approvals and enabled choices persist.
 
-Development history lives in [sessions.log](sessions.log). Versioned changes live
-in [CHANGELOG.md](CHANGELOG.md). Contributor and agent instructions are in
-[CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and [CLAUDE.md](CLAUDE.md).
+</details>
 
-## App artwork
+## Road to the full replacement
 
-The icon is a late-night developer mascot: bloodshot eyes, messy hair, and laptop
-screen glow. Source artwork, PNG, and macOS ICNS assets live in `Resources/`.
-Regenerate the icon family with `./script/generate_icon.sh`; see
-[artwork provenance and prompt](Resources/ARTWORK.md).
+[Feature parity](docs/PARITY.md) tracks every category from Amphetamine's published
+feature list, including schedules, downloads, network/device triggers, screen
+saver and lock policies, Drive Alive, global hotkeys, customization, and scripting.
+A checked item means implemented; test evidence and remaining limitations stay
+separate. Beta requires owner approval and the [acceptance gates](docs/ROADMAP.md).
 
-## License and credits
+[Contributing](CONTRIBUTING.md) · [Development sessions](sessions.log) ·
+[Release history](CHANGELOG.md) · [Agent instructions](AGENTS.md) · [Claude guidance](CLAUDE.md)
 
-Copyright © 2026 **Angelo De Leon**. Licensed under
-[GNU AGPL v3.0](LICENSE), `AGPL-3.0-only`. Preserve required copyright and license
-notices when redistributing. Commercial use is permitted under the license;
-this project does not require royalties for compliant Community use.
+## Artwork, license, and support
 
-Inspired by the keep-awake utility category, including Amphetamine. The optional
-integration requires a separate installation and follows that app's own terms.
+The mascot and matching night-workstation banner are original generated artwork.
+Sources, exports, prompts, and provenance: [icon](Resources/ARTWORK.md) /
+[banner](docs/assets/BANNER.md). Screens in the banner are illustration, not a UI
+screenshot or evidence of implemented chat/agent integrations.
 
-Want to support development? Star the repo, report reproducible issues, and help
-exercise the [manual test checklist](docs/TESTING.md). Funding links can be added
-when the project's support destination is ready.
+Copyright © 2026 **Angelo De Leon**. [GNU AGPL v3.0](LICENSE), `AGPL-3.0-only`.
+Preserve required notices. Commercial use is permitted under the license;
+compliant open-source use does not require royalty payments.
+
+Inspired by Amphetamine and the keep-awake utility category. No Amphetamine
+installation, code, assets, or Power Protect component is used by this version.
+
+**Support the night shift:** star the repo, report reproducible issues, or help
+with the hardware test checklist. Donation links will be added when the support
+destination is ready. There is no paid edition in the current alpha.

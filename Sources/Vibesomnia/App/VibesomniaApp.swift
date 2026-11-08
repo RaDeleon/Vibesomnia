@@ -64,6 +64,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 cleanupInProgress = false
                 DispatchQueue.main.async { sender.terminate(nil) }
             } catch {
+                store.addons.resume()
                 store.report(error)
                 cleanupInProgress = false
             }

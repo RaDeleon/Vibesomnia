@@ -1,0 +1,1 @@
+{"schemaVersion":1,"id":"shift-chime","name":"End-of-shift chime","summary":"Play a built-in macOS sound when a session ends. Does not run on app quit.","interpreter":"zsh","entryPoint":"main.sh","events":["manual","sessionEnded"],"timeoutSeconds":10}

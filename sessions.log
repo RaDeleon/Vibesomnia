@@ -56,3 +56,41 @@ Verification:
 Delivery: Feature branch feat/app-icon; source version v0.1.0-alpha.2.
 Limitations: The detailed mascot is intended for app/Dock branding; the menu bar
   continues using native monochrome status symbols. No power behavior changed.
+
+2026-11-07 | Session 003 | Standalone closed lid, banner, and add-ons · alpha.3
+Objective: Replace the Amphetamine backend, expand the illustrated README, and
+  implement a reviewed user-script/add-on workflow. Full feature parity is the
+  product target, tracked separately from current alpha completion.
+Changes:
+  - Generated a matching night-workstation banner using the existing mascot as
+    reference; expanded README navigation, feature matrix, architecture and guides.
+  - Removed the Amphetamine service. Added a temporary admin-authorized power
+    guard with exclusive ownership, PID/start identity, sequence/nonce lease,
+    verified sleep restoration, and explicit root-record recovery.
+  - Added add-on import, in-app script/manifest editor, exact-version approval,
+    manual and session start/end events, example packages and cancellation.
+  - Added an unprivileged process-group runner with clean environment, timeout,
+    bounded capture, and quit cleanup; scripts never run in the power guard.
+  - Added closed-lid design, add-on guide, and published-feature parity inventory.
+  - Advanced version metadata and changelog to 0.1.0-alpha.3.
+Verification:
+  - 17 core/extension tests passed, including heartbeat replay/nonce/expiry,
+    changed-script/manifest fingerprints, traversal rejection, clean environment,
+    timeout, cancellation, and bounded output.
+  - Build/run --verify, native runtime smoke test, and ad-hoc signature passed.
+  - Owner approved ending the existing Amphetamine session and local administrator
+    prompts. Standalone guard activation and normal stop restored sleep correctly.
+  - Simulated Vibesomnia process exit: independent guard restored sleep and exited.
+  - Suspended the app while its PID remained alive: heartbeat expiry restored sleep
+    in about 8.4 seconds. Resumed app detected guard loss and ended the session.
+  - Final system SleepDisabled=0; no power-guard worker or root recovery record left.
+  - Computer-use UI: examples installed unapproved, read-only diagnostic reviewed
+    and run, in-app edit saved, prior approval invalidated and Run disabled.
+  - Markdown local links and banner dimensions (2172x724) verified; diff check clean.
+  - Graph lookup/coverage used for existing session lifecycle; changed/stale files
+    were read directly before relying on their current behavior.
+Limitations: Physical lid/charger tests and remote reconnection from another device
+  remain unverified. Root-worker forced-failure recovery and production distribution
+  need more testing. Full Amphetamine parity and full remote desktop are not done;
+  see docs/PARITY.md. No Community/Pro split or public binary release.
+Delivery: Feature branch feat/standalone-closed-lid; source version v0.1.0-alpha.3.

@@ -23,9 +23,15 @@ paywalls, licensing checks, payment flows, or artificial feature limits now.
   integration. Avoid third-party dependencies unless there is a concrete need.
 - SessionStore owns app-wide state. Views must not directly run power commands.
 - Native mode prevents idle sleep only. Never claim this also bypasses lid sleep.
-- Closed-lid mode currently uses optional Amphetamine automation. Do not silently
-  end/replace sessions started by the user, alter sudoers, install root daemons,
-  disable security, enable remote sharing, or expose unauthenticated listeners.
+- Closed-lid mode uses the bundled temporary VibesomniaPowerGuard after explicit
+  macOS administrator approval. It owns only a sleep override it acquired from
+  normal state. Preserve its root-owned lock/record, PID identity check, expiring
+  heartbeat, fixed operations, and restore-before-cleanup ordering.
+- Never execute add-ons in the power guard. User scripts run unprivileged with
+  reviewed content hashes, opt-in hooks, timeouts, bounded captured output, and
+  process-group cleanup. Changing code or manifest invalidates approval.
+- Do not silently end other apps' sessions, alter sudoers, install persistent
+  root daemons, weaken security, enable remote sharing, or expose listeners.
 - Native power assertions must be released on stop/failure/quit. Any external
   backend needs ownership tracking and explicit interruption recovery.
 - Remote commands are typed and allowlisted. No arbitrary shell/script endpoint.

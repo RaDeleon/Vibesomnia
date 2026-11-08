@@ -17,7 +17,7 @@ struct ContentView: View {
                 if store.needsRecovery, store.session == nil {
                     GroupBox("Previous closed-lid session") {
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("Vibesomnia may have exited before ending its Amphetamine session. Recovery ends the current Amphetamine session, including any you started since then.")
+                            Text("A stopped Vibesomnia power guard left a recovery record. Restore normal sleep settings with administrator approval.")
                             Button("Recover session") { Task { await store.recover() } }.disabled(store.busy)
                         }.padding(8)
                     }
@@ -37,7 +37,7 @@ struct ContentView: View {
                     }
                 }
                 HStack {
-                    Text("0.1.0-alpha.2 · Open source · Created by Angelo De Leon")
+                    Text("0.1.0-alpha.3 · Open source · Created by Angelo De Leon")
                     Spacer()
                     Link("Source & roadmap", destination: URL(string: "https://github.com/RaDeleon/Vibesomnia")!)
                 }.font(.caption).foregroundStyle(.secondary)
@@ -89,7 +89,7 @@ struct ContentView: View {
                 Toggle("Let the display sleep", isOn: $store.allowDisplaySleep)
                 Toggle("Keep running with lid closed", isOn: $store.closedLid)
                 if store.closedLid {
-                    Text("Alpha: uses Amphetamine + its closed-display support. Requires Automation approval. End existing Amphetamine sessions first.")
+                    Text("Uses Vibesomnia’s own temporary power guard. macOS requests administrator approval for each session. Normal sleep returns on stop, exit, or lost heartbeat.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Picker("While app runs", selection: $store.selectedApp) {
@@ -110,7 +110,7 @@ struct ContentView: View {
                           systemImage: store.session == nil ? "play.fill" : "stop.fill")
                         .frame(maxWidth: .infinity)
                 }.buttonStyle(.borderedProminent).controlSize(.large).disabled(store.busy || (store.needsRecovery && store.session == nil))
-                Text(store.session?.backend == .amphetamine ? "Closed-lid backend: Amphetamine" : "Native sessions prevent idle sleep; they do not override lid-close sleep.")
+                Text(store.session?.backend == .closedLid ? "Closed-lid guard active · no Amphetamine needed" : "Native sessions prevent idle sleep; they do not override lid-close sleep.")
                     .font(.caption).foregroundStyle(.secondary)
             }.padding(12)
         }

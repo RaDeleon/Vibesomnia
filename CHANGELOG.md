@@ -10,6 +10,40 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 - Standalone closed-lid backend, richer triggers, and remote-workspace validation.
 - Community/Pro separation is deferred; no paid tier exists in this version.
 
+## [0.1.0-alpha.3] — 2026-11-07
+
+### Added
+
+- Matching mascot/workstation README banner, expanded navigation, architecture,
+  extension documentation, and a complete feature-parity inventory.
+- Bundled standalone closed-lid power guard with explicit macOS administrator
+  authorization, exclusive ownership, process identity and heartbeat monitoring,
+  verified restoration, and explicit recovery for leftover records.
+- Add-on import, source/manifest editor, version-specific content approval,
+  opt-in manual/start/end events, example packages, and disable/cancel controls.
+- Unprivileged script process groups, clean environment, timeouts, captured-output
+  limits, cancellation, and quit cleanup.
+
+### Changed
+
+- Removed the Amphetamine runtime dependency and automation backend.
+- Timed sessions begin after successful activation rather than before authorization.
+
+### Validation
+
+- Seventeen policy/extension tests and the native runtime smoke test pass.
+- Standalone activation, normal stop, and app-exit restoration verified locally
+  with Amphetamine's session ended; frozen-app lease expiry restored sleep in
+  about 8.4 seconds. Physical lid/charger and remote reconnection remain manual.
+- Add-on UI install/review/run/edit and approval invalidation verified.
+
+### Known limitations
+
+- Full Amphetamine feature parity and full remote desktop are not complete; see
+  docs/PARITY.md. The guard is experimental and locally ad-hoc signed.
+- Add-ons are trusted local code, not sandboxed extensions; packages import only
+  the manifest and one script. Overlapping hooks are skipped, not queued.
+
 ## [0.1.0-alpha.2] — 2026-11-07
 
 ### Added
@@ -50,7 +84,9 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 - Physical lid/charger behavior and remote connections require manual validation.
 - Local ad-hoc builds only; no notarized DMG or Mac App Store release yet.
 
-[Unreleased]: https://github.com/RaDeleon/Vibesomnia/compare/v0.1.0-alpha.2...HEAD
+[Unreleased]: https://github.com/RaDeleon/Vibesomnia/compare/v0.1.0-alpha.3...HEAD
 [0.1.0-alpha.1]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.1
 
 [0.1.0-alpha.2]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.2
+
+[0.1.0-alpha.3]: https://github.com/RaDeleon/Vibesomnia/tree/v0.1.0-alpha.3

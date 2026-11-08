@@ -4,6 +4,12 @@ import SwiftUI
 struct SettingsView: View {
     @ObservedObject var store: SessionStore
     var body: some View {
+        TabView {
+            preferences.tabItem { Label("General", systemImage: "gearshape") }
+            AddOnsView(store: store.addons).tabItem { Label("Add-ons", systemImage: "puzzlepiece.extension") }
+        }.frame(width: 760, height: 580)
+    }
+    private var preferences: some View {
         Form {
             Section("Battery") {
                 Toggle("End sessions on battery at 20%", isOn: $store.batteryProtection)
@@ -12,8 +18,8 @@ struct SettingsView: View {
             }
             Section("Alpha behavior") {
                 Text("Sessions and triggers do not resume automatically after relaunch. No background login item is installed.")
-                Text("Native power assertions are released on exit. If an Amphetamine session is interrupted, the next launch offers explicit recovery.")
+                Text("Native power assertions are released on exit. The closed-lid guard restores sleep when the app exits or loses its heartbeat. Explicit recovery is available after guard failure.")
             }
-        }.formStyle(.grouped).frame(width: 470, height: 300)
+        }.formStyle(.grouped)
     }
 }

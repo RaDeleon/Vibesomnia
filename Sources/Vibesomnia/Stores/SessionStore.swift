@@ -20,9 +20,10 @@ final class SessionStore: ObservableObject {
     @Published var batteryProtection = true
     @Published private(set) var battery: BatteryStatus?
     @Published private(set) var needsRecovery = false
+    let addons = AddOnStore()
     let transport = ControlTransport()
     private let power = PowerService()
-    private lazy var amphetamine = AmphetamineService(transport: transport)
+    private lazy var lidGuard = ClosedLidService(transport: transport)
     private let workspace = WorkspaceService()
     private let logger = Logger(subsystem: "com.angelodeleon.Vibesomnia", category: "sessions")
     private var timer: Timer?
@@ -33,7 +34,7 @@ final class SessionStore: ObservableObject {
     init() {
         do { try transport.prepare(); ipcReady = true }
         catch { self.error = error.localizedDescription }
-        needsRecovery = amphetamine.needsRecovery
+        needsRecovery = lidGuard.needsRecovery
         apps = workspace.snapshot()
         battery = .current()
         publish()
@@ -59,21 +60,28 @@ final class SessionStore: ObservableObject {
             throw VibeError.message("Battery is at or below 20%. Connect power or disable battery protection.")
         }
         busy = true
-        defer { busy = false; needsRecovery = amphetamine.needsRecovery; publish() }
-        if next.backend == .amphetamine { try await amphetamine.start(next.request) }
+        defer { busy = false; needsRecovery = lidGuard.needsRecovery; publish() }
+        if next.backend == .closedLid {
+            try power.start(allowDisplaySleep: next.request.allowDisplaySleep)
+            do { try await lidGuard.start() } catch { power.stop(); throw error }
+        }
         else { try power.start(allowDisplaySleep: next.request.allowDisplaySleep) }
-        session = next
+        session = try ActiveSession(request: next.request)
         error = nil
+        addons.fire(.sessionStarted)
         record("Started \(next.backend.rawValue) session\(next.endsAt == nil ? " · indefinite" : " · timed")")
     }
 
     func stop(reason: String = "Stopped manually") async throws {
         guard !busy else { throw VibeError.message("A session change is already in progress.") }
         busy = true
-        defer { busy = false; needsRecovery = amphetamine.needsRecovery; publish() }
-        if session?.backend == .amphetamine || amphetamine.ownsSession { try await amphetamine.stop() }
+        defer { busy = false; needsRecovery = lidGuard.needsRecovery; publish() }
+        if session?.backend == .closedLid || lidGuard.ownsSession { try await lidGuard.stop() }
         power.stop()
-        if session != nil { record(reason) }
+        if session != nil {
+            record(reason)
+            if reason != "App quit" { addons.fire(.sessionEnded) }
+        }
         session = nil
         suppressAutoStart = true
         error = nil
@@ -82,10 +90,10 @@ final class SessionStore: ObservableObject {
     func recover() async {
         guard !busy else { return }
         busy = true
-        defer { busy = false; needsRecovery = amphetamine.needsRecovery; publish() }
+        defer { busy = false; needsRecovery = lidGuard.needsRecovery; publish() }
         do {
-            try await amphetamine.stop()
-            record("Recovered prior Amphetamine session")
+            try await lidGuard.recover()
+            record("Recovered Vibesomnia power settings")
             error = nil
         } catch { report(error) }
     }
@@ -107,6 +115,7 @@ final class SessionStore: ObservableObject {
         guard !needsRecovery || session != nil else {
             throw VibeError.message("Recover the previous closed-lid session before quitting.")
         }
+        await addons.cancel(forShutdown: true)
         try await stop(reason: "App quit")
     }
 
@@ -122,6 +131,18 @@ final class SessionStore: ObservableObject {
         defer { ticking = false }
         apps = workspace.snapshot()
         battery = .current()
+        needsRecovery = lidGuard.needsRecovery
+        if session?.backend == .closedLid {
+            do { try lidGuard.heartbeat() }
+            catch {
+                let failure = error
+                try? await stop(reason: "Closed-lid guard stopped")
+                power.stop()
+                session = nil
+                report(failure)
+                suppressAutoStart = true
+            }
+        }
         let running = workspace.runningBundleIDs
         if !selectedApp.isEmpty, !running.contains(selectedApp) { suppressAutoStart = false }
         do {

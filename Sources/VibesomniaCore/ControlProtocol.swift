@@ -37,7 +37,6 @@ public struct ControlTransport {
     public var inbox: URL { root.appendingPathComponent("inbox", isDirectory: true) }
     public var replies: URL { root.appendingPathComponent("replies", isDirectory: true) }
     public var status: URL { root.appendingPathComponent("status.json") }
-    public var recovery: URL { root.appendingPathComponent("amphetamine-owned.json") }
 
     public init(root: URL? = nil) {
         self.root = root ?? FileManager.default.homeDirectoryForCurrentUser
