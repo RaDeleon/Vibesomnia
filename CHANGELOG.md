@@ -5,6 +5,13 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 
 ## [Unreleased]
 
+### Documentation
+
+- Added a development diary and entry template for future angelodeleon.com posts,
+  separating the project story, owner reports, and verified results.
+- Recorded the first physical closed-lid observation on alpha.4; repeat-cycle and
+  complete remote-interaction acceptance remain pending.
+
 ### Planned
 
 - Richer triggers and physical closed-lid / remote-workspace validation.

@@ -158,3 +158,30 @@ Limitations: Local app is ad-hoc signed; pkg is unsigned and unnotarized. No val
   remain acceptance work. Manual installer workflow must reach the default branch
   before normal workflow dispatch. Main and repository visibility were not changed.
 Delivery: alpha.5 source on feat/standalone-closed-lid; local DMG with checksum.
+
+2026-11-07 | Session 006 | Private prerelease and project development diary
+Objective: Add the installer release to GitHub and preserve narrative material
+  for future posts on angelodeleon.com, without changing repository visibility.
+Changes:
+  - Owner explicitly authorized a repository release. Published alpha.5 as a
+    private-repository prerelease with DMG and checksum, using the existing
+    immutable source tag. Release notes identify unsigned/unnotarized status.
+  - Added docs/dev-diary/ with an index, entry template and unpublished working
+    draft covering motivation, naming/artwork, power ownership/recovery, the
+    ChatGPT identity bug, extensions, packaging and the first real lid observation.
+  - Added a project instruction to maintain the diary at meaningful milestones;
+    engineering logs and version changelogs remain separate sources of evidence.
+  - Recorded that the owner reported the closed-lid test seemed to work. The Mac
+    reported a closed lid, fresh Vibesomnia status, and ChatGPT/Claude running.
+    That observation was on alpha.4, not the newly packaged alpha.5, and was not
+    an isolated proof or a completed remote interaction/repeated-cycle test.
+Verification:
+  - Confirmed repository PRIVATE before creating the release.
+  - Verified the source tag points to the packaged alpha.5 commit.
+  - Local checksum passes; both GitHub-uploaded asset SHA-256 digests match local files.
+  - Release API reports published prerelease (not draft), with both assets uploaded.
+  - Diary relative links and documentation diff checked; no app code changed.
+Limitations: Release remains local-test quality, unsigned and unnotarized. Earlier
+  installation and hardware acceptance gaps remain. Diary prose is a draft for
+  owner review; no website content was created or published. Main was not merged.
+Delivery: https://github.com/RaDeleon/Vibesomnia/releases/tag/v0.1.0-alpha.5

@@ -64,6 +64,9 @@ Gracefully end owned sessions before relaunching; don't force-kill around recove
   README badge, CHANGELOG, and generated bundle version metadata.
 - CHANGELOG.md records user-visible changes by version, with Unreleased for work
   not assigned a release. Distinguish added, fixed, changed, and known limitations.
+- Keep docs/dev-diary/ updated for meaningful milestones, bugs, and decisions as
+  unpublished material for angelodeleon.com. Separate owner reports from verified
+  behavior, name the tested version, and never publish to the website automatically.
 - Append a dated entry to sessions.log for each work session: objective, changes,
   verification, limitations, and next steps. Never invent time spent or outcomes.
 - Update README, roadmap, and tests when behavior or scope changes.

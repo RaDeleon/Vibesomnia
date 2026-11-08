@@ -73,7 +73,8 @@ an optional lid/remote test. Reopen the guide from the toolbar or Settings.
 **Current installer: local alpha only.** Its app is ad-hoc signed; its installer
 is unsigned and not notarized. Developer ID signing/notarization and clean-Mac
 installation testing remain release gates. Repository visibility stays private
-until the owner confirms testing is complete. No public download is published.
+until the owner confirms testing is complete. The [private alpha.5 release](https://github.com/RaDeleon/Vibesomnia/releases/tag/v0.1.0-alpha.5)
+provides the test DMG to repository collaborators; no public download is published.
 
 ### Build from source
 
@@ -263,7 +264,7 @@ saver and lock policies, Drive Alive, global hotkeys, customization, and scripti
 A checked item means implemented; test evidence and remaining limitations stay
 separate. Beta requires owner approval and the [acceptance gates](docs/ROADMAP.md).
 
-[Contributing](CONTRIBUTING.md) · [Development sessions](sessions.log) ·
+[Contributing](CONTRIBUTING.md) · [Development diary](docs/dev-diary/README.md) · [Development sessions](sessions.log) ·
 [Release history](CHANGELOG.md) · [Agent instructions](AGENTS.md) · [Claude guidance](CLAUDE.md)
 
 ## Artwork, license, and support
