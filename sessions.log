@@ -1,0 +1,38 @@
+# Vibesomnia engineering session log
+# Append one dated entry per development session. No inferred hours, private
+# machine details, chat contents, or fabricated verification. Runtime sessions
+# are separate from this source-controlled development history.
+
+2026-11-07 | Session 001 | Bootstrap v0.1.0-alpha.1
+Objective: Start a working, fully open-source macOS alpha with accurate project
+  documentation and version history. Defer Community/Pro editions.
+Changes:
+  - Added SwiftPM core, SwiftUI dashboard/menu/settings, native power service,
+    optional Amphetamine automation, battery guard, AI app launch service, and CLI.
+  - Added same-user bounded/expiring command transport; no network listener.
+  - Added build/run bundle script, Codex Run action, tests, and CI definition.
+  - Added README, AGENTS.md, CLAUDE.md, CONTRIBUTING.md, CHANGELOG.md, VERSION,
+    roadmap, test checklist, and this engineering log.
+Verification:
+  - swift test: 8 tests passed (timer boundaries, app lifetime, validation,
+    request expiry, launch allowlist, private file transport, stale status,
+    symlink rejection).
+  - Build/run --verify: app bundle launched and CLI responded.
+  - Live native assertions: system-only and system+display modes acquired the
+    expected assertions; stop and toggle released them.
+  - Real one-minute timeout completed in the dashboard and released assertions.
+  - Disposable GUI fixture exit ended its app-lifetime session and released power.
+  - CLI launched the installed Codex GUI app successfully.
+  - Dashboard, running/off states, countdown, app choices, and battery settings
+    inspected through computer use; no visual overlap observed at default size.
+  - Added and passed repeatable runtime smoke test for native controls and quit.
+  - Fixed a shutdown stall found by smoke testing: AppKit termination now returns
+    to the normal run loop before async cleanup, then terminates explicitly.
+  - git diff --check passed; generated builds and private logs are ignored.
+Limitations: Full Amphetamine parity, independent closed-lid support, full remote
+  desktop control, persistent preferences, notarization, and physical lid tests
+  are not complete. App-store feasibility and monetization are backlogged.
+Next: Owner review of the running alpha; opt-in closed-lid/charger hardware tests,
+  independent remote SSH testing, richer triggers, and native closed-lid design.
+Delivery: Feature branch feat/v0.1.0-alpha.1; version 0.1.0-alpha.1. No binary
+  release, notarization, app-store submission, or default-branch merge in this session.
