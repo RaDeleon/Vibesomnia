@@ -17,6 +17,10 @@ prereleases. The owner approved the V1.0 Beta 1 milestone on 2026-11-07.
 
 ### Planned
 
+- Investigate unowned sleep overrides and clarify the closed-lid acquisition
+  conflict message ([#3](https://github.com/RaDeleon/Vibesomnia/issues/3)); deferred
+  at the owner’s request without resetting the current system setting.
+
 - Richer triggers and physical closed-lid / remote-workspace validation.
 - Community/Pro separation is deferred; no paid tier exists in this version.
 

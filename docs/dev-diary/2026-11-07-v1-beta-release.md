@@ -30,3 +30,18 @@ beta explicitly discloses that limitation.
 Possible article angle: finding a release and finding the right installed app
 are both part of the product. A technically correct build is not enough if users
 keep opening an older copy or cannot find its download.
+
+## Follow-up: one installed app and an explicit backlog
+
+The owner chose to leave the unowned system sleep override enabled and defer
+investigation. [Issue #3](https://github.com/RaDeleon/Vibesomnia/issues/3) records
+what was observed and how to investigate without adopting or clearing unknown
+state automatically.
+
+With the lid open, the older app quit gracefully and the beta package installed
+successfully into Applications. Three obsolete app copies and the old alpha
+installer/checksum were moved to Trash. The installed app's metadata, CLI and
+signature were verified; only the Applications copy was running afterward.
+Status reported no active Vibesomnia session, and the global sleep override
+remained enabled. This resolves local version ambiguity while leaving the cause
+of the external/unowned setting open for later work.

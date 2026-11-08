@@ -275,3 +275,29 @@ Delivery plan: Merge PR #2 with the beta changes, publish V1.0 — Beta 1 as Lat
   the local power-state handoff is safe. Track GitHub outcomes on PR/release pages.
 Limitations: Beta approval is a milestone decision, not completed physical remote,
   override-loss, clean-Mac, notarization or Intel hardware acceptance.
+
+2026-11-07 | Session 011 | Backlog override conflict and consolidate installed beta
+Objective: Defer investigation of the closed-lid conflict while honoring the
+  owner's explicit choice to leave the unowned system override unchanged.
+Changes:
+  - Created backlog issue #3 with observations, investigation tasks and acceptance
+    criteria; linked it from the roadmap and Unreleased planned work.
+  - With lid confirmed open and no Vibesomnia guard record, gracefully quit the
+    older alpha.5 app and installed the validated beta package to Applications.
+  - Moved three obsolete app bundles and two alpha installer/checksum files to
+    Trash, unregistered obsolete app paths and registered the current app.
+Verification:
+  - The system package installer reported success and a 1.0.0.1 receipt.
+  - Installed bundle signature validates; app metadata and CLI report
+    1.0.0-beta.1. The sole running app is the Applications installation.
+  - Fresh CLI status responds with no session and closedLidActive=false.
+  - SleepDisabled remains 1. No reset command was issued, no external utility
+    changed, and no Vibesomnia closed-lid session was started.
+  - V1.0 Beta 1 release was previously published as Latest on merged main;
+    the release tag points to its source merge commit and has DMG/checksum assets.
+Limitations: The source of the unowned flag remains unknown and deferred. This
+  local installation does not establish clean-Mac Gatekeeper behavior, Intel
+  hardware compatibility, or repeat-cycle lid/remote acceptance.
+Delivery: https://github.com/RaDeleon/Vibesomnia/issues/3
+Next: Revisit issue #3 when requested; retain the current global override until
+  the owner explicitly authorizes a change.

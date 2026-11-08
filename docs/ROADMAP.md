@@ -27,6 +27,8 @@ is a direction, not a claim about today's build.
 - [ ] Persist remaining session options; login item and opt-in resume policies.
 - [x] Reconcile the live closed-lid guard with the macOS sleep override (alpha.6).
 - [ ] Complete live external-override-loss and repeated lid-cycle acceptance tests.
+- [ ] [Investigate unowned sleep overrides and the closed-lid conflict message](https://github.com/RaDeleon/Vibesomnia/issues/3).
+      Deferred at the owner’s request; leave existing unowned overrides unchanged.
 - [ ] Multiple app/CLI activity triggers with clear precedence and pause behavior.
 - [ ] Scheduled/date sessions, power adapter, network, and external-display triggers.
 - [ ] File/download sessions, Drive Alive, display/system sleep policy refinement.
