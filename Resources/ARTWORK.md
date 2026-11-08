@@ -8,7 +8,10 @@ A sleep-deprived developer mascot for the late-night AI coding workflow.
 - `../script/generate_icon.sh`: reproducible export using macOS `sips` and `iconutil`.
 
 The app bundle uses `CFBundleIconFile`; the dashboard uses the app's bundled icon.
-The menu bar retains a small native monochrome status symbol for legibility.
+The menu bar uses the same full-color ICNS artwork at 20 points, with a small
+green dot while a session is active. It retains the mascot in both states;
+accessible labels also identify idle/awake status. No separate generated artwork
+or system sleep symbol is used for the menu bar.
 
 ## Generation
 

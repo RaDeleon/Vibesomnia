@@ -114,6 +114,12 @@ Check that the app bundle and CLI report VERSION consistently.
 
 ## UI and accessibility
 
+- Verify the menu bar shows the app's full-color mascot, with no moon/sleep symbol.
+  Check idle and native active sessions: a green dot appears only while active;
+  stopping restores the idle icon. Open the menu and confirm controls still work.
+  Inspect light/dark menu bars, selected-menu appearance, Retina/non-Retina sizing,
+  and VoiceOver's idle/awake label. The mascot must remain visible in both states.
+
 Check light/dark appearance, error messages, permission denial, larger text,
 keyboard navigation, VoiceOver, multiple windows, menu labels, and minimum size.
 Capture screenshots from the real app; don't substitute marketing mockups for UI.

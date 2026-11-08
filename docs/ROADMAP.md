@@ -6,6 +6,7 @@ is a direction, not a claim about today's build.
 ## Alpha 0.1 — usable foundation
 
 - [x] Native menu bar + dashboard, manual start/stop, graceful quit.
+- [x] Mascot menu bar icon matching the app artwork, with an active-session dot.
 - [x] Indefinite/timed sessions and optional display wakefulness.
 - [x] GUI app-lifetime sessions and opt-in app-start triggers.
 - [x] Battery cutoff, session events, CLI status/control.

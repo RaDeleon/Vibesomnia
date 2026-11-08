@@ -36,8 +36,10 @@ struct VibesomniaApp: App {
         MenuBarExtra {
             SessionMenu(store: store).disabled(store.isPreview)
         } label: {
-            Label(store.session == nil ? "Vibesomnia" : "Vibesomnia · awake",
-                  systemImage: store.session == nil ? "moon.zzz" : "moon.stars.fill")
+            Image(nsImage: MenuBarIcon.image(active: store.session != nil))
+                .renderingMode(.original)
+                .accessibilityLabel(store.session == nil ? "Vibesomnia · idle" : "Vibesomnia · awake")
+                .help(store.session == nil ? "Vibesomnia · idle" : "Vibesomnia · awake")
         }
         Settings {
             if store.isPreview { Text("Setup preview · preferences are not saved").padding() }
