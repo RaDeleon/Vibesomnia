@@ -9,7 +9,7 @@ paywalls, licensing checks, payment flows, or artificial feature limits now.
 
 ## Before changing code
 
-- Read README.md, CHANGELOG.md, and the most recent sessions.log entries.
+- Read README.md, changelog.md, and the most recent sessionlog.md entries.
 - Follow existing module boundaries. App lifecycle, UI, session state, native
   power, app discovery, and CLI transport belong in separate files.
 - If a codebase-memory graph tool is available, use it for structural exploration,
@@ -62,12 +62,12 @@ Gracefully end owned sessions before relaunching; don't force-kill around recove
 - Use SemVer prereleases: `1.0.0-beta.1`, `.2`, etc. Stable is an explicit milestone.
 - For a new release, synchronize VERSION, AppStatus/CLI/UI version strings,
   README badge, CHANGELOG, and generated bundle version metadata.
-- CHANGELOG.md records user-visible changes by version, with Unreleased for work
+- changelog.md records user-visible changes by version, with Unreleased for work
   not assigned a release. Distinguish added, fixed, changed, and known limitations.
 - Keep docs/dev-diary/ updated for meaningful milestones, bugs, and decisions as
   unpublished material for angelodeleon.com. Separate owner reports from verified
   behavior, name the tested version, and never publish to the website automatically.
-- Append a dated entry to sessions.log for each work session: objective, changes,
+- Append a dated entry to sessionlog.md for each work session: objective, changes,
   verification, limitations, and next steps. Never invent time spent or outcomes.
 - Update README, roadmap, and tests when behavior or scope changes.
 - Stage/commit/push completed work on a feature branch by default. Inspect the
@@ -85,4 +85,21 @@ Gracefully end owned sessions before relaunching; don't force-kill around recove
 All current code is AGPL-3.0-only. Preserve Angelo De Leon's copyright notices.
 Don't put user-specific local paths, network addresses, remote access details,
 private keys, saved chat history, or secret-bearing logs into source or docs.
-Source sessions.log is an engineering work log, not captured user activity.
+Local sessionlog.md is an engineering work log, not captured user activity.
+
+## Local records
+
+- `changelog.md`, `sessionlog.md`, `Devlog.md`, and `Devlog.html` are local-only,
+  ignored files at the owner's request. The entire `docs/dev-diary/` directory
+  and any `DevDiary*`/`devdiary*` records are also private and ignored. Never
+  force-add these files or publish their contents.
+- Read these local files when present. A fresh clone may not have them; use GitHub
+  release notes and the public roadmap as the baseline and create local records.
+- Maintain `changelog.md` by version and append a Markdown session entry to
+  `sessionlog.md` with objective, changes, verification, limitations and next steps.
+- `Devlog.md` is the editable todo/bug/backlog register. Update it as work changes;
+  regenerate the offline viewer with `python3 work/render_devlog.py` when available.
+  Otherwise update `Devlog.html` consistently. Mark implementation and verified
+  acceptance separately. The browser viewer is a snapshot, not live telemetry.
+- Public user-visible version history belongs in GitHub release notes. Keep local
+  record links out of the public README because these files are intentionally absent.

@@ -18,7 +18,7 @@
   <a href="#get-running">Get running</a> · <a href="#the-night-crew">Features</a> ·
   <a href="#closed-lid-without-amphetamine">Closed lid</a> · <a href="#your-scripts-your-workflow">Add-ons</a> ·
   <a href="#take-it-remote">Remote controls</a> · <a href="docs/PARITY.md">Feature parity</a> ·
-  <a href="CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/RaDeleon/Vibesomnia/releases">Releases</a>
 </p>
 
 > **V1.0 Beta 1, fully open source.** This is a beta test release, not a finished
@@ -282,8 +282,7 @@ saver and lock policies, Drive Alive, global hotkeys, customization, and scripti
 A checked item means implemented; test evidence and remaining limitations stay
 separate. Beta requires owner approval and the [acceptance gates](docs/ROADMAP.md).
 
-[Contributing](CONTRIBUTING.md) · [Development diary](docs/dev-diary/README.md) · [Development sessions](sessions.log) ·
-[Release history](CHANGELOG.md) · [Agent instructions](AGENTS.md) · [Claude guidance](CLAUDE.md)
+[Contributing](CONTRIBUTING.md) · [Release history](https://github.com/RaDeleon/Vibesomnia/releases) · [Agent instructions](AGENTS.md) · [Claude guidance](CLAUDE.md)
 
 ## Artwork, license, and support
 
@@ -302,3 +301,7 @@ installation, code, assets, or Power Protect component is used by this version.
 **Support the night shift:** star the repo, report reproducible issues, or help
 with the hardware test checklist. Donation links will be added when the support
 destination is ready. There is no paid edition in the current alpha.
+
+Local development records (`changelog.md`, `sessionlog.md`, `Devlog.md` and
+`Devlog.html`, plus `docs/dev-diary/`) are ignored. They hold personal session history and the editable
+work register; GitHub release notes and the roadmap remain public references.

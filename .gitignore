@@ -10,3 +10,18 @@ work/
 *.p12
 *.mobileprovision
 *.cer
+
+# Owner's local development records (never stage these)
+/changelog.md
+/CHANGELOG.md
+/sessionlog.md
+/sessions.log
+/Devlog.md
+/Devlog.html
+/devlog.md
+/devlog.html
+
+# Private owner development diary
+/docs/dev-diary/
+dev-diary/
+[Dd]ev[Dd]iary*
