@@ -34,6 +34,8 @@ cp Resources/AppIcon.icns "$APP_BUNDLE/Contents/Resources/AppIcon.icns"
 APP_VERSION="$(cat VERSION)"
 BASE_VERSION="${APP_VERSION%%-*}"
 BUILD_NUMBER="${APP_VERSION##*.}"
+# Beta revisions advance beyond earlier alpha bundle build numbers.
+if [[ "$APP_VERSION" == *-beta.* ]]; then BUILD_NUMBER="$((1000 + BUILD_NUMBER))"; fi
 cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

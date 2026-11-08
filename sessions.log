@@ -251,3 +251,27 @@ Limitations:
   - Source work is on fix/closed-lid-live-status; main was not merged automatically.
 Next: Owner validates the switch and closed/open/closed remote cycle; integrate
   after review and publish a new installer when explicitly requested.
+
+2026-11-07 | Session 010 | V1.0 Beta 1 release and installation consolidation
+Objective: Owner explicitly approved beta, requested a Latest release with DMG,
+  all pending work merged to main, and obsolete local app copies removed.
+Changes:
+  - Promoted VERSION, app/CLI/UI and generated installer metadata to 1.0.0-beta.1.
+  - Packaging accepts beta versions; beta bundle builds advance beyond alpha.
+    Installer verification checks full, marketing, bundle-build and CLI versions.
+  - Updated README, policies, installer text, workflow labels, roadmap, changelog
+    and unpublished development diary for the beta milestone and known limits.
+Verification:
+  - 27 Swift tests pass. Universal DMG passes checksum/image/package/signature,
+    architectures, deployment target, resources and version checks.
+  - No Developer ID signing identity is installed. This beta remains ad-hoc app
+    signed, with an unsigned, unnotarized installer; acceptance gaps are explicit.
+  - Owner visually confirmed alpha.6's switch ON after actual power/CLI agreement.
+  - A later inventory found the older alpha.5 preview copy running and a global
+    sleep override with no Vibesomnia guard record. The lid was closed. Requested
+    lid-open confirmation before resetting the unowned flag or replacing apps.
+Delivery plan: Merge PR #2 with the beta changes, publish V1.0 — Beta 1 as Latest
+  with DMG and checksum, and consolidate the current app into Applications once
+  the local power-state handoff is safe. Track GitHub outcomes on PR/release pages.
+Limitations: Beta approval is a milestone decision, not completed physical remote,
+  override-loss, clean-Mac, notarization or Intel hardware acceptance.

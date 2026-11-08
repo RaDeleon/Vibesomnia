@@ -1,7 +1,7 @@
-# DMG installer and alpha testing
+# DMG installer and beta testing
 
-The owner approved public alpha development on 2026-11-07 while acceptance testing
-continues. Packaging never changes visibility or publishes a release automatically.
+The owner approved V1.0 Beta 1 and its public release on 2026-11-07 while
+acceptance testing continues. Packaging never changes visibility or publishes a release automatically.
 
 ## User experience
 
@@ -24,7 +24,7 @@ not a developer's existing build folder. Per-user preferences survive updates.
 ```sh
 swift test
 ./script/package_dmg.sh --local
-./script/verify_installer.py dist/installers/Vibesomnia-0.1.0-alpha.5-universal-local-unsigned.dmg
+./script/verify_installer.py dist/installers/Vibesomnia-1.0.0-beta.1-universal-local-unsigned.dmg
 ```
 
 Output: `dist/installers/`, with a SHA-256 checksum next to the DMG. The package
@@ -69,7 +69,7 @@ valid certificates and credentials are supplied; the local path does not fake it
 ## GitHub Actions
 
 `.github/workflows/installer.yml` is **manual only**. Select `local` for an unsigned
-alpha or `signed` for Developer ID distribution. It runs tests, builds/validates
+test build or `signed` for Developer ID distribution. It runs tests, builds/validates
 the DMG, and stores an Actions artifact for seven days. It has read-only
 repository permissions and no release-publishing or visibility-changing step.
 GitHub requires this dispatch workflow to exist on the default branch before it
@@ -91,7 +91,9 @@ to repository visibility and the account's plan; no paid runner or billing setti
 Follow docs/TESTING.md: clean installation, upgrade, first-run persistence,
 permission denial, app discovery, sleep restoration, physical lid cycling and
 real remote reconnection. Verify the downloaded signed artifact on clean Apple
-silicon and Intel systems. The owner explicitly authorized the alpha.5 prerelease and public repository.
+silicon and Intel systems. The owner explicitly authorized the V1.0 Beta 1 release, including main integration.
+GitHub marks this release Latest for visibility while its title and notes retain
+the beta designation. App version/tag are 1.0.0-beta.1/v1.0.0-beta.1.
 Further binary releases still require explicit approval; public availability
 does not replace these acceptance checks. Provide corresponding
 source for the exact binary version alongside any distributed release.

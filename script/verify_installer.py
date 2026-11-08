@@ -44,13 +44,17 @@ def verify(dmg):
             package = ET.parse(component / "PackageInfo").getroot()
             require(package.get("relocatable") == "false", "Installer may relocate the app")
             require(package.get("install-location") == "/", "Unexpected package root")
-            require(package.get("version") == version.replace("-alpha.", "."), "Wrong package version")
+            require(package.get("version") == version.replace("-alpha.", ".").replace("-beta.", "."), "Wrong package version")
             preinstall = component / "Scripts/preinstall"
             require(preinstall.read_bytes() == (ROOT / "script/installer/preinstall").read_bytes(), "Preinstall guard mismatch")
             app = component / "Payload/Applications/Vibesomnia.app"
             with (app / "Contents/Info.plist").open("rb") as handle:
                 info = plistlib.load(handle)
             require(info["VibesomniaPrereleaseVersion"] == version, "Wrong app version")
+            require(info["CFBundleShortVersionString"] == version.split("-")[0], "Wrong marketing version")
+            revision = int(version.rsplit(".", 1)[1])
+            expected_build = revision + (1000 if "-beta." in version else 0)
+            require(info["CFBundleVersion"] == str(expected_build), "Wrong bundle build number")
             require(info["LSMinimumSystemVersion"] == "14.0", "Wrong minimum system version")
             run("codesign", "--verify", "--deep", "--strict", app)
             for relative in ["MacOS/Vibesomnia", "MacOS/vibesomnia-cli", "Helpers/VibesomniaPowerGuard"]:

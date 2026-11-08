@@ -1,7 +1,7 @@
 # Changelog
 
 All notable user-visible changes are recorded here. Versions use SemVer
-prereleases. Alpha continues until the owner explicitly approves the beta gate.
+prereleases. The owner approved the V1.0 Beta 1 milestone on 2026-11-07.
 
 ## [Unreleased]
 
@@ -19,6 +19,30 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 
 - Richer triggers and physical closed-lid / remote-workspace validation.
 - Community/Pro separation is deferred; no paid tier exists in this version.
+
+## [1.0.0-beta.1] — 2026-11-07
+
+### Changed
+
+- Owner-approved V1.0 Beta 1 milestone, including the alpha.6 live closed-lid
+  verification and immediate on/off control changes.
+- Universal DMG/pkg packaging supports beta versions with synchronized app,
+  CLI, bundle and installer metadata. Beta bundle build numbers advance beyond alpha.
+- Published as a normal GitHub release marked Latest, titled V1.0 — Beta 1, so
+  users can find the installer from the repository and README.
+- Updated current product guidance, installer text and roadmap for beta testing.
+
+### Verification and known limitations
+
+- Owner visually confirmed the alpha.6 dashboard switch was ON while CLI and
+  macOS both reported active protection. This is a visual confirmation, not a
+  repeat-cycle remote acceptance test.
+- An older alpha.5 preview copy was subsequently found running. The system sleep
+  override was enabled without an owned guard; acquisition correctly refused it.
+- The app is ad-hoc signed; the installer is unsigned and unnotarized. Clean-Mac
+  Gatekeeper handling, Intel hardware, repeat lid/remote cycles and controlled
+  external-override-loss tests remain open. Beta approval does not imply these pass.
+- Full Amphetamine parity and built-in remote desktop remain roadmap items.
 
 ## [0.1.0-alpha.6] — 2026-11-07
 

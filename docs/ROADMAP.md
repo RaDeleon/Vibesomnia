@@ -1,6 +1,6 @@
 # Roadmap
 
-Vibesomnia is alpha. The goal is a reliable open-source app first; feature parity
+Vibesomnia is beta, following owner approval of V1.0 Beta 1. The goal is a reliable open-source app first; feature parity
 is a direction, not a claim about today's build.
 
 ## Alpha 0.1 — usable foundation
@@ -16,9 +16,9 @@ is a direction, not a claim about today's build.
 - [ ] Physical closed-lid/open-lid/reclose and charger-transition acceptance tests.
 - [ ] Remote SSH validation from another device.
 - [x] Universal local-test DMG/pkg, first-run setup, and private installer workflow.
-- [ ] Signed/notarized alpha DMG, clean installation, and wider Mac/OS testing.
+- [ ] Signed/notarized DMG, clean installation, and wider Mac/OS testing.
 
-## Alpha 0.2+ — own the whole session
+## Beta and beyond — own the whole session
 
 - [x] Standalone temporary guard, lease/process monitoring, restoration and explicit recovery.
 - [ ] Closed-lid hardware/charger matrix, rare recovery scenarios, production signing,
@@ -55,7 +55,11 @@ implementation only; no copied source, branding, or assets.
 - [ ] Threat model, abuse boundaries, consent, revocation, and security review before
       any network listener, pairing service, remote input, or public exposure.
 
-## Beta gate — owner approval required
+## Acceptance work remaining after beta approval
+
+The owner approved the beta milestone on 2026-11-07. The following checks remain
+open and are not implied passes by the new version name.
+
 
 - Repeatable start/stop/timeout, app exits, battery transitions, and crash recovery.
 - Verified closed-lid → remote control → open → close again flow on supported Macs.
@@ -67,4 +71,4 @@ implementation only; no copied source, branding, or assets.
 
 Community/Pro editions, early-access policy, commercial licensing, contributor
 agreements, payments, support/funding links, and Mac App Store feasibility.
-No feature gates, license checks, or monetization work in the current alpha.
+No feature gates, license checks, or monetization work in the current beta.

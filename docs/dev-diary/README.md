@@ -13,6 +13,7 @@ record; `CHANGELOG.md` remains the version-by-version change list.
 
 | Date | Entry | Stage |
 | --- | --- | --- |
+| 2026-11-07 | [Giving the beta a clear download](2026-11-07-v1-beta-release.md) | Unpublished website notes · V1.0 Beta 1 |
 | 2026-11-07 | [When “active” did not mean protected](2026-11-07-live-closed-lid-status.md) | Unpublished website notes · alpha.6 status fix |
 | 2026-11-07 | [Opening the repo while it is still alpha](2026-11-07-public-alpha.md) | Unpublished website notes · visibility decision |
 | 2026-11-07 | [Why I’m building Vibesomnia—and getting the first closed-lid test working](2026-11-07-origin-to-alpha.md) | Unpublished working draft · alpha.1–alpha.5 |

@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml"><img alt="macOS checks" src="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml/badge.svg" /></a>
-  <img alt="Version 0.1.0-alpha.6" src="https://img.shields.io/badge/version-0.1.0--alpha.6-9b82f5" />
+  <img alt="Version 1.0.0-beta.1" src="https://img.shields.io/badge/version-1.0.0--beta.1-9b82f5" />
   <img alt="macOS 14+" src="https://img.shields.io/badge/macOS-14%2B-19172f?logo=apple" />
   <img alt="Swift and SwiftUI" src="https://img.shields.io/badge/Swift-SwiftUI-f07152?logo=swift&logoColor=white" />
   <a href="LICENSE"><img alt="AGPL v3" src="https://img.shields.io/badge/license-AGPL--3.0-7462c8" /></a>
@@ -21,16 +21,16 @@
   <a href="CHANGELOG.md">Changelog</a>
 </p>
 
-> **Alpha, fully open source.** This is a working development build, not a finished
+> **V1.0 Beta 1, fully open source.** This is a beta test release, not a finished
 > Amphetamine replacement yet. The standalone closed-lid guard and script system
 > are implemented; the [parity checklist](docs/PARITY.md) shows what still needs work.
 > Community/Pro editions and monetization are deferred. No paywalls or license checks.
 
-**[Download the published alpha.5 DMG installer](https://github.com/RaDeleon/Vibesomnia/releases/tag/v0.1.0-alpha.5)** · [All releases](https://github.com/RaDeleon/Vibesomnia/releases)
+**[Download V1.0 Beta 1 — DMG installer](https://github.com/RaDeleon/Vibesomnia/releases/tag/v1.0.0-beta.1)** · [All releases](https://github.com/RaDeleon/Vibesomnia/releases)
 
-The source is now alpha.6. The downloadable installer above is alpha.5 and does
-not yet include the live closed-lid status fix. GitHub labels experimental builds
-as **Pre-release**; tags alone are source snapshots.
+App version **1.0.0-beta.1** includes verified closed-lid status and immediate
+on/off controls. The GitHub release is marked **Latest** for download visibility;
+it remains beta software with the limitations below.
 
 ## Built for the nights that become mornings
 
@@ -45,7 +45,7 @@ scripts, and access through the remote tools you already use.
 
 ## The night crew
 
-| Capability | What alpha.6 does |
+| Capability | What V1.0 Beta 1 does |
 | --- | --- |
 | **On your terms** | Manual, timed, indefinite, and selected-GUI-app sessions |
 | **Lights out, work on** | Native idle-sleep prevention, with optional display wakefulness |
@@ -65,7 +65,7 @@ session while Vibesomnia is focused; it is not a global hotkey yet.
 
 ### Install the app
 
-The experimental alpha has a **universal DMG containing a macOS installer**.
+The beta has a **universal DMG containing a macOS installer**.
 Open `Install Vibesomnia.pkg`, install to Applications, then launch Vibesomnia.
 First-run setup detects AI apps, saves your sleep preferences, and walks through
 an optional lid/remote test. Reopen the guide from the toolbar or Settings.
@@ -76,11 +76,11 @@ an optional lid/remote test. Reopen the guide from the toolbar or Settings.
 - Existing SSH or screen-sharing access for remote use; setup does not enable it.
 - No model account, API key, or third-party Swift dependency.
 
-**Current installer: local alpha only.** Its app is ad-hoc signed; its installer
-is unsigned and not notarized. Developer ID signing/notarization and clean-Mac
-installation testing remain release gates. The owner has approved public alpha
-development while acceptance testing continues. The [alpha.5 prerelease](https://github.com/RaDeleon/Vibesomnia/releases/tag/v0.1.0-alpha.5)
-provides the experimental test DMG; public availability does not mean beta readiness.
+**Unsigned beta installer.** The app is ad-hoc signed; its installer is unsigned
+and not notarized. macOS may block the download. Developer ID signing, notarization,
+clean-Mac installation, Intel hardware and repeat-cycle remote testing remain open.
+The owner approved the beta milestone; that decision does not turn pending tests
+into verified results.
 
 ### Build from source
 

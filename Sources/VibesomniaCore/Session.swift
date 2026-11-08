@@ -82,7 +82,7 @@ public struct AppStatus: Codable, Sendable {
     public var closedLidVerifiedAt: Date?
     public init(session: ActiveSession?, apps: [WorkspaceApp], lastError: String?,
                 closedLidActive: Bool? = nil, closedLidVerifiedAt: Date? = nil) {
-        updatedAt = Date(); version = "0.1.0-alpha.6"
+        updatedAt = Date(); version = "1.0.0-beta.1"
         self.session = session; self.apps = apps; self.lastError = lastError
         self.closedLidActive = closedLidActive
         self.closedLidVerifiedAt = closedLidVerifiedAt
