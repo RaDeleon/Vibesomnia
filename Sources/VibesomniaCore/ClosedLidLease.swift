@@ -1,6 +1,19 @@
 // Copyright © 2026 Angelo De Leon. SPDX-License-Identifier: AGPL-3.0-only
 import Foundation
 
+/// Both macOS and our owned worker must agree before reporting protection.
+public enum ClosedLidHealth {
+    public static func validate(powerCheck: String, record: GuardRecord?, nonce: String,
+                                workerAlive: Bool) throws {
+        guard powerCheck == "sleep-disabled" else {
+            throw VibeError.message("Closed-lid protection was lost or could not be verified. The session has ended. Turn closed-lid mode on again when ready.")
+        }
+        guard let record, record.nonce == nonce, record.active, workerAlive else {
+            throw VibeError.message("Closed-lid guard stopped. The session has ended; check recovery if sleep was not restored.")
+        }
+    }
+}
+
 public struct ClosedLidLease: Codable, Sendable {
     public var nonce: String
     public var sequence: UInt64

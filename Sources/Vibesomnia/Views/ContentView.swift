@@ -37,7 +37,7 @@ struct ContentView: View {
                     }
                 }
                 HStack {
-                    Text("0.1.0-alpha.5 · Open source · Created by Angelo De Leon")
+                    Text("0.1.0-alpha.6 · Open source · Created by Angelo De Leon")
                     Spacer()
                     Link("Source & roadmap", destination: URL(string: "https://github.com/RaDeleon/Vibesomnia")!)
                 }.font(.caption).foregroundStyle(.secondary)
@@ -90,8 +90,11 @@ struct ContentView: View {
                     HStack { Text("Minutes"); TextField("Minutes", value: $store.minutes, format: .number).frame(width: 80) }
                 }
                 Toggle("Let the display sleep", isOn: $store.allowDisplaySleep)
-                Toggle("Keep running with lid closed", isOn: $store.closedLid)
-                if store.closedLid {
+                Toggle("Keep running with lid closed", isOn: Binding(
+                    get: { store.isClosedLidActive },
+                    set: { enabled in store.perform { try await store.setClosedLidEnabled(enabled) } }
+                )).disabled(store.busy || store.needsRecovery || store.isPreview)
+                if store.isClosedLidActive {
                     Text("Uses Vibesomnia’s own temporary power guard. macOS requests administrator approval for each session. Normal sleep returns on stop, exit, or lost heartbeat.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
@@ -102,7 +105,7 @@ struct ContentView: View {
                     }
                 }
                 Toggle("Start when selected app runs", isOn: $store.autoStart).disabled(store.selectedApp.isEmpty)
-                Text("Session options apply to the next session.").font(.caption).foregroundStyle(.secondary)
+                Text("The closed-lid switch changes the current session immediately. Timer, display, and app options apply to the next session.").font(.caption).foregroundStyle(.secondary)
                 Button {
                     store.perform {
                         if store.session == nil { try await store.start() }
@@ -113,7 +116,7 @@ struct ContentView: View {
                           systemImage: store.session == nil ? "play.fill" : "stop.fill")
                         .frame(maxWidth: .infinity)
                 }.buttonStyle(.borderedProminent).controlSize(.large).disabled(store.busy || (store.needsRecovery && store.session == nil))
-                Text(store.session?.backend == .closedLid ? "Closed-lid guard active · no Amphetamine needed" : "Native sessions prevent idle sleep; they do not override lid-close sleep.")
+                Text(store.isClosedLidActive ? "Closed-lid protection verified · checked every second" : "Closed-lid protection is off. Native sessions prevent idle sleep only.")
                     .font(.caption).foregroundStyle(.secondary)
             }.padding(12)
         }

@@ -25,7 +25,8 @@ is a direction, not a claim about today's build.
       and distribution constraints.
 - [x] Persist display/closed-lid/battery preferences and setup completion.
 - [ ] Persist remaining session options; login item and opt-in resume policies.
-- [ ] Monitor external session termination accurately; reconcile backend state.
+- [x] Reconcile the live closed-lid guard with the macOS sleep override (alpha.6).
+- [ ] Complete live external-override-loss and repeated lid-cycle acceptance tests.
 - [ ] Multiple app/CLI activity triggers with clear precedence and pause behavior.
 - [ ] Scheduled/date sessions, power adapter, network, and external-display triggers.
 - [ ] File/download sessions, Drive Alive, display/system sleep policy refinement.

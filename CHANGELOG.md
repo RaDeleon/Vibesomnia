@@ -20,6 +20,36 @@ prereleases. Alpha continues until the owner explicitly approves the beta gate.
 - Richer triggers and physical closed-lid / remote-workspace validation.
 - Community/Pro separation is deferred; no paid tier exists in this version.
 
+## [0.1.0-alpha.6] — 2026-11-07
+
+### Fixed
+
+- Closed-lid status now checks the actual macOS sleep override as well as the
+  owned live guard. Losing the override ends the session and clears the switch.
+- The guard monitors the global flag and relinquishes ownership if it is cleared;
+  it never silently re-enables it or fights another power utility.
+
+### Changed
+
+- The dashboard closed-lid switch controls the active session immediately.
+  Turning it off retains native keep-awake mode; changing modes preserves the
+  original timer, display policy and selected-app condition.
+- Settings/setup explicitly label the separate default for new sessions.
+- CLI status reports verified closed-lid activity and its last verification time.
+- README prominently links the published alpha.5 installer and distinguishes it
+  from the newer alpha.6 source/local build.
+
+### Validation and limitations
+
+- 27 automated tests pass, including cleared/unknown power state with a live guard,
+  guard ownership failures, timer-preserving mode changes and older CLI snapshots.
+- Updated local app launches and reports alpha.6. Live CLI status confirms an
+  active guard, fresh verification timestamp and SleepDisabled=1; ChatGPT and
+  Claude Desktop are detected as running.
+- Computer-use inspection timed out. Visual switch checks, real override-loss
+  injection and repeated physical lid/remote tests remain pending.
+- This version is a local alpha build; the published DMG remains alpha.5.
+
 ## [0.1.0-alpha.5] — 2026-11-07
 
 ### Added

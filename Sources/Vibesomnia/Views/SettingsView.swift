@@ -20,7 +20,7 @@ struct SettingsView: View {
             }
             Section("Setup") {
                 Toggle("Let the display sleep", isOn: $store.allowDisplaySleep)
-                Toggle("Keep running with lid closed", isOn: $store.closedLid)
+                Toggle("Use closed-lid mode for new sessions", isOn: $store.closedLid)
                 Text("Changes apply to the next session. Closed-lid sessions ask for administrator approval each time.")
                     .font(.caption).foregroundStyle(.secondary)
                 Button("Open setup guide") {

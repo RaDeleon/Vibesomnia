@@ -7,6 +7,8 @@ import VibesomniaCore
 @MainActor
 final class SessionStore: ObservableObject {
     @Published private(set) var session: ActiveSession?
+    @Published private(set) var closedLidVerifiedAt: Date?
+    var isClosedLidActive: Bool { session?.backend == .closedLid && closedLidVerifiedAt != nil }
     @Published private(set) var apps: [WorkspaceApp] = []
     @Published private(set) var busy = false
     @Published var error: String?
@@ -105,6 +107,7 @@ final class SessionStore: ObservableObject {
         }
         else { try power.start(allowDisplaySleep: next.request.allowDisplaySleep) }
         session = try ActiveSession(request: next.request)
+        closedLidVerifiedAt = next.backend == .closedLid ? Date() : nil
         error = nil
         addons.fire(.sessionStarted)
         record("Started \(next.backend.rawValue) session\(next.endsAt == nil ? " · indefinite" : " · timed")")
@@ -114,6 +117,7 @@ final class SessionStore: ObservableObject {
         guard !isPreview else { return }
         guard !busy else { throw VibeError.message("A session change is already in progress.") }
         busy = true
+        closedLidVerifiedAt = nil
         defer { busy = false; needsRecovery = lidGuard.needsRecovery; publish() }
         if session?.backend == .closedLid || lidGuard.ownsSession { try await lidGuard.stop() }
         power.stop()
@@ -124,6 +128,35 @@ final class SessionStore: ObservableObject {
         session = nil
         suppressAutoStart = true
         error = nil
+    }
+
+    /// The dashboard switch controls the live session, not the saved startup preference.
+    func setClosedLidEnabled(_ enabled: Bool) async throws {
+        guard !isPreview else { throw VibeError.message("Setup preview cannot change power mode.") }
+        guard !busy else { throw VibeError.message("A session change is already in progress.") }
+        guard let current = session else {
+            if enabled {
+                var next = request
+                next.closedLid = true
+                try await start(next)
+            }
+            return
+        }
+        guard enabled != (current.backend == .closedLid) else { return }
+        let next = try current.changingClosedLid(to: enabled)
+        busy = true
+        defer { busy = false; needsRecovery = lidGuard.needsRecovery; publish() }
+        closedLidVerifiedAt = nil
+        if enabled {
+            guard !needsRecovery else { throw VibeError.message("Recover the previous closed-lid session first.") }
+            try await lidGuard.start()
+            closedLidVerifiedAt = Date()
+        } else {
+            try await lidGuard.stop()
+        }
+        session = next
+        error = nil
+        record(enabled ? "Closed-lid protection enabled" : "Closed-lid protection off · native keep-awake continues")
     }
 
     func recover() async {
@@ -177,9 +210,15 @@ final class SessionStore: ObservableObject {
         apps = workspace.snapshot()
         battery = .current()
         needsRecovery = lidGuard.needsRecovery
-        if session?.backend == .closedLid {
-            do { try lidGuard.heartbeat() }
+        if let observed = session, observed.backend == .closedLid {
+            do {
+                let verified = try await lidGuard.heartbeat()
+                guard !busy, session == observed else { return }
+                closedLidVerifiedAt = verified ? Date() : nil
+            }
             catch {
+                guard !busy, session == observed else { return }
+                closedLidVerifiedAt = nil
                 let failure = error
                 try? await stop(reason: "Closed-lid guard stopped")
                 power.stop()
@@ -253,7 +292,9 @@ final class SessionStore: ObservableObject {
 
     private func publish() {
         guard ipcReady else { return }
-        do { try transport.write(AppStatus(session: session, apps: apps, lastError: error), to: transport.status) }
+        do { try transport.write(AppStatus(session: session, apps: apps, lastError: error,
+                                          closedLidActive: isClosedLidActive,
+                                          closedLidVerifiedAt: closedLidVerifiedAt), to: transport.status) }
         catch { self.error = "Remote controls unavailable: \(error.localizedDescription)" }
     }
 

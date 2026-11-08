@@ -3,6 +3,54 @@ import XCTest
 @testable import VibesomniaCore
 
 final class SessionTests: XCTestCase {
+    func testChangingLidModePreservesTimerAndAppPolicy() throws {
+        let original = try ActiveSession(request: .init(minutes: 10, allowDisplaySleep: false,
+                                                       whileApp: "com.example.editor"),
+                                         now: Date(timeIntervalSince1970: 1000))
+        let closed = try original.changingClosedLid(to: true)
+        XCTAssertEqual(closed.backend, .closedLid)
+        XCTAssertEqual(closed.startedAt, original.startedAt)
+        XCTAssertEqual(closed.endsAt, original.endsAt)
+        XCTAssertEqual(closed.request.whileApp, original.request.whileApp)
+        XCTAssertFalse(closed.request.allowDisplaySleep)
+        XCTAssertEqual(try closed.changingClosedLid(to: false), original)
+    }
+
+    func testLiveWorkerCannotMaskClearedOrUnknownSleepOverride() {
+        let record = GuardRecord(uid: 501, parentPID: 10, parentStamp: 1,
+                                 workerPID: 11, workerStamp: 2, nonce: "owned", active: true)
+        for flag in ["normal", "", "unexpected"] {
+            XCTAssertThrowsError(try ClosedLidHealth.validate(powerCheck: flag, record: record,
+                                                            nonce: "owned", workerAlive: true))
+        }
+        XCTAssertNoThrow(try ClosedLidHealth.validate(powerCheck: "sleep-disabled", record: record,
+                                                    nonce: "owned", workerAlive: true))
+    }
+
+    func testSystemOverrideAloneDoesNotEstablishOwnedProtection() {
+        var record = GuardRecord(uid: 501, parentPID: 10, parentStamp: 1,
+                                 workerPID: 11, workerStamp: 2, nonce: "owned", active: true)
+        XCTAssertThrowsError(try ClosedLidHealth.validate(powerCheck: "sleep-disabled", record: nil,
+                                                        nonce: "owned", workerAlive: true))
+        XCTAssertThrowsError(try ClosedLidHealth.validate(powerCheck: "sleep-disabled", record: record,
+                                                        nonce: "other", workerAlive: true))
+        XCTAssertThrowsError(try ClosedLidHealth.validate(powerCheck: "sleep-disabled", record: record,
+                                                        nonce: "owned", workerAlive: false))
+        record.active = false
+        XCTAssertThrowsError(try ClosedLidHealth.validate(powerCheck: "sleep-disabled", record: record,
+                                                        nonce: "owned", workerAlive: true))
+    }
+
+    func testOldStatusDoesNotImplyVerifiedProtection() throws {
+        let oldStatus = "{\"updatedAt\":0,\"version\":\"0.1.0-alpha.4\",\"apps\":[]}"
+        let decoded = try JSONDecoder().decode(AppStatus.self, from: Data(oldStatus.utf8))
+        XCTAssertNil(decoded.closedLidActive)
+        XCTAssertNil(decoded.closedLidVerifiedAt)
+        let observed = AppStatus(session: nil, apps: [], lastError: nil, closedLidActive: false)
+        let roundTrip = try JSONDecoder().decode(AppStatus.self, from: JSONEncoder().encode(observed))
+        XCTAssertEqual(roundTrip.closedLidActive, false)
+    }
+
     func testTimerEndsAtBoundary() throws {
         let start = Date(timeIntervalSince1970: 1000)
         let session = try ActiveSession(request: .init(minutes: 10), now: start)

@@ -68,6 +68,18 @@ Check that the app bundle and CLI report VERSION consistently.
 - Start Vibesomnia closed-lid mode; approve the macOS administrator prompt yourself.
 - Verify SleepDisabled=1, display assertions follow the chosen display policy,
   and the temporary root-owned state records Vibesomnia's PID identity.
+- Dashboard switch is OFF when idle even if the saved closed-lid default is ON.
+- Start closed-lid mode through the CLI/setup; verify the dashboard switch is ON,
+  CLI `closedLidActive=true`, and `closedLidVerifiedAt` advances with actual checks.
+- Turn the dashboard switch OFF; verify SleepDisabled=0, the guard exits and native
+  keep-awake remains. Turn it ON; approve macOS and verify protection resumes.
+- Change modes in a timed/app-constrained session; verify its original deadline,
+  display choice and selected-app condition are unchanged. Cancel authorization;
+  the existing native session must remain intact with the switch OFF.
+- With the lid OPEN in an isolated owned test, clear the global override. Verify
+  the guard exits, the app clears its switch and ends the session with an error.
+  It must not reapply the override or auto-restart immediately. Repeat with a failed
+  state read; verify recovery evidence remains when restoration cannot be confirmed.
 - Stop normally; verify SleepDisabled=0 and no root guard/record remains.
 - In an isolated test, terminate the app; verify the guard restores and exits.
 - Suspend only the test app to stop heartbeat progress; verify lease expiry

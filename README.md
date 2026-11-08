@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml"><img alt="macOS checks" src="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml/badge.svg" /></a>
-  <img alt="Version 0.1.0-alpha.5" src="https://img.shields.io/badge/version-0.1.0--alpha.5-9b82f5" />
+  <img alt="Version 0.1.0-alpha.6" src="https://img.shields.io/badge/version-0.1.0--alpha.6-9b82f5" />
   <img alt="macOS 14+" src="https://img.shields.io/badge/macOS-14%2B-19172f?logo=apple" />
   <img alt="Swift and SwiftUI" src="https://img.shields.io/badge/Swift-SwiftUI-f07152?logo=swift&logoColor=white" />
   <a href="LICENSE"><img alt="AGPL v3" src="https://img.shields.io/badge/license-AGPL--3.0-7462c8" /></a>
@@ -26,6 +26,12 @@
 > are implemented; the [parity checklist](docs/PARITY.md) shows what still needs work.
 > Community/Pro editions and monetization are deferred. No paywalls or license checks.
 
+**[Download the published alpha.5 DMG installer](https://github.com/RaDeleon/Vibesomnia/releases/tag/v0.1.0-alpha.5)** · [All releases](https://github.com/RaDeleon/Vibesomnia/releases)
+
+The source is now alpha.6. The downloadable installer above is alpha.5 and does
+not yet include the live closed-lid status fix. GitHub labels experimental builds
+as **Pre-release**; tags alone are source snapshots.
+
 ## Built for the nights that become mornings
 
 Your laptop shouldn't clock out before your agents do. Vibesomnia keeps macOS
@@ -39,7 +45,7 @@ scripts, and access through the remote tools you already use.
 
 ## The night crew
 
-| Capability | What alpha.5 does |
+| Capability | What alpha.6 does |
 | --- | --- |
 | **On your terms** | Manual, timed, indefinite, and selected-GUI-app sessions |
 | **Lights out, work on** | Native idle-sleep prevention, with optional display wakefulness |
@@ -92,7 +98,8 @@ there is no public notarized release or Mac App Store package yet.
 
 1. Leave **Let the display sleep** enabled for a dark screen and an awake Mac.
 2. Choose a timer or keep the session indefinite. Optionally select a running app.
-3. Enable **Keep running with lid closed** if you need it, then start the session.
+3. Turn on **Keep running with lid closed** to start protected mode immediately,
+   or use **Start session** with your saved default from Settings.
 4. Approve the macOS administrator prompt for closed-lid mode.
 5. End the session from the dashboard, menu bar, or CLI to restore normal behavior.
 
@@ -117,6 +124,17 @@ rather than force-killing an app that owns an active session.
 </details>
 
 ## Closed lid without Amphetamine
+
+The dashboard’s **Keep running with lid closed** switch shows verified protection
+and changes the current session immediately. Turning it on starts a session if
+needed and requests administrator approval. Turning it off keeps native idle-sleep
+prevention running, preserving your timer and app condition. End the session to
+stop both. Settings and setup offer a separate default for new sessions.
+
+The app and guard recheck macOS power state every second. If the override is
+cleared, the switch turns off and the session ends with an error; Vibesomnia does
+not silently reapply the setting. CLI status includes `closedLidActive` and
+`closedLidVerifiedAt`. These checks verify power state, not remote connectivity.
 
 Closed-lid mode now belongs to Vibesomnia. Ordinary sessions use IOKit power
 assertions; closed-lid sessions additionally use **VibesomniaPowerGuard**, a

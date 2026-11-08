@@ -34,6 +34,23 @@ The worker's runtime is tied to the session. Opening/reclosing the lid does not
 end the session; display sleep is independently controlled by native assertions.
 While active, system sleep requests are suppressed, not just idle sleep.
 
+## Live status and mode switching (alpha.6)
+
+The dashboard switch reflects verified protection, not the saved new-session
+preference. The app reads the helper's unprivileged `--check` before renewing
+its lease and requires the matching active, live worker. The worker independently
+checks the macOS flag once per second. If the flag becomes zero, it relinquishes
+ownership without reapplying the setting; the app ends the session and reports
+lost protection. A failed state read also stops claiming protection and ends the
+session. Checks are periodic observations, not proof of remote connectivity.
+
+Enabling the switch starts a session or adds protection to the current native
+session after authorization. Disabling it stops only the guard and retains native
+assertions. The timer's original deadline, app condition and display policy are
+preserved. Stale asynchronous checks cannot renew a stopped lease or overwrite a
+newer session transition. CLI status exposes `closedLidActive` and the optional
+`closedLidVerifiedAt`; older snapshots without these fields remain unverified.
+
 ## Restoration
 
 Stop writes an explicit lease stop request. The worker also restores on app PID

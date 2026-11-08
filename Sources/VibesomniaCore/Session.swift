@@ -50,6 +50,13 @@ public struct ActiveSession: Codable, Equatable, Sendable {
         }
         return nil
     }
+
+    /// Change power mode without extending the timer or losing app/display policy.
+    public func changingClosedLid(to enabled: Bool) throws -> ActiveSession {
+        var next = request
+        next.closedLid = enabled
+        return try ActiveSession(request: next, now: startedAt)
+    }
 }
 
 public struct WorkspaceApp: Codable, Identifiable, Sendable {
@@ -70,9 +77,15 @@ public struct AppStatus: Codable, Sendable {
     public var session: ActiveSession?
     public var apps: [WorkspaceApp]
     public var lastError: String?
-    public init(session: ActiveSession?, apps: [WorkspaceApp], lastError: String?) {
-        updatedAt = Date(); version = "0.1.0-alpha.5"
+    /// Nil when reading older app snapshots that did not verify actual power state.
+    public var closedLidActive: Bool?
+    public var closedLidVerifiedAt: Date?
+    public init(session: ActiveSession?, apps: [WorkspaceApp], lastError: String?,
+                closedLidActive: Bool? = nil, closedLidVerifiedAt: Date? = nil) {
+        updatedAt = Date(); version = "0.1.0-alpha.6"
         self.session = session; self.apps = apps; self.lastError = lastError
+        self.closedLidActive = closedLidActive
+        self.closedLidVerifiedAt = closedLidVerifiedAt
     }
 }
 

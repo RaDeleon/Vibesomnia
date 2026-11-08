@@ -222,3 +222,32 @@ Preparation:
 Delivery: Merge/check outcome is tracked by GitHub PR #1 and main's merge commit.
 Limitations: Integration does not close the documented installation, signing,
   hardware or remote-acceptance gaps and does not promote the alpha to beta.
+
+2026-11-07 | Session 009 | Verify closed-lid power state and update local app
+Objective: Correct misleading closed-lid status, make the switch control actual
+  protection, update the local app and investigate GitHub release visibility.
+Changes:
+  - App verifies the real macOS flag before renewing its owned guard lease.
+  - Guard checks the flag independently and relinquishes a cleared override.
+  - Dashboard controls current protection; saved startup defaults are separate.
+    Mode changes preserve timer, display policy and selected-app conditions.
+  - CLI exposes verified state/time; synchronized version metadata to alpha.6.
+  - Added regression coverage, README download link, design/testing/roadmap notes,
+    changelog and an unpublished development-diary entry.
+Verification:
+  - 27 Swift tests passed; build_and_run --verify gracefully ended the older
+    session, rebuilt the local bundle and verified launch/CLI responsiveness.
+  - Live alpha.6 status confirmed protection active with advancing verification
+    time and SleepDisabled=1. ChatGPT and Claude Desktop report running.
+  - Browser confirmed the main sidebar displayed tags/create-release while the
+    Releases page contained the published alpha.5 prerelease. No new binary
+    release was published and the existing release/tag/assets were unchanged.
+Limitations:
+  - Computer-use inspection timed out; requested owner visual switch confirmation.
+  - Live override-loss injection, UI mode cycling and physical lid/remote repeat
+    tests remain pending. Active session was left running for owner testing.
+  - Initial graph coverage was verified for eight affected files; later graph
+    transport closed, so remaining coverage used direct source reads.
+  - Source work is on fix/closed-lid-live-status; main was not merged automatically.
+Next: Owner validates the switch and closed/open/closed remote cycle; integrate
+  after review and publish a new installer when explicitly requested.
