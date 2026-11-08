@@ -1,0 +1,12 @@
+.build/
+.swiftpm/
+dist/
+work/
+.DS_Store
+*.xcuserstate
+.env
+.env.*
+!.env.example
+*.p12
+*.mobileprovision
+*.cer

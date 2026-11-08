@@ -1,0 +1,78 @@
+name: Build private installer
+on:
+  workflow_dispatch:
+    inputs:
+      signing:
+        description: Local alpha test or Developer ID signed and notarized
+        type: choice
+        options: [local, signed]
+        default: local
+permissions:
+  contents: read
+concurrency:
+  group: installer-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  package:
+    runs-on: macos-14
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify version and tests
+        run: |
+          swift test
+          git diff --exit-code
+      - name: Build local alpha installer
+        if: inputs.signing == 'local'
+        run: ./script/package_dmg.sh --local
+      - name: Sign, notarize, and package
+        if: inputs.signing == 'signed'
+        env:
+          CERTIFICATES_P12: ${{ secrets.DEVELOPER_ID_CERTIFICATES_P12 }}
+          CERTIFICATES_PASSWORD: ${{ secrets.DEVELOPER_ID_CERTIFICATES_PASSWORD }}
+          VIBESOMNIA_SIGNING_IDENTITY: ${{ secrets.DEVELOPER_ID_APPLICATION }}
+          VIBESOMNIA_INSTALLER_IDENTITY: ${{ secrets.DEVELOPER_ID_INSTALLER }}
+          APPLE_ID: ${{ secrets.NOTARY_APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.NOTARY_TEAM_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.NOTARY_APP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          : "${CERTIFICATES_P12:?Missing certificate archive}"
+          : "${CERTIFICATES_PASSWORD:?Missing certificate password}"
+          : "${VIBESOMNIA_SIGNING_IDENTITY:?Missing Application identity}"
+          : "${VIBESOMNIA_INSTALLER_IDENTITY:?Missing Installer identity}"
+          : "${APPLE_ID:?Missing Apple ID}"
+          : "${APPLE_TEAM_ID:?Missing Team ID}"
+          : "${APPLE_APP_PASSWORD:?Missing app-specific password}"
+          KEYCHAIN_PATH="$RUNNER_TEMP/vibesomnia-signing.keychain-db"
+          CERT_PATH="$RUNNER_TEMP/vibesomnia-certificates.p12"
+          KEYCHAIN_PASSWORD="$(openssl rand -hex 24)"
+          cleanup() {
+            security delete-keychain "$KEYCHAIN_PATH" || true
+            rm -f "$CERT_PATH"
+          }
+          trap cleanup EXIT
+          printf '%s' "$CERTIFICATES_P12" | base64 --decode > "$CERT_PATH"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -P "$CERTIFICATES_PASSWORD" -k "$KEYCHAIN_PATH" -T /usr/bin/codesign -T /usr/bin/productbuild
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH" >/dev/null
+          security list-keychains -d user -s "$KEYCHAIN_PATH" "$HOME/Library/Keychains/login.keychain-db"
+          export VIBESOMNIA_NOTARY_PROFILE=vibesomnia-ci
+          xcrun notarytool store-credentials "$VIBESOMNIA_NOTARY_PROFILE" --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_APP_PASSWORD"
+          ./script/package_dmg.sh --signed
+      - name: Validate packaged installer
+        run: |
+          for dmg in dist/installers/*.dmg; do
+            ./script/verify_installer.py "$dmg"
+          done
+      - name: Save installer for private testing
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vibesomnia-installer-${{ inputs.signing }}
+          path: |
+            dist/installers/*.dmg
+            dist/installers/*.sha256
+          if-no-files-found: error
+          retention-days: 7

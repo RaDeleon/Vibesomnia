@@ -1,0 +1,7 @@
+#!/bin/sh
+# Do not replace an app or helper while it is keeping a user's Mac awake.
+if [ -e /private/var/run/vibesomnia-closed-lid ] || /usr/bin/pgrep -x Vibesomnia >/dev/null || /usr/bin/pgrep -f '/Contents/Helpers/VibesomniaPowerGuard --worker' >/dev/null; then
+    echo 'End or recover your Vibesomnia session and quit Vibesomnia before installing this update.' >&2
+    exit 1
+fi
+exit 0

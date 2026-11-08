@@ -1,0 +1,1 @@
+{"schemaVersion":1,"id":"workspace-pulse","name":"Workspace pulse","summary":"Show the time, system uptime, and current power assertions locally.","interpreter":"zsh","entryPoint":"main.sh","events":["manual"],"timeoutSeconds":10}

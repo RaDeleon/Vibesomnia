@@ -1,0 +1,224 @@
+# Vibesomnia engineering session log
+# Append one dated entry per development session. No inferred hours, private
+# machine details, chat contents, or fabricated verification. Runtime sessions
+# are separate from this source-controlled development history.
+
+2026-11-07 | Session 001 | Bootstrap v0.1.0-alpha.1
+Objective: Start a working, fully open-source macOS alpha with accurate project
+  documentation and version history. Defer Community/Pro editions.
+Changes:
+  - Added SwiftPM core, SwiftUI dashboard/menu/settings, native power service,
+    optional Amphetamine automation, battery guard, AI app launch service, and CLI.
+  - Added same-user bounded/expiring command transport; no network listener.
+  - Added build/run bundle script, Codex Run action, tests, and CI definition.
+  - Added README, AGENTS.md, CLAUDE.md, CONTRIBUTING.md, CHANGELOG.md, VERSION,
+    roadmap, test checklist, and this engineering log.
+Verification:
+  - swift test: 8 tests passed (timer boundaries, app lifetime, validation,
+    request expiry, launch allowlist, private file transport, stale status,
+    symlink rejection).
+  - Build/run --verify: app bundle launched and CLI responded.
+  - Live native assertions: system-only and system+display modes acquired the
+    expected assertions; stop and toggle released them.
+  - Real one-minute timeout completed in the dashboard and released assertions.
+  - Disposable GUI fixture exit ended its app-lifetime session and released power.
+  - CLI launched the installed Codex GUI app successfully.
+  - Dashboard, running/off states, countdown, app choices, and battery settings
+    inspected through computer use; no visual overlap observed at default size.
+  - Added and passed repeatable runtime smoke test for native controls and quit.
+  - Fixed a shutdown stall found by smoke testing: AppKit termination now returns
+    to the normal run loop before async cleanup, then terminates explicitly.
+  - git diff --check passed; generated builds and private logs are ignored.
+Limitations: Full Amphetamine parity, independent closed-lid support, full remote
+  desktop control, persistent preferences, notarization, and physical lid tests
+  are not complete. App-store feasibility and monetization are backlogged.
+Next: Owner review of the running alpha; opt-in closed-lid/charger hardware tests,
+  independent remote SSH testing, richer triggers, and native closed-lid design.
+Delivery: Feature branch feat/v0.1.0-alpha.1; version 0.1.0-alpha.1. No binary
+  release, notarization, app-store submission, or default-branch merge in this session.
+
+2026-11-07 | Session 002 | App icon · v0.1.0-alpha.2
+Objective: Create an app-related icon with a bloodshot-eyed developer vibe coding.
+Changes:
+  - Created a late-night developer mascot with messy hair, bloodshot eyes, dark
+    hoodie, laptop, and lavender screen glow using the built-in image tool.
+  - Added original artwork, PNG, ICNS, provenance/prompt, and repeatable exports.
+  - Wired the icon into the macOS bundle, dashboard, and README.
+  - Advanced alpha version strings and changelog to 0.1.0-alpha.2.
+Verification:
+  - swift test: all 8 tests passed.
+  - Build/run --verify: alpha.2 app launched and CLI responded.
+  - ICNS decoded successfully; 16px and 1024px family dimensions verified.
+  - PNG is 1024x1024 with alpha; bundled ICNS matches the checked-in asset.
+  - Ad-hoc app signature verified.
+  - Computer-use screenshot confirmed the mascot appears in the dashboard.
+  - Explicit bundled icon loading corrected a cached generic-icon preview.
+Delivery: Feature branch feat/app-icon; source version v0.1.0-alpha.2.
+Limitations: The detailed mascot is intended for app/Dock branding; the menu bar
+  continues using native monochrome status symbols. No power behavior changed.
+
+2026-11-07 | Session 003 | Standalone closed lid, banner, and add-ons · alpha.3
+Objective: Replace the Amphetamine backend, expand the illustrated README, and
+  implement a reviewed user-script/add-on workflow. Full feature parity is the
+  product target, tracked separately from current alpha completion.
+Changes:
+  - Generated a matching night-workstation banner using the existing mascot as
+    reference; expanded README navigation, feature matrix, architecture and guides.
+  - Removed the Amphetamine service. Added a temporary admin-authorized power
+    guard with exclusive ownership, PID/start identity, sequence/nonce lease,
+    verified sleep restoration, and explicit root-record recovery.
+  - Added add-on import, in-app script/manifest editor, exact-version approval,
+    manual and session start/end events, example packages and cancellation.
+  - Added an unprivileged process-group runner with clean environment, timeout,
+    bounded capture, and quit cleanup; scripts never run in the power guard.
+  - Added closed-lid design, add-on guide, and published-feature parity inventory.
+  - Advanced version metadata and changelog to 0.1.0-alpha.3.
+Verification:
+  - 17 core/extension tests passed, including heartbeat replay/nonce/expiry,
+    changed-script/manifest fingerprints, traversal rejection, clean environment,
+    timeout, cancellation, and bounded output.
+  - Build/run --verify, native runtime smoke test, and ad-hoc signature passed.
+  - Owner approved ending the existing Amphetamine session and local administrator
+    prompts. Standalone guard activation and normal stop restored sleep correctly.
+  - Simulated Vibesomnia process exit: independent guard restored sleep and exited.
+  - Suspended the app while its PID remained alive: heartbeat expiry restored sleep
+    in about 8.4 seconds. Resumed app detected guard loss and ended the session.
+  - At the end of isolated guard tests, SleepDisabled=0 and no worker/record remained.
+  - Later system checks found SleepDisabled=1 again without a Vibesomnia owner.
+    Amphetamine was fully closed through its menu; the unowned flag persisted.
+    Requested owner confirmation before resetting another utility's global state.
+    No Vibesomnia worker or root recovery record was left by the tests.
+  - Computer-use UI: examples installed unapproved, read-only diagnostic reviewed
+    and run, in-app edit saved, prior approval invalidated and Run disabled.
+  - Markdown local links and banner dimensions (2172x724) verified; diff check clean.
+  - Graph lookup/coverage used for existing session lifecycle; changed/stale files
+    were read directly before relying on their current behavior.
+Limitations: Physical lid/charger tests and remote reconnection from another device
+  remain unverified. Root-worker forced-failure recovery and production distribution
+  need more testing. Full Amphetamine parity and full remote desktop are not done;
+  see docs/PARITY.md. No Community/Pro split or public binary release.
+Delivery: Feature branch feat/standalone-closed-lid; source version v0.1.0-alpha.3.
+
+Repository review: Draft PR #1 opened through the existing personal GitHub login;
+  the generic connector/local default account lacked access to this private repo.
+  Push and pull-request CI jobs passed. Repository visibility was not changed.
+
+2026-11-07 | Session 004 | Desktop discovery correction · alpha.4
+Objective: Fix ChatGPT detection and activate closed-lid mode for the owner's
+  physical lid and remote-access test.
+Changes:
+  - Product detection checks bundle names alongside IDs: a ChatGPT-named build
+    using com.openai.codex is ChatGPT, not a separate Codex installation.
+  - Discovery includes running bundle URLs, Launch Services and system/user
+    Applications folders. Launch and app-lifetime controls use detected identity.
+  - Added three regression tests, updated test guide and alpha.4 version metadata.
+Verification:
+  - Graph lookup, relationship trace and coverage checks completed; source read.
+  - All 20 tests passed; build/run --verify and ad-hoc signature verification passed.
+  - Live app status reports ChatGPT and Claude Desktop installed and running.
+  - Previous unowned override had already cleared (SleepDisabled=0); no reset made.
+  - Owner authorized closed-lid activation and approved the administrator prompt.
+  - Verified active closedLid session, SleepDisabled=1, guard process present,
+    native idle-system assertion, and no idle-display assertion.
+Handoff: Left indefinite closed-lid session running with display sleep allowed for
+  the requested test. Battery protection remains enabled. Physical lid cycling
+  and remote reconnection are not claimed as passed pending owner observation.
+
+2026-11-07 | Session 005 | Private DMG installer and first-run setup · alpha.5
+Objective: Produce a ready-to-install DMG/pkg and first-run setup while keeping
+  the repository private and preserving the owner's active closed-lid session.
+Changes:
+  - Added universal release bundle construction, macOS package wizard, versioned
+    DMG and checksum, and a validator that inspects without installing.
+  - Installer targets Applications without relocation; preinstall refuses a
+    running app/guard or leftover recovery record. No power/network/login changes.
+  - Added welcome, app detection, saved sleep preferences, and optional guided
+    remote test. Owner-confirmed results are distinct from automated evidence.
+  - Added setup replay in toolbar/Settings and an isolated, read-only setup preview.
+  - Added optional Developer ID signing/notarization path and manual private
+    Actions artifacts. No release publishing or visibility-changing permissions.
+  - Updated version metadata, README, distribution guide, tests and roadmap.
+Verification:
+  - Graph discovery/trace and relevant file coverage checked; sources read.
+  - All 23 Swift tests passed, including persisted preferences and corrupt fallback.
+  - Universal release build passed; image checksum, package layout/choice XML,
+    app/CLI versions, macOS 14 targets, all arm64/x86_64 slices, bundled signatures,
+    license, welcome/conclusion resources and preinstall contents verified.
+  - Preinstall rejected the active session with an end/recover-and-quit message.
+  - Computer use checked four setup preview pages, detection of ChatGPT/Claude,
+    preference toggles/back navigation, and disabled power actions in preview.
+  - Installer introduction/license screens inspected without accepting terms or
+    performing a privileged installation. Duplicate title prefix corrected.
+  - Existing alpha.4 PID and closed-lid session start time remained unchanged.
+    Normal build/run --verify and runtime smoke test were not used because they
+    would stop the owner's active session; separate bundle/preview checks used.
+Limitations: Local app is ad-hoc signed; pkg is unsigned and unnotarized. No valid
+  Developer ID identity was available. Actual installation, signed/notarized job,
+  first launch from Applications, Intel hardware and physical lid/remote tests
+  remain acceptance work. Manual installer workflow must reach the default branch
+  before normal workflow dispatch. Main and repository visibility were not changed.
+Delivery: alpha.5 source on feat/standalone-closed-lid; local DMG with checksum.
+
+2026-11-07 | Session 006 | Private prerelease and project development diary
+Objective: Add the installer release to GitHub and preserve narrative material
+  for future posts on angelodeleon.com, without changing repository visibility.
+Changes:
+  - Owner explicitly authorized a repository release. Published alpha.5 as a
+    private-repository prerelease with DMG and checksum, using the existing
+    immutable source tag. Release notes identify unsigned/unnotarized status.
+  - Added docs/dev-diary/ with an index, entry template and unpublished working
+    draft covering motivation, naming/artwork, power ownership/recovery, the
+    ChatGPT identity bug, extensions, packaging and the first real lid observation.
+  - Added a project instruction to maintain the diary at meaningful milestones;
+    engineering logs and version changelogs remain separate sources of evidence.
+  - Recorded that the owner reported the closed-lid test seemed to work. The Mac
+    reported a closed lid, fresh Vibesomnia status, and ChatGPT/Claude running.
+    That observation was on alpha.4, not the newly packaged alpha.5, and was not
+    an isolated proof or a completed remote interaction/repeated-cycle test.
+Verification:
+  - Confirmed repository PRIVATE before creating the release.
+  - Verified the source tag points to the packaged alpha.5 commit.
+  - Local checksum passes; both GitHub-uploaded asset SHA-256 digests match local files.
+  - Release API reports published prerelease (not draft), with both assets uploaded.
+  - Diary relative links and documentation diff checked; no app code changed.
+Limitations: Release remains local-test quality, unsigned and unnotarized. Earlier
+  installation and hardware acceptance gaps remain. Diary prose is a draft for
+  owner review; no website content was created or published. Main was not merged.
+Delivery: https://github.com/RaDeleon/Vibesomnia/releases/tag/v0.1.0-alpha.5
+
+2026-11-07 | Session 007 | Public alpha development
+Objective: Make the repository public at the owner's explicit request, replacing
+  the earlier plan to wait for full acceptance testing.
+Changes:
+  - Updated alpha.5 release title/notes to experimental public-alpha wording,
+    retaining unsigned/unnotarized and incomplete-acceptance disclosures.
+  - Changed repository visibility from PRIVATE to PUBLIC; existing prerelease
+    assets, branches, history and diary are now publicly accessible.
+  - Updated current README/policy/distribution notes and added a diary entry about
+    the decision. Preserved earlier diary context with a dated follow-up link.
+Verification:
+  - Refreshed remote refs. Targeted scan of 126 historical text blobs found no
+    matches for tested credential/key/credential-URL or personal-path patterns.
+    This was a bounded hygiene check, not a comprehensive security audit.
+  - GitHub API confirmed PUBLIC visibility and alpha.5 as a published prerelease.
+  - Default branch remains main; draft PR #1 was not merged. No app code, release
+    tag, binary or running power session changed, and no website post was published.
+Limitations: Default main still has the starter README. Full implementation and
+  polished docs are on the feature branch/draft PR. Public visibility does not
+  establish beta readiness or close the installation/hardware/remote test gaps.
+Delivery: https://github.com/RaDeleon/Vibesomnia
+
+2026-11-07 | Session 008 | Integrate completed alpha work into main
+Objective: Merge all remaining repository work at the owner's explicit request.
+Preparation:
+  - Refreshed remote refs and inspected every open PR and branch. PR #1 is the
+    sole open PR, targets main, and has no merge conflicts.
+  - Verified the app-icon and alpha.1 branches are ancestors of the current
+    standalone-closed-lid branch, so PR #1 includes all pending feature commits.
+  - Both CI checks on the inspected head passed. Selected a merge commit rather
+    than squash to retain ancestry and keep source release tags unchanged.
+  - Added this work record and a development-diary integration note; no app code
+    changed, no running session was restarted, and no binary was republished.
+Delivery: Merge/check outcome is tracked by GitHub PR #1 and main's merge commit.
+Limitations: Integration does not close the documented installation, signing,
+  hardware or remote-acceptance gaps and does not promote the alpha to beta.
