@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Support Vibesomnia</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color:#f2efff;background:#15131d}*{box-sizing:border-box}body{margin:0;padding:56px 24px}main{max-width:620px;margin:auto}img{width:96px;height:96px;border-radius:24px}h1{font-size:clamp(32px,6vw,48px);letter-spacing:-1.6px;line-height:1.1;margin:24px 0 16px}p{color:#bbb6cc;line-height:1.65}.eyebrow{font-size:12px;letter-spacing:2px;color:#ba9cfc;text-transform:uppercase;margin-top:28px}.amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 18px}button,input{font:inherit;border-radius:12px;border:1px solid #514666;background:#221e2f;color:inherit;padding:16px}button{cursor:pointer}button[aria-pressed=true]{border-color:#bb95ff;background:#4a356b}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #d4bfff;outline-offset:3px}label{display:block;color:#bbb6cc}input{width:100%;margin:8px 0 22px}#checkout{width:100%;background:#a17beb;color:#120e1a;font-weight:650}#checkout:disabled{opacity:.5;cursor:not-allowed}.note{font-size:13px}a{color:#c6a8ff}footer{margin-top:40px;border-top:1px solid #383044;padding-top:20px;font-size:13px}#status{min-height:48px}@media(prefers-color-scheme:light){:root{color:#272133;background:#f7f5fc}p,label{color:#635a72}button,input{background:#fff;color:#272133}button[aria-pressed=true]{background:#e9ddff}footer{border-color:#d7cde5}}
+</style>
+</head>
+<body><main>
+<img src="../AppIcon.png" alt="Vibesomnia’s late-night developer mascot">
+<div class="eyebrow">Support the night shift</div>
+<h1>You keep us building.</h1>
+<p>Vibesomnia is open source, built by Angelo De Leon. If it helps your AI workspace stay up while you step away, you can help support its development.</p>
+<div class="amounts" role="group" aria-label="Donation amount in US dollars">
+<button type="button" data-amount="1" aria-pressed="false">$1</button>
+<button type="button" data-amount="5" aria-pressed="true">$5</button>
+<button type="button" data-amount="10" aria-pressed="false">$10</button>
+<button type="button" data-amount="20" aria-pressed="false">$20</button>
+<button type="button" data-amount="50" aria-pressed="false">$50</button>
+<button type="button" data-amount="100" aria-pressed="false">$100</button>
+</div>
+<label for="custom">Or choose your own amount (USD)</label>
+<input id="custom" type="number" inputmode="decimal" min="1" max="100000" step="0.01" placeholder="Enter an amount" aria-describedby="status">
+<button id="checkout" type="button" disabled>Donate $5</button>
+<p id="status" class="note" role="status">Donations are not connected yet. No payment will be collected on this page.</p>
+<p class="note">Contributions are optional. All current app features remain available to everyone.</p>
+<footer>Made by Angelo De Leon · <a href="https://github.com/RaDeleon/Vibesomnia">GitHub</a> · <a href="https://angelodeleon.com">Website</a></footer>
+</main>
+<script>
+// Recipient/provider must be supplied and verified before enabling checkout.
+// No guessed payment URLs or client-side payment processing.
+let selected = 5;
+const buttons = [...document.querySelectorAll('[data-amount]')];
+const custom = document.getElementById('custom');
+const checkout = document.getElementById('checkout');
+const status = document.getElementById('status');
+function render(){
+ const valid = Number.isFinite(selected) && selected >= 1 && selected <= 100000 && Math.abs(selected * 100 - Math.round(selected * 100)) < 0.0001;
+ checkout.textContent = valid ? `Donate ${new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(selected)}` : 'Choose an amount';
+ checkout.disabled = true;
+ status.textContent = valid ? 'Donations are not connected yet. No payment will be collected on this page.' : 'Enter an amount from $1 to $100,000 with at most two decimal places.';
+ buttons.forEach(b=>b.setAttribute('aria-pressed', String(!custom.value && Number(b.dataset.amount) === selected)));
+}
+buttons.forEach(b=>b.addEventListener('click',()=>{selected=Number(b.dataset.amount);custom.value='';render()}));
+custom.addEventListener('input',()=>{selected=custom.value ? Number(custom.value) : 5;render()});
+render();
+</script></body></html>

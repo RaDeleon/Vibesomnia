@@ -10,7 +10,7 @@ Usage: vibesomnia-cli <command> [options]
   start                    Start an indefinite session (display may sleep)
   stop                     End Vibesomnia's current session
   toggle                   Start or end a session
-  launch <app>             claude | chatgpt | codex | claude-code | codex-cli
+  launch <app>             A Night Crew catalog identifier (see below)
   display-off              Turn displays off now
   quit                     End the session and quit Vibesomnia
 
@@ -22,6 +22,8 @@ Start/toggle options:
 
 Open Vibesomnia.app before using the CLI. Over SSH, log in as the same macOS
 user. This CLI never opens a network port or executes arbitrary remote code.
+
+Night Crew: \(NightCrewCatalog.products.map(\.id).joined(separator: ", "))
 """
 
 func run() throws {

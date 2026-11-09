@@ -6,10 +6,13 @@ cd "$ROOT_DIR"
 APP_BUNDLE="$ROOT_DIR/dist/Vibesomnia.app"
 APP_BINARY="$APP_BUNDLE/Contents/MacOS/Vibesomnia"
 
-case "$MODE" in run|--debug|debug|--logs|logs|--telemetry|telemetry|--verify|verify|--build-only) ;; *) echo "Usage: $0 [--build-only|--verify|--debug|--logs|--telemetry]" >&2; exit 2;; esac
+case "$MODE" in run|--debug|debug|--logs|logs|--telemetry|telemetry|--verify|verify|--build-only|--preview) ;; *) echo "Usage: $0 [--build-only|--preview|--verify|--debug|--logs|--telemetry]" >&2; exit 2;; esac
 # Request a graceful quit first; don't kill an app that may own a closed-lid session.
-if pgrep -x Vibesomnia >/dev/null; then
-    "$APP_BUNDLE/Contents/MacOS/vibesomnia-cli" quit
+if [ "$MODE" != "--build-only" ] && [ "$MODE" != "--preview" ] && pgrep -x Vibesomnia >/dev/null; then
+    CLI="$APP_BUNDLE/Contents/MacOS/vibesomnia-cli"
+    if [ ! -x "$CLI" ]; then CLI="/Applications/Vibesomnia.app/Contents/MacOS/vibesomnia-cli"; fi
+    if [ ! -x "$CLI" ]; then echo "No CLI found to quit safely. End the session and quit Vibesomnia first." >&2; exit 1; fi
+    "$CLI" quit
     for _ in {1..50}; do
         if ! pgrep -x Vibesomnia >/dev/null; then break; fi
         sleep 0.1
@@ -19,6 +22,7 @@ fi
 "$ROOT_DIR/script/build_bundle.sh" "$APP_BUNDLE" debug native
 case "$MODE" in
     --build-only) echo "Built $APP_BUNDLE" ;;
+    --preview) open -n "$APP_BUNDLE" --args --workspace-preview ;;
     --debug|debug) lldb -- "$APP_BINARY" ;;
     --logs|logs) open -n "$APP_BUNDLE"; /usr/bin/log stream --info --style compact --predicate 'process == "Vibesomnia"' ;;
     --telemetry|telemetry) open -n "$APP_BUNDLE"; /usr/bin/log stream --info --style compact --predicate 'subsystem == "com.angelodeleon.Vibesomnia"' ;;

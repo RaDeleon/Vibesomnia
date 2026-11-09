@@ -73,7 +73,7 @@ final class AddOnStore: ObservableObject {
             reload()
         } catch { output = error.localizedDescription }
     }
-    func newScript() {
+    func newScript() -> InstalledAddOn? {
         do {
             let id = "my-script-" + UUID().uuidString.lowercased().prefix(8)
             let directory = root.appendingPathComponent(id)
@@ -82,8 +82,9 @@ final class AddOnStore: ObservableObject {
             let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
             try encoder.encode(manifest).write(to: directory.appendingPathComponent("manifest.json"))
             try Data("#!/bin/zsh\nprint \"Hello from Vibesomnia: $VIBESOMNIA_EVENT\"\n".utf8).write(to: directory.appendingPathComponent("main.sh"))
-            reload(); NSWorkspace.shared.open(directory)
-        } catch { output = error.localizedDescription }
+            reload()
+            return addons.first { $0.id == id }
+        } catch { output = error.localizedDescription; return nil }
     }
     func save(_ addon: InstalledAddOn, manifestText: String, scriptText: String) throws {
         let manifest = try JSONDecoder().decode(AddOnManifest.self, from: Data(manifestText.utf8))

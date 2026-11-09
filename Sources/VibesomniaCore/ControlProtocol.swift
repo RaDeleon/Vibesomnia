@@ -19,8 +19,8 @@ public struct ControlRequest: Codable, Sendable {
             throw VibeError.message("Control request expired; send it again.")
         }
         try session?.validate()
-        if action == .launch, !["claude", "chatgpt", "codex", "claude-code", "codex-cli"].contains(app ?? "") {
-            throw VibeError.message("Unknown app. Use claude, chatgpt, codex, claude-code, or codex-cli.")
+        if action == .launch, !NightCrewCatalog.products.contains(where: { $0.id == app }) {
+            throw VibeError.message("Unknown app. Use a Night Crew catalog identifier.")
         }
     }
 }

@@ -1,5 +1,6 @@
 // Copyright © 2026 Angelo De Leon. SPDX-License-Identifier: AGPL-3.0-only
 import AppKit
+import UniformTypeIdentifiers
 import Combine
 import OSLog
 import VibesomniaCore
@@ -13,6 +14,20 @@ final class SessionStore: ObservableObject {
     @Published private(set) var busy = false
     @Published var error: String?
     @Published private(set) var events: [String] = []
+    @Published var page: WorkspacePage = .dashboard
+    @Published var settingsTab: SettingsTab = .general
+    @Published private(set) var now = Date()
+    @Published private(set) var appErrors: [String: String] = [:]
+    @Published var pinnedApps = Set(NightCrewCatalog.defaultPinned) { didSet { preferencesDefaults?.set(Array(pinnedApps), forKey: "crew.pinned") } }
+    @Published var autoShowRunning = true { didSet { preferencesDefaults?.set(autoShowRunning, forKey: "crew.autoShow") } }
+    @Published var recapEnabled = false {
+        didSet {
+            preferencesDefaults?.set(recapEnabled, forKey: "recap.enabled")
+            if !recapEnabled { observedAppNames.removeAll(); lastRecap = nil }
+        }
+    }
+    @Published private(set) var lastRecap: SessionRecap?
+    private var observedAppNames = Set<String>()
     @Published var minutes = 60
     @Published var timed = false
     @Published var allowDisplaySleep = true { didSet { savePreferences() } }
@@ -31,7 +46,7 @@ final class SessionStore: ObservableObject {
     let transport = ControlTransport()
     private let power = PowerService()
     private lazy var lidGuard = ClosedLidService(transport: transport)
-    private let workspace = WorkspaceService()
+    private lazy var workspace = WorkspaceService(defaults: preferencesDefaults)
     private let logger = Logger(subsystem: "com.angelodeleon.Vibesomnia", category: "sessions")
     private var timer: Timer?
     private var ticking = false
@@ -41,6 +56,9 @@ final class SessionStore: ObservableObject {
     init(preview: Bool = false) {
         isPreview = preview
         preferencesDefaults = preview ? nil : .standard
+        if let pinned = preferencesDefaults?.stringArray(forKey: "crew.pinned") { pinnedApps = Set(pinned) }
+        if preferencesDefaults?.object(forKey: "crew.autoShow") != nil { autoShowRunning = preferencesDefaults?.bool(forKey: "crew.autoShow") ?? true }
+        recapEnabled = preferencesDefaults?.bool(forKey: "recap.enabled") ?? false
         let preferences = SetupPreferences.load(from: preferencesDefaults)
         allowDisplaySleep = preferences.allowDisplaySleep
         closedLid = preferences.closedLid
@@ -49,6 +67,7 @@ final class SessionStore: ObservableObject {
         setupCompleted = preferences.completed
         showSetup = !preferences.completed
         if preview {
+            showSetup = false
             apps = workspace.snapshot()
             battery = .current()
             return // Preview never touches IPC, add-ons, leases, or system power.
@@ -80,7 +99,36 @@ final class SessionStore: ObservableObject {
         showSetup = false
     }
 
-    func refreshApps() { apps = workspace.snapshot() }
+    func refreshApps() { apps = workspace.snapshot(force: true) }
+    var visibleApps: [WorkspaceApp] { NightCrewCatalog.visible(apps, pinned: pinnedApps, autoShowRunning: autoShowRunning) }
+    func appIcon(_ id: String) -> NSImage? { workspace.icon(for: id) }
+    func pinApp(_ id: String, _ pinned: Bool) {
+        if pinned { pinnedApps.insert(id) } else { pinnedApps.remove(id) }
+    }
+    func addApplication() {
+        guard !isPreview else { return }
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = false; panel.canChooseFiles = true
+        panel.allowsMultipleSelection = false; panel.allowedContentTypes = [.application]
+        panel.prompt = "Add to Night Crew"
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        do { pinnedApps.insert(try workspace.addApplication(url)); refreshApps() } catch { report(error) }
+    }
+    func showSettings(_ tab: SettingsTab = .general) { settingsTab = tab; page = .settings }
+    func selectDuration(_ value: Int?) throws {
+        guard !busy else { throw VibeError.message("Wait for the session update to finish.") }
+        try SessionRequest(minutes: value).validate()
+        if let current = session {
+            session = try current.changingDuration(to: value)
+            record(value.map { "Timer reset to \(SessionDuration.title($0))" } ?? "Timer removed")
+        }
+        timed = value != nil
+        if let value { minutes = value }
+        now = Date(); publish()
+    }
+    var countdown: String? { session?.remainingSeconds(now: now).map(SessionDuration.countdown) }
+    func dismissRecap() { lastRecap = nil }
+
 
     var request: SessionRequest {
         SessionRequest(minutes: timed ? minutes : nil, allowDisplaySleep: allowDisplaySleep,
@@ -107,8 +155,13 @@ final class SessionStore: ObservableObject {
         }
         else { try power.start(allowDisplaySleep: next.request.allowDisplaySleep) }
         session = try ActiveSession(request: next.request)
+        timed = next.request.minutes != nil
+        if let duration = next.request.minutes { minutes = duration }
         closedLidVerifiedAt = next.backend == .closedLid ? Date() : nil
         error = nil
+        observedAppNames = recapEnabled ? Set(apps.filter(\.running).map(\.name)) : []
+        lastRecap = nil
+        now = Date()
         addons.fire(.sessionStarted)
         record("Started \(next.backend.rawValue) session\(next.endsAt == nil ? " · indefinite" : " · timed")")
     }
@@ -121,7 +174,12 @@ final class SessionStore: ObservableObject {
         defer { busy = false; needsRecovery = lidGuard.needsRecovery; publish() }
         if session?.backend == .closedLid || lidGuard.ownsSession { try await lidGuard.stop() }
         power.stop()
-        if session != nil {
+        if let current = session {
+            if recapEnabled {
+                lastRecap = SessionRecap(startedAt: current.startedAt, endedAt: Date(), reason: reason,
+                                         observedApps: Array(observedAppNames))
+            }
+            observedAppNames.removeAll()
             record(reason)
             if reason != "App quit" { addons.fire(.sessionEnded) }
         }
@@ -177,7 +235,14 @@ final class SessionStore: ObservableObject {
 
     func launch(_ app: String) async throws {
         guard !isPreview else { return }
-        try await workspace.launch(app)
+        do {
+            try await workspace.launch(app)
+            appErrors[app] = nil
+            refreshApps()
+        } catch {
+            appErrors[app] = error.localizedDescription
+            throw error
+        }
     }
 
     func displayOff() async throws {
@@ -204,10 +269,13 @@ final class SessionStore: ObservableObject {
     }
 
     private func tick() async {
+        now = Date()
         guard !ticking, !busy else { return }
         ticking = true
         defer { ticking = false }
         apps = workspace.snapshot()
+        if session != nil, recapEnabled { observedAppNames.formUnion(apps.filter(\.running).map(\.name)) }
+        if !recapEnabled { observedAppNames.removeAll() }
         battery = .current()
         needsRecovery = lidGuard.needsRecovery
         if let observed = session, observed.backend == .closedLid {

@@ -55,8 +55,27 @@ public struct ActiveSession: Codable, Equatable, Sendable {
     public func changingClosedLid(to enabled: Bool) throws -> ActiveSession {
         var next = request
         next.closedLid = enabled
-        return try ActiveSession(request: next, now: startedAt)
+        return ActiveSession(request: next, startedAt: startedAt, endsAt: endsAt)
     }
+
+    private init(request: SessionRequest, startedAt: Date, endsAt: Date?) {
+        self.request = request; self.startedAt = startedAt; self.endsAt = endsAt
+        backend = request.closedLid ? .closedLid : .native
+    }
+
+    /// A duration selection during a session sets time remaining from now.
+    public func changingDuration(to minutes: Int?, now: Date = Date()) throws -> ActiveSession {
+        var next = request
+        next.minutes = minutes
+        try next.validate()
+        return ActiveSession(request: next, startedAt: startedAt,
+                             endsAt: minutes.map { now.addingTimeInterval(Double($0) * 60) })
+    }
+
+    public func remainingSeconds(now: Date = Date()) -> Int? {
+        endsAt.map { max(0, Int(ceil($0.timeIntervalSince(now)))) }
+    }
+
 }
 
 public struct WorkspaceApp: Codable, Identifiable, Sendable {

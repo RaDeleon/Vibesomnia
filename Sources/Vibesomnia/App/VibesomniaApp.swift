@@ -5,12 +5,12 @@ import SwiftUI
 @main
 struct VibesomniaApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
-    @StateObject private var store = SessionStore(preview: CommandLine.arguments.contains("--setup-preview"))
+    @StateObject private var store = SessionStore(preview: CommandLine.arguments.contains("--setup-preview") || CommandLine.arguments.contains("--workspace-preview"))
 
     var body: some Scene {
         WindowGroup("Vibesomnia", id: "workspace") {
             Group {
-                if store.isPreview {
+                if CommandLine.arguments.contains("--setup-preview") {
                     SetupView(store: store) { NSApp.terminate(nil) }
                 } else {
                     ContentView(store: store)
@@ -24,6 +24,9 @@ struct VibesomniaApp: App {
         .defaultSize(width: 860, height: 680)
         .windowResizability(.contentMinSize)
         .commands {
+            CommandGroup(replacing: .appSettings) {
+                WorkspaceSettingsCommand(store: store)
+            }
             CommandGroup(after: .appInfo) {
                 Button(store.session == nil ? "Start Session" : "End Session") {
                     store.perform {
@@ -36,15 +39,15 @@ struct VibesomniaApp: App {
         MenuBarExtra {
             SessionMenu(store: store).disabled(store.isPreview)
         } label: {
-            Image(nsImage: MenuBarIcon.image(active: store.session != nil))
+            HStack(spacing: 4) {
+                Image(nsImage: MenuBarIcon.image(active: store.session != nil))
                 .renderingMode(.original)
                 .accessibilityLabel(store.session == nil ? "Vibesomnia · idle" : "Vibesomnia · awake")
                 .help(store.session == nil ? "Vibesomnia · idle" : "Vibesomnia · awake")
+                if let countdown = store.countdown { Text(countdown).monospacedDigit() }
+            }
         }
-        Settings {
-            if store.isPreview { Text("Setup preview · preferences are not saved").padding() }
-            else { SettingsView(store: store) }
-        }
+
     }
 }
 

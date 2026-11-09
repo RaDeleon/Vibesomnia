@@ -37,6 +37,15 @@ is a direction, not a claim about today's build.
 - [ ] Optional session history/export with explicit privacy controls.
 - [ ] Editable CLI executable locations and configurable project directories.
 
+## Workspace refresh (unreleased)
+
+- [x] In-window settings, explained session controls, timer presets/countdown.
+- [x] Expanded app catalog, native icons, pinning and launch troubleshooting.
+- [x] Opt-in in-memory session metadata recap with a Computer History prompt handoff.
+- [ ] Live UI, menu, custom app, persistence and accessibility acceptance.
+- [ ] Donation provider/recipient setup and verified checkout; page prepared.
+- [ ] Supported automatic Computer History connector; no private-cache scraping.
+
 ## Amphetamine-inspired parity inventory
 
 The detailed [parity checklist](PARITY.md) is the authoritative feature inventory.
@@ -73,5 +82,5 @@ open and are not implied passes by the new version name.
 ## Deferred business backlog
 
 Community/Pro editions, early-access policy, commercial licensing, contributor
-agreements, payments, support/funding links, and Mac App Store feasibility.
-No feature gates, license checks, or monetization work in the current beta.
+agreements and Mac App Store feasibility. Voluntary support is now requested;
+checkout remains pending recipient/provider setup. No feature gates or license checks.

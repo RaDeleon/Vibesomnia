@@ -126,5 +126,42 @@ Capture screenshots from the real app; don't substitute marketing mockups for UI
 
 ## Evidence
 
-Record actual checks and limitations in sessions.log and release notes. Keep
+Record actual checks and limitations in the local session log and release notes. Keep
 private runtime output, hostnames, and screenshots containing user data out of Git.
+
+
+## Workspace refresh acceptance
+
+- Gear, Command-comma, and menu-bar Settings reuse the main window; Dashboard
+  returns without changing an active session. Test after closing the window too.
+- Open Stay awhile help; read every option and confirm the popover fits onscreen.
+- Start a 5-minute session from the menu. Confirm dashboard/menu-bar countdowns
+  agree. Set 10 minutes remaining; confirm original start and power ownership
+  stay intact. Remove timer; verify indefinite. Custom 0/negative/excess duration
+  must fail without replacing the active session. Test a one-minute actual expiry.
+- Confirm icons and installed/running status against actual applications. Verify
+  separate Atlas IDE/browser and ChatGPT/Codex identities. Uninstalled tools must
+  not appear connected. CLI presence must not be treated as running/model activity.
+- Pin/unpin, toggle automatic running-app discovery, relaunch and check persistence.
+  Add a custom `.app` outside Applications, launch it, and check the actual icon.
+- Exercise a real launch failure; yellow status and Troubleshoot must show the
+  error, recovery guidance and retry. Verify retry clears a successful failure.
+- Enable recap, start/stop, check actual interval/app names, copy the prompt and
+  inspect UTC timestamps. No history files or conversations should be read. A
+  completed recap is not evidence that an AI task succeeded. Disable and verify
+  collection stops; quitting discards in-memory recaps.
+- Support opens the bundled page; all six presets and custom amount work. With no
+  recipient configured, checkout remains disabled and clearly says so.
+- Inspect minimum-size layout, scrolling, light/dark appearance, focus order and
+  accessibility labels. Check idle CPU/RSS as a sample, not a universal benchmark.
+
+
+### Non-disruptive UI preview
+
+`./script/build_and_run.sh --preview` opens a read-only workspace using actual app
+metadata. It does not create IPC, acquire power assertions, load script storage,
+or save preferences. The title and dashboard label identify the preview. Use it
+for layout/navigation checks while an installed session is active; close that
+preview with Command-Q before a normal `--verify` run. Preview checks do not prove
+live session, countdown, persistence, script execution or remote behavior.
+`--build-only` now builds without requesting the running app to quit.

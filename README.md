@@ -32,6 +32,16 @@ App version **1.0.0-beta.1** includes verified closed-lid status and immediate
 on/off controls. The GitHub release is marked **Latest** for download visibility;
 it remains beta software with the limitations below.
 
+## In development
+
+The current development branch adds in-window Settings, explained session controls,
+menu-bar duration presets and countdown, and an expanded Night Crew with native app
+icons, pinning and launch troubleshooting. Optional session recaps include a
+Computer History prompt handoff; automatic history integration is pending. The
+Support page is prepared, with checkout disabled until a donation destination is
+configured. See [workspace controls](docs/WORKSPACE.md) for behavior and limits.
+These changes are not yet in the downloadable Beta 1 installer.
+
 ## Built for the nights that become mornings
 
 Your laptop shouldn't clock out before your agents do. Vibesomnia keeps macOS
@@ -300,7 +310,7 @@ installation, code, assets, or Power Protect component is used by this version.
 
 **Support the night shift:** star the repo, report reproducible issues, or help
 with the hardware test checklist. Donation links will be added when the support
-destination is ready. There is no paid edition in the current alpha.
+destination is ready. There is no paid edition in the current beta.
 
 Local development records (`changelog.md`, `sessionlog.md`, `Devlog.md` and
 `Devlog.html`, plus `docs/dev-diary/`) are ignored. They hold personal session history and the editable

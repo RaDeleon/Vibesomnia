@@ -7,9 +7,30 @@ struct ContentView: View {
     @ObservedObject var store: SessionStore
 
     var body: some View {
+        Group {
+            if store.page == .settings {
+                SettingsView(store: store)
+            } else { dashboard }
+        }
+        .frame(minWidth: 860, minHeight: 680)
+        .tint(.purple)
+        .navigationTitle(store.isPreview ? "Vibesomnia · UI preview" : "Vibesomnia")
+        .toolbar {
+            Button("Dashboard", systemImage: "square.grid.2x2") { store.page = .dashboard }
+            Button("Setup guide", systemImage: "sparkles") { store.showSetup = true }
+            Button("Support Vibesomnia", systemImage: "heart") { SupportPage.open() }
+            Button("Settings", systemImage: "gearshape") { store.showSettings() }
+        }
+    }
+
+    private var dashboard: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 header
+                if store.isPreview {
+                    Label("Read-only UI preview · your running session is unchanged", systemImage: "eye")
+                        .font(.callout).foregroundStyle(.secondary)
+                }
                 if let error = store.error {
                     Label(error, systemImage: "exclamationmark.triangle.fill")
                         .font(.callout).foregroundStyle(.orange).textSelection(.enabled)
@@ -22,9 +43,10 @@ struct ContentView: View {
                         }.padding(8)
                     }
                 }
+                if let recap = store.lastRecap { SessionRecapView(store: store, recap: recap) }
                 HStack(alignment: .top, spacing: 20) {
-                    sessionCard.frame(maxWidth: .infinity)
-                    workspaceCard.frame(maxWidth: .infinity)
+                    SessionControlsView(store: store).frame(maxWidth: .infinity)
+                    NightCrewView(store: store).frame(maxWidth: .infinity)
                 }
                 remoteCard
                 if !store.events.isEmpty {
@@ -43,22 +65,18 @@ struct ContentView: View {
                 }.font(.caption).foregroundStyle(.secondary)
             }.padding(30)
         }
-        .frame(minWidth: 800, minHeight: 620)
-        .toolbar {
-            Button("Setup guide", systemImage: "sparkles") { store.showSetup = true }
-            SettingsLink()
-        }
+
     }
 
-    private var bundledAppIcon: NSImage {
+    private static let bundledAppIcon: NSImage = {
         if let url = Bundle.main.url(forResource: "AppIcon", withExtension: "icns"),
            let image = NSImage(contentsOf: url) { return image }
         return NSApp.applicationIconImage
-    }
+    }()
 
     private var header: some View {
         HStack(spacing: 16) {
-            Image(nsImage: bundledAppIcon)
+            Image(nsImage: Self.bundledAppIcon)
                 .resizable().interpolation(.high)
                 .frame(width: 76, height: 76)
                 .accessibilityLabel("Vibesomnia: a late-night developer at a glowing laptop")
@@ -70,79 +88,17 @@ struct ContentView: View {
             VStack(alignment: .trailing, spacing: 4) {
                 Label(store.session == nil ? "Off duty" : "Keeping awake", systemImage: "circle.fill")
                     .foregroundStyle(store.session == nil ? Color.secondary : Color.green)
-                if let end = store.session?.endsAt {
-                    Text(end, style: .timer).monospacedDigit()
+                if store.session?.endsAt != nil {
+                    Text(store.countdown ?? "00:00:00").monospacedDigit()
+                        .accessibilityLabel("Time remaining")
                 } else if store.session != nil { Text("Until you say stop").font(.caption).foregroundStyle(.secondary) }
                 if let battery = store.battery {
                     Text("\(battery.percent)% · \(battery.onBattery ? "Battery" : "Power adapter")")
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }.font(.callout)
-        }
-    }
-
-    private var sessionCard: some View {
-        GroupBox {
-            VStack(alignment: .leading, spacing: 14) {
-                Text("STAY AWHILE").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
-                Toggle("End after a timer", isOn: $store.timed)
-                if store.timed {
-                    HStack { Text("Minutes"); TextField("Minutes", value: $store.minutes, format: .number).frame(width: 80) }
-                }
-                Toggle("Let the display sleep", isOn: $store.allowDisplaySleep)
-                Toggle("Keep running with lid closed", isOn: Binding(
-                    get: { store.isClosedLidActive },
-                    set: { enabled in store.perform { try await store.setClosedLidEnabled(enabled) } }
-                )).disabled(store.busy || store.needsRecovery || store.isPreview)
-                if store.isClosedLidActive {
-                    Text("Uses Vibesomnia’s own temporary power guard. macOS requests administrator approval for each session. Normal sleep returns on stop, exit, or lost heartbeat.")
-                        .font(.caption).foregroundStyle(.secondary)
-                }
-                Picker("While app runs", selection: $store.selectedApp) {
-                    Text("Any / manual session").tag("")
-                    ForEach(store.apps.filter { $0.installed && $0.bundleID != nil }) { app in
-                        Text(app.name).tag(app.bundleID ?? "")
-                    }
-                }
-                Toggle("Start when selected app runs", isOn: $store.autoStart).disabled(store.selectedApp.isEmpty)
-                Text("The closed-lid switch changes the current session immediately. Timer, display, and app options apply to the next session.").font(.caption).foregroundStyle(.secondary)
-                Button {
-                    store.perform {
-                        if store.session == nil { try await store.start() }
-                        else { try await store.stop() }
-                    }
-                } label: {
-                    Label(store.busy ? "Updating…" : (store.session == nil ? "Start session" : "End session"),
-                          systemImage: store.session == nil ? "play.fill" : "stop.fill")
-                        .frame(maxWidth: .infinity)
-                }.buttonStyle(.borderedProminent).controlSize(.large).disabled(store.busy || (store.needsRecovery && store.session == nil))
-                Text(store.isClosedLidActive ? "Closed-lid protection verified · checked every second" : "Closed-lid protection is off. Native sessions prevent idle sleep only.")
-                    .font(.caption).foregroundStyle(.secondary)
-            }.padding(12)
-        }
-    }
-
-    private var workspaceCard: some View {
-        GroupBox {
-            VStack(alignment: .leading, spacing: 14) {
-                Text("YOUR NIGHT CREW").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
-                ForEach(store.apps) { app in
-                    HStack {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(app.name).fontWeight(.medium)
-                            Text(app.bundleID == nil && app.installed ? "CLI installed · opens in Terminal" : app.running ? "Running" : app.installed ? "Ready to launch" : "Not installed")
-                                .font(.caption).foregroundStyle(.secondary)
-                        }
-                        Spacer()
-                        Button(app.running ? "Open" : "Launch") { store.perform { try await store.launch(app.id) } }
-                            .disabled(!app.installed)
-                    }
-                    if app.id != "codex-cli" { Divider() }
-                }
-                Text("Detects app availability only. No conversations, prompts, or API keys are read.")
-                    .font(.caption).foregroundStyle(.secondary)
-            }.padding(12)
-        }
+        }.padding(20)
+            .background(LinearGradient(colors: [.purple.opacity(0.16), .indigo.opacity(0.06)], startPoint: .topLeading, endPoint: .bottomTrailing), in: RoundedRectangle(cornerRadius: 20))
     }
 
     private var remoteCard: some View {

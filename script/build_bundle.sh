@@ -30,6 +30,9 @@ if [ -d Resources/AddOnExamples ]; then
     cp -R Resources/AddOnExamples/. "$APP_BUNDLE/Contents/Resources/AddOnExamples/"
 fi
 cp NOTICE "$APP_BUNDLE/Contents/Resources/NOTICE"
+mkdir -p "$APP_BUNDLE/Contents/Resources/Support"
+cp Resources/Support/index.html "$APP_BUNDLE/Contents/Resources/Support/index.html"
+cp Resources/AppIcon.png "$APP_BUNDLE/Contents/Resources/AppIcon.png"
 cp Resources/AppIcon.icns "$APP_BUNDLE/Contents/Resources/AppIcon.icns"
 APP_VERSION="$(cat VERSION)"
 BASE_VERSION="${APP_VERSION%%-*}"

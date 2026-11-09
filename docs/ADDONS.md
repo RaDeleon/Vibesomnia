@@ -6,11 +6,11 @@ script-execution endpoint is present.
 
 ## Use the app
 
-Open Settings → Add-ons:
+Open Settings → Scripts (inside the main workspace):
 
-- **New script** creates an unapproved package in your AddOns folder.
+- **New script** creates an unapproved package and opens its in-app editor.
 - **Import add-on** copies a selected package's manifest and entry-point script.
-- **Edit** edits script and manifest in-app. **Open folder** supports your editor.
+- **Edit** edits code with simple start/end hook checkboxes; the advanced manifest remains available. **Open folder** supports your editor.
 - **Review** displays the actual code, interpreter, event bindings, and timeout.
 - **Approve this version** enables only the exact reviewed content hash.
 - **Run** invokes it manually; event hooks run only while approved and enabled.
@@ -97,3 +97,25 @@ Do not paste API tokens into packages or publish private paths/keys in the repo.
 A script that sends messages, uploads files, changes a firewall, or performs a
 financial action needs the user's own deliberate authorization and configuration;
 Vibesomnia approving code is not permission from the data's owner or recipient.
+
+
+## How this relates to Amphetamine
+
+Amphetamine exposes an AppleScript dictionary so **another script can control
+Amphetamine**: start/end a session, query remaining time, allow display sleep,
+control triggers and change other supported settings. Its developer also lists
+[AppleScript support](https://apps.apple.com/us/app/amphetamine/id937984704).
+For example, an automation could start a keep-awake session before a build and
+end it after the build finishes. Its local scripting dictionary is the reference
+for exact commands supported by the installed version.
+
+Vibesomnia's add-ons work in the other direction: **Vibesomnia runs a script you
+reviewed**, manually or when a session starts/ends. External automation controls
+Vibesomnia through its typed CLI. An AppleScript command dictionary and importing
+Amphetamine automations unchanged are not implemented. Amphetamine Enhancer is
+a separate helper project, not evidence of a general user add-on marketplace.
+
+The included examples are useful starting points: Workspace Pulse inspects local
+power assertions; End-of-shift Chime plays a sound after a session. A future
+workspace recipe could open chosen apps, and a local project report could show
+Git changes. These are ordinary user-authorized scripts, not model integrations.
