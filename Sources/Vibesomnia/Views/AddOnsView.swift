@@ -26,7 +26,9 @@ struct AddOnsView: View {
                 Button("Install examples") { store.installExamples() }
                 Button("Reload") { store.reload() }
             }
-            List(store.addons) { addon in
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 12) {
+                    ForEach(store.addons) { addon in
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         VStack(alignment: .leading) {
@@ -36,14 +38,19 @@ struct AddOnsView: View {
                         Spacer()
                         Toggle("Enabled", isOn: Binding(get: { store.enabled(addon) }, set: { store.setEnabled(addon, $0) }))
                             .disabled(!store.approved(addon))
-                        Button("Edit") { editing = addon }
-                        Button("Review") { reviewing = addon }
+                        Button("Edit") { editing = addon }.accessibilityLabel("Edit \(addon.manifest.name)")
+                        Button("Review") { reviewing = addon }.accessibilityLabel("Review \(addon.manifest.name)")
                         Button("Run") { Task { await store.run(addon) } }
                             .disabled(!store.enabled(addon) || store.running)
+                            .accessibilityLabel("Run \(addon.manifest.name)")
                     }
                     Text("\(addon.manifest.interpreter.rawValue) · \(addon.manifest.timeoutSeconds)s limit · \(addon.manifest.events.map(\.rawValue).joined(separator: ", "))")
                         .font(.caption).foregroundStyle(.secondary)
-                }.padding(.vertical, 6)
+                }.padding(12)
+                    .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 10))
+                    .accessibilityElement(children: .contain)
+                    }
+                }
             }
             if store.running { Button("Stop script") { Task { await store.cancel() } } }
             Text("Last result").font(.headline)

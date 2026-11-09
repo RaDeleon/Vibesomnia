@@ -26,7 +26,7 @@ struct SetupView: View {
                     }
                 }
                 Spacer()
-                Text(store.isPreview ? "SETUP PREVIEW\nNo settings or power changes" : "ALPHA · MADE FOR MAC\nYour workspace, on your terms")
+                Text(store.isPreview ? "SETUP PREVIEW\nNo settings or power changes" : "BETA · MADE FOR MAC\nYour workspace, on your terms")
                     .font(.caption).foregroundStyle(.secondary)
             }.padding(28).frame(width: 230).frame(maxHeight: .infinity).background(.regularMaterial)
             VStack(alignment: .leading, spacing: 20) {

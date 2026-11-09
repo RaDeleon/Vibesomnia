@@ -1,4 +1,4 @@
-# Workspace controls (unreleased)
+# Workspace controls (Beta 2 local test build)
 
 These changes are on the development branch; the published V1.0 Beta 1 installer
 has not been replaced by this work.

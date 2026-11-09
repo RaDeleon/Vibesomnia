@@ -8,7 +8,7 @@ struct VibesomniaApp: App {
     @StateObject private var store = SessionStore(preview: CommandLine.arguments.contains("--setup-preview") || CommandLine.arguments.contains("--workspace-preview"))
 
     var body: some Scene {
-        WindowGroup("Vibesomnia", id: "workspace") {
+        Window("Vibesomnia", id: "workspace") {
             Group {
                 if CommandLine.arguments.contains("--setup-preview") {
                     SetupView(store: store) { NSApp.terminate(nil) }

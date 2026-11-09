@@ -41,6 +41,7 @@ final class SessionStore: ObservableObject {
     @Published var confirmedRemoteTest = false { didSet { savePreferences() } }
     let isPreview: Bool
     private let preferencesDefaults: UserDefaults?
+    private var loadingPreferences = true
     private var setupCompleted = false
     lazy var addons = AddOnStore()
     let transport = ControlTransport()
@@ -66,6 +67,7 @@ final class SessionStore: ObservableObject {
         confirmedRemoteTest = preferences.confirmedRemoteTest
         setupCompleted = preferences.completed
         showSetup = !preferences.completed
+        loadingPreferences = false
         if preview {
             showSetup = false
             apps = workspace.snapshot()
@@ -84,6 +86,9 @@ final class SessionStore: ObservableObject {
     }
 
     private func savePreferences() {
+        // Published property observers fire while restoring the other fields.
+        // Do not persist a partially restored record (especially completed=false).
+        guard !loadingPreferences else { return }
         var value = SetupPreferences()
         value.completed = setupCompleted
         value.allowDisplaySleep = allowDisplaySleep

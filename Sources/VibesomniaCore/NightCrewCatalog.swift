@@ -51,7 +51,7 @@ public enum NightCrewCatalog {
 public enum SessionDuration {
     public static let presets = [5, 10, 30, 60] + Array(2...12).map { $0 * 60 }
     public static func title(_ minutes: Int) -> String {
-        minutes >= 60 && minutes % 60 == 0 ? "\(minutes / 60) \(minutes == 60 ? "hour" : "hours")" : "\(minutes) minutes"
+        minutes >= 60 && minutes % 60 == 0 ? "\(minutes / 60) \(minutes == 60 ? "hour" : "hours")" : "\(minutes) \(minutes == 1 ? "minute" : "minutes")"
     }
     public static func countdown(_ seconds: Int) -> String {
         let value = max(0, seconds)

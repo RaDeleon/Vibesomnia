@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml"><img alt="macOS checks" src="https://github.com/RaDeleon/Vibesomnia/actions/workflows/ci.yml/badge.svg" /></a>
-  <img alt="Version 1.0.0-beta.1" src="https://img.shields.io/badge/version-1.0.0--beta.1-9b82f5" />
+  <img alt="Development version 1.0.0-beta.2" src="https://img.shields.io/badge/development-1.0.0--beta.2-9b82f5" />
   <img alt="macOS 14+" src="https://img.shields.io/badge/macOS-14%2B-19172f?logo=apple" />
   <img alt="Swift and SwiftUI" src="https://img.shields.io/badge/Swift-SwiftUI-f07152?logo=swift&logoColor=white" />
   <a href="LICENSE"><img alt="AGPL v3" src="https://img.shields.io/badge/license-AGPL--3.0-7462c8" /></a>
@@ -32,9 +32,9 @@ App version **1.0.0-beta.1** includes verified closed-lid status and immediate
 on/off controls. The GitHub release is marked **Latest** for download visibility;
 it remains beta software with the limitations below.
 
-## In development
+## Beta 2 development build
 
-The current development branch adds in-window Settings, explained session controls,
+Version **1.0.0-beta.2**, currently a local test build, adds in-window Settings, explained session controls,
 menu-bar duration presets and countdown, and an expanded Night Crew with native app
 icons, pinning and launch troubleshooting. Optional session recaps include a
 Computer History prompt handoff; automatic history integration is pending. The

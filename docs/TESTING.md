@@ -31,6 +31,9 @@ Check that the app bundle and CLI report VERSION consistently.
 - Open the installed app: first-run setup appears. Detect apps, change preferences,
   finish/skip, relaunch, and confirm choices persist while sessions remain stopped.
 - Reopen setup from both toolbar and Settings. Test permission denial/cancellation.
+- Complete setup, then quit/relaunch twice. Confirm the completion flag and all
+  saved choices survive both launches; loading preferences must not write a
+  partially restored record over them.
 - Follow the physical lid/remote checklist below; owner confirmation is not an
   automatically measured connectivity result.
 - Test update and uninstall (end/recover session, quit, move app to Trash).
