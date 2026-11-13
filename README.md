@@ -15,6 +15,7 @@
 </p>
 
 <p align="center">
+  <a href="#why-i-built-vibesomnia">Why I built it</a> ·
   <a href="#get-running">Get running</a> · <a href="#the-night-crew">Features</a> ·
   <a href="#closed-lid-without-amphetamine">Closed lid</a> · <a href="#your-scripts-your-workflow">Add-ons</a> ·
   <a href="#take-it-remote">Remote controls</a> · <a href="docs/PARITY.md">Feature parity</a> ·
@@ -32,12 +33,34 @@ App version **1.0.0-beta.1** includes verified closed-lid status and immediate
 on/off controls. The GitHub release is marked **Latest** for download visibility;
 it remains beta software with the limitations below.
 
+## Why I built Vibesomnia
+
+I keep my MacBook docked a lot, but I don't always want to sit at the desk to
+keep coding. When I'm away from home, I use my phone to work with ChatGPT,
+Claude Code, and desktop AI apps on the Mac. I also use my agentic browser,
+BrowserRAD, to handle browser work and tasks. The MacBook at home is still the
+machine doing the work.
+
+The problem was sleep. If the Mac sat idle long enough, it would go to sleep
+and interrupt what I was doing remotely. Claude Code would time out, and I'd
+lose the session. Being away from the keyboard didn't mean I was done working,
+but the machine treated it that way.
+
+I built Vibesomnia so I could close the lid, work from my phone while doing
+other things, and keep my AI tools coding and controlling the computer. The
+same need comes up at night: start a task before bed, shut the lid, and keep
+idle sleep from cutting the run short.
+
+Vibesomnia keeps the Mac awake underneath that workflow. My existing remote
+access tools provide the connection from my phone; ChatGPT, Claude, and
+BrowserRAD handle the tasks.
+
+**You can sleep. Your AI doesn't have to.**
+
 ## Built for the nights that become mornings
 
-Your laptop shouldn't clock out before your agents do. Vibesomnia keeps macOS
-awake while Claude Desktop, ChatGPT, Codex, and your terminal tools keep working.
-Use the display normally, let it go dark, or opt into closed-lid mode. End the
-session when you're done.
+Use the display normally, let it go dark, or opt into closed-lid mode. Start a
+manual, timed, or app-aware session, and end it when you're done.
 
 The goal is the power and flexibility of an Amphetamine-class utility, built
 around AI development: clear session controls, useful app awareness, your own
